@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Ultra-smooth Sortowanie (anime.js)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    body {
+      background: #1a1a2e;
+      color: #eee;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px;
+    }
+    #container {
+      position: relative;
+      width: 800px;
+      height: 400px;
+      margin: 30px 0;
+    }
+    .bar {
+      position: absolute;
+      width: 60px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      bottom: 0;
+    }
+    .bar.comparing {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      transform: translateY(-20px);
+      box-shadow: 0 12px 24px rgba(245,87,108,0.5);
+    }
+    .bar.sorted {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      box-shadow: 0 8px 16px rgba(0,242,254,0.4);
+    }
+    button {
+      margin: 5px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    #info {
+      font-size: 18px;
+      margin: 20px 0;
+      min-height: 30px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Ultra-Smooth Sortowanie (anime.js)</h1>
+
+  <div id="container"></div>
+
+  <div id="info">Kliknij "Następny krok" aby rozpocząć</div>
+
+  <div>
+    <button onclick="nextStep()">Następny krok →</button>
+    <button onclick="reset()">Reset</button>
+    <button onclick="autoPlay()">Auto Play</button>
+  </div>
+
+  <script>
+    const container = document.getElementById('container');
+    const info = document.getElementById('info');
+    let array = [5, 2, 8, 1, 9];
+    let bars = [];
+    let steps = [];
+    let stepIndex = 0;
+    let autoInterval = null;
+
+    // Utwórz słupki
+    function createBars() {
+      container.innerHTML = '';
+      bars = [];
+      array.forEach((val, i) => {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.textContent = val;
+        bar.style.height = (val * 40) + 'px';
+        bar.style.left = (i * 100 + 200) + 'px';
+        container.appendChild(bar);
+        bars.push(bar);
+      });
+    }
+
+    // Generuj kroki sortowania
+    function generateSteps() {
+      const st = [];
+      const arr = [...array];
+      const n = arr.length;
+
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          st.push({
+            type: 'compare',
+            indices: [j, j + 1],
+            message: `Porównuję ${arr[j]} i ${arr[j + 1]}`
+          });
+
+          if (arr[j] > arr[j + 1]) {
+            st.push({
+              type: 'swap',
+              indices: [j, j + 1],
+              message: `Zamiana ${arr[j]} ↔ ${arr[j + 1]}`
+            });
+
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          }
+        }
+        st.push({
+          type: 'sorted',
+          index: n - i - 1,
+          message: `Element ${arr[n - i - 1]} posortowany ✓`
+        });
+      }
+      return st;
+    }
+
+    // Wykonaj krok
+    function executeStep(step) {
+      info.textContent = step.message;
+
+      if (step.type === 'compare') {
+        bars[step.indices[0]].classList.add('comparing');
+        bars[step.indices[1]].classList.add('comparing');
+
+        anime({
+          targets: [bars[step.indices[0]], bars[step.indices[1]]],
+          translateY: -30,
+          duration: 500,
+          easing: 'easeOutElastic(1, .6)',
+          complete: () => {
+            setTimeout(() => {
+              bars[step.indices[0]].classList.remove('comparing');
+              bars[step.indices[1]].classList.remove('comparing');
+              anime({
+                targets: [bars[step.indices[0]], bars[step.indices[1]]],
+                translateY: 0,
+                duration: 300
+              });
+            }, 300);
+          }
+        });
+
+      } else if (step.type === 'swap') {
+        const [i, j] = step.indices;
+        const pos1 = bars[i].style.left;
+        const pos2 = bars[j].style.left;
+
+        anime({
+          targets: bars[i],
+          left: pos2,
+          duration: 800,
+          easing: 'easeInOutQuad'
+        });
+
+        anime({
+          targets: bars[j],
+          left: pos1,
+          duration: 800,
+          easing: 'easeInOutQuad',
+          complete: () => {
+            [bars[i], bars[j]] = [bars[j], bars[i]];
+          }
+        });
+
+      } else if (step.type === 'sorted') {
+        bars[step.index].classList.add('sorted');
+        anime({
+          targets: bars[step.index],
+          scale: [1, 1.1, 1],
+          duration: 600,
+          easing: 'easeInOutQuad'
+        });
+      }
+    }
+
+    function nextStep() {
+      if (stepIndex >= steps.length) {
+        info.textContent = '✓ Sortowanie zakończone!';
+        return;
+      }
+      executeStep(steps[stepIndex++]);
+    }
+
+    function reset() {
+      if (autoInterval) clearInterval(autoInterval);
+      stepIndex = 0;
+      array = [5, 2, 8, 1, 9];
+      createBars();
+      info.textContent = 'Kliknij "Następny krok" aby rozpocząć';
+    }
+
+    function autoPlay() {
+      if (autoInterval) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+      } else {
+        autoInterval = setInterval(() => {
+          if (stepIndex >= steps.length) {
+            clearInterval(autoInterval);
+            autoInterval = null;
+          } else {
+            nextStep();
+          }
+        }, 1500);
+      }
+    }
+
+    // Inicjalizacja
+    steps = generateSteps();
+    createBars();
+
+    // Klawiatura
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') nextStep();
+      if (e.key === 'r') reset();
+    });
+  </script>
+</body>
+</html>

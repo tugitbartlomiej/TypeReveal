@@ -1,0 +1,11 @@
+# This file is used internally by FFMPEG.
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/1185818338_1266386199_223132457.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_1330040333_1501994419.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_1788821012_399048259.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_3201849554_2036622134.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_3638080044_2047783914.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_3201849554_3249104697.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_2399663974_356467587.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_3201849554_3619608918.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_1106456421_3454237906.mp4'
+file 'file:F:/Studia/Studiowanie/Sem8/Java/LAB/Lab3/Test/media/videos/example_manim/480p15/partial_movie_files/ComplexityChart/624642324_2408024828_1090025611.mp4'

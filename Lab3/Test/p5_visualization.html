@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>p5.js Ultra Visualization</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      background: rgba(0,0,0,0.8);
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 100;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      background: #6c5ce7;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover { background: #5f4fd1; }
+    #info {
+      position: fixed;
+      top: 20px;
+      background: rgba(0,0,0,0.8);
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">Użyj → lub spacji aby przejść do następnego kroku</div>
+  <div id="controls">
+    <button onclick="nextStep()">Następny krok →</button>
+    <button onclick="prevStep()">← Poprzedni</button>
+    <button onclick="resetViz()">Reset</button>
+    <button onclick="toggleAuto()">Auto Play</button>
+  </div>
+
+  <script>
+    let array = [5, 2, 8, 1, 9, 3, 7, 4, 6];
+    let steps = [];
+    let currentStep = 0;
+    let autoPlay = false;
+    let barWidth = 60;
+    let spacing = 80;
+    let animProgress = 0;
+    let animating = false;
+
+    // Kolory
+    const colors = {
+      normal: [102, 126, 234],
+      comparing: [255, 193, 7],
+      swapping: [244, 67, 54],
+      sorted: [76, 175, 80]
+    };
+
+    function setup() {
+      createCanvas(800, 600);
+      frameRate(60);
+      generateSteps();
+    }
+
+    function draw() {
+      background(10, 10, 15);
+
+      // Rysuj tytuł
+      fill(255);
+      textSize(32);
+      textAlign(CENTER);
+      text('🎨 Ultra Sortowanie - p5.js', width / 2, 60);
+
+      // Aktualizuj stan
+      if (autoPlay && frameCount % 90 === 0) {
+        nextStep();
+      }
+
+      // Rysuj słupki
+      let step = steps[currentStep] || { type: 'initial', array: [...array], indices: [] };
+
+      push();
+      translate(width / 2 - (array.length * spacing) / 2, height - 100);
+
+      step.array.forEach((val, i) => {
+        let x = i * spacing;
+        let h = val * 40;
+        let col = colors.normal;
+
+        // Kolory zależnie od stanu
+        if (step.type === 'compare' && step.indices.includes(i)) {
+          col = colors.comparing;
+          // Efekt pulsowania
+          h += sin(frameCount * 0.1) * 10;
+        } else if (step.type === 'swap' && step.indices.includes(i)) {
+          col = colors.swapping;
+        } else if (step.sorted && step.sorted.includes(i)) {
+          col = colors.sorted;
+        }
+
+        // Gradient
+        for (let j = 0; j < h; j++) {
+          let inter = map(j, 0, h, 0, 1);
+          let c = lerpColor(color(col[0], col[1], col[2]), color(col[0] - 50, col[1] - 50, col[2] - 50), inter);
+          stroke(c);
+          line(x, -j, x + barWidth, -j);
+        }
+
+        // Ramka
+        noFill();
+        stroke(255, 150);
+        strokeWeight(2);
+        rect(x, 0, barWidth, -h, 5);
+
+        // Wartość
+        fill(255);
+        noStroke();
+        textSize(24);
+        textAlign(CENTER, CENTER);
+        text(val, x + barWidth / 2, -h - 25);
+
+        // Efekt połysku
+        noStroke();
+        fill(255, 255, 255, 50);
+        rect(x + 5, -h + 5, 10, h / 3, 5);
+      });
+
+      pop();
+
+      // Info
+      fill(255);
+      textSize(16);
+      textAlign(CENTER);
+      text(`Krok ${currentStep + 1} / ${steps.length}`, width / 2, height - 30);
+      if (step.message) {
+        text(step.message, width / 2, height - 10);
+      }
+    }
+
+    function generateSteps() {
+      steps = [{ type: 'initial', array: [...array], indices: [], message: 'Stan początkowy' }];
+      let arr = [...array];
+      let sorted = [];
+
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+          steps.push({
+            type: 'compare',
+            array: [...arr],
+            indices: [j, j + 1],
+            sorted: [...sorted],
+            message: `Porównuję ${arr[j]} i ${arr[j + 1]}`
+          });
+
+          if (arr[j] > arr[j + 1]) {
+            steps.push({
+              type: 'swap',
+              array: [...arr],
+              indices: [j, j + 1],
+              sorted: [...sorted],
+              message: `Zamiana ${arr[j]} ↔ ${arr[j + 1]}`
+            });
+
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          }
+        }
+        sorted.push(arr.length - i - 1);
+        steps.push({
+          type: 'sorted',
+          array: [...arr],
+          indices: [],
+          sorted: [...sorted],
+          message: `Element ${arr[arr.length - i - 1]} posortowany ✓`
+        });
+      }
+
+      steps.push({
+        type: 'complete',
+        array: [...arr],
+        indices: [],
+        sorted: arr.map((_, i) => i),
+        message: '✓ Sortowanie zakończone!'
+      });
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+      }
+    }
+
+    function resetViz() {
+      currentStep = 0;
+      autoPlay = false;
+    }
+
+    function toggleAuto() {
+      autoPlay = !autoPlay;
+    }
+
+    function keyPressed() {
+      if (keyCode === RIGHT_ARROW || key === ' ') {
+        nextStep();
+        return false;
+      }
+      if (keyCode === LEFT_ARROW) {
+        prevStep();
+        return false;
+      }
+      if (key === 'r') {
+        resetViz();
+      }
+    }
+  </script>
+</body>
+</html>

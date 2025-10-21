@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Java – animowane pisanie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Reveal.js (slajdy) -->
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/black.css" id="theme">
+
+  <!-- Prism.js (kolorowanie składni) -->
+  <link rel="stylesheet" href="https://unpkg.com/prismjs/themes/prism-tomorrow.css">
+  <script defer src="https://unpkg.com/prismjs/prism.js"></script>
+  <script defer src="https://unpkg.com/prismjs/components/prism-java.min.js"></script>
+
+  <!-- Typed.js (efekt „maszynopisu”) -->
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+  <style>
+    :root { --pad: 18px }
+    .reveal pre { font-size: 1.06rem; line-height: 1.35; }
+    /* ważne: zachowuj prawdziwe \n, nie zawijaj */
+    .reveal pre, pre[class*="language-"] { white-space: pre; }
+    .typed-cursor { opacity: 1; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .controls-local { margin-top: var(--pad); display: flex; gap: 12px; align-items: center; opacity: .9; font-size: .9rem }
+    .controls-local button { padding: 6px 10px; border: 0; border-radius: 8px; cursor: pointer }
+    .hint { opacity:.7; font-size:.9rem; margin-top: 8px }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- SLIDE 1: tytuł -->
+    <section>
+      <h2>ANIMOWANE PISANIE KODU<br/>(JAVA)</h2>
+      <p>Kliknij → aby przejść do przykładu.</p>
+    </section>
+
+    <!-- SLIDE 2: animacja -->
+    <section id="typing-slide">
+      <h3>Przykład — pisanie jak „na żywo”</h3>
+
+      <pre><code id="code" class="language-java"></code></pre>
+
+      <div class="controls-local">
+        <button id="next">Następny fragment</button>
+        <button id="undo">Cofnij</button>
+        <label>Prędkość:
+          <input id="speed" type="range" min="5" max="150" value="30">
+        </label>
+      </div>
+      <div class="hint">Używaj też klawisza → lub spacji — dopóki są kolejne fragmenty, slajd nie przejdzie dalej.</div>
+
+      <!-- KROKI: nowe linie tylko tam, gdzie jawnie dodasz \n -->
+      <script type="application/json" id="steps">
+      [
+        "public class Hello {",                             
+        "\n    public static void main(String[] args) {",
+        "\n        System.out.println(\"Hello\");",
+        "\n    }",
+        "\n}",
+        "\n\n// Dodajmy metodę pomocniczą:",
+        "\nstatic int add(int a, int b) { return a + b; }",
+        "\n\n// I wywołanie:",
+        "\nSystem.out.println(add(2,3));"
+      ]
+      </script>
+    </section>
+
+    <!-- SLIDE 3: Interaktywna wizualizacja sortowania -->
+    <section id="sorting-slide">
+      <h3>Sortowanie bąbelkowe - krok po kroku</h3>
+
+      <div id="array-container" style="display: flex; gap: 10px; justify-content: center; margin: 30px 0;">
+        <!-- Elementy tablicy będą tu -->
+      </div>
+
+      <div id="sort-info" style="margin: 20px 0; font-size: 1.1rem; min-height: 30px;">
+        Kliknij "Następny krok" aby rozpocząć
+      </div>
+
+      <div class="controls-local">
+        <button id="sort-next">Następny krok</button>
+        <button id="sort-reset">Reset</button>
+        <button id="sort-auto">Auto play</button>
+      </div>
+      <div class="hint">Używaj → lub spacji - każdy krok sortowania osobno!</div>
+
+      <style>
+        .array-item {
+          width: 60px;
+          height: 60px;
+          background: #2196F3;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          font-weight: bold;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .array-item.comparing {
+          background: #FFC107;
+          transform: translateY(-10px);
+        }
+        .array-item.swapping {
+          background: #FF5722;
+        }
+        .array-item.sorted {
+          background: #4CAF50;
+        }
+      </style>
+    </section>
+
+    <!-- SLIDE 3b: Manim KROK PO KROKU (klatki PNG) -->
+    <section id="manim-frames-slide">
+      <h3>🎬 Manim: Sortowanie krok po kroku</h3>
+
+      <div style="position: relative; width: 800px; height: 450px; margin: 20px auto; background: #000; border-radius: 10px; overflow: hidden;">
+        <img id="manim-frame" src="" alt="Manim frame" style="width: 100%; height: 100%; object-fit: contain;">
+      </div>
+
+      <div id="manim-info" style="margin: 20px 0; font-size: 1.1rem; min-height: 30px;">
+        Klatka 0 / 28
+      </div>
+
+      <div class="controls-local">
+        <button id="manim-prev">← Poprzedni</button>
+        <button id="manim-next">Następny →</button>
+        <button id="manim-reset">Reset</button>
+        <label>Klatka: <input id="manim-slider" type="range" min="1" max="28" value="1" style="width: 200px;"></label>
+      </div>
+      <div class="hint">Używaj ← → aby przechodzić między klatkami Manim! Pełna kontrola nad animacją.</div>
+    </section>
+
+    <!-- SLIDE 3c: Wideo z animacją Manim (auto play) -->
+    <section>
+      <h3>Wizualizacja: Manim Animation (Auto)</h3>
+      <video width="800" controls autoplay loop muted>
+        <source src="animations/sorting.mp4" type="video/mp4">
+        <p>Tutaj wstaw wideo wygenerowane przez Manim (np. sorting.mp4)</p>
+      </video>
+      <p class="hint">Animacja Manim: pełna automatyczna animacja</p>
+    </section>
+
+    <!-- SLIDE 4: Python Tutor - Wizualizacja tablicy w pamięci -->
+    <section>
+      <h3 style="margin-bottom: 5px;">📊 Python Tutor: Tablica w pamięci</h3>
+      <iframe src="https://pythontutor.com/iframe-embed.html#code=public%20class%20ArrayDemo%20%7B%0A%20%20public%20static%20void%20main(String%5B%5D%20args)%20%7B%0A%20%20%20%20int%5B%5D%20arr%20%3D%20new%20int%5B5%5D%3B%0A%20%20%20%20arr%5B0%5D%20%3D%2010%3B%0A%20%20%20%20arr%5B1%5D%20%3D%2020%3B%0A%20%20%20%20arr%5B2%5D%20%3D%2030%3B%0A%20%20%20%20arr%5B1%5D%20%3D%20arr%5B1%5D%20*%202%3B%0A%20%20%20%20System.out.println(arr%5B1%5D)%3B%0A%20%20%7D%0A%7D&codeDivHeight=350&codeDivWidth=400&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=java&rawInputLstJSON=%5B%5D&textReferences=false"
+              width="1400"
+              height="800"
+              frameborder="0"
+              style="border: 3px solid #667eea; border-radius: 10px; box-shadow: 0 8px 24px rgba(102,126,234,0.3); max-width: 100%;">
+      </iframe>
+      <p class="hint" style="margin-top: 5px;">Klikaj "Next >" aby zobaczyć krok po kroku jak tablica zmienia się w pamięci!</p>
+    </section>
+
+    <!-- SLIDE 5: Złożoność algorytmów (wykres Manim) -->
+    <section>
+      <h3>📈 Złożoność algorytmów - Big O</h3>
+      <img src="images/complexity_chart.png" alt="Big O notation" style="max-width: 80%; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.3);">
+      <p style="font-size: 1.2rem; margin-top: 20px;">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²)</p>
+    </section>
+
+    <!-- SLIDE 6: VisuAlgo - Wszystkie algorytmy sortowania -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">🎯 VisuAlgo: Porównanie algorytmów sortowania</h3>
+      <iframe src="https://visualgo.net/en/sorting?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #667eea; border-radius: 12px; box-shadow: 0 12px 32px rgba(102,126,234,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Wybierz algorytm (Bubble Sort, Quick Sort, Merge Sort), kliknij "Sort" i używaj "Go" lub "Next" do kroków!</p>
+    </section>
+
+    <!-- SLIDE 7: Python Tutor - Obiekty i referencje -->
+    <section>
+      <h3 style="margin-bottom: 5px;">📦 Python Tutor: Obiekty i referencje</h3>
+      <iframe src="https://pythontutor.com/iframe-embed.html#code=class%20Student%20%7B%0A%20%20String%20name%3B%0A%20%20int%20age%3B%0A%20%20Student(String%20n%2C%20int%20a)%20%7B%0A%20%20%20%20name%20%3D%20n%3B%0A%20%20%20%20age%20%3D%20a%3B%0A%20%20%7D%0A%7D%0A%0Apublic%20class%20Demo%20%7B%0A%20%20public%20static%20void%20main(String%5B%5D%20args)%20%7B%0A%20%20%20%20Student%20s1%20%3D%20new%20Student(%22Anna%22%2C%2020)%3B%0A%20%20%20%20Student%20s2%20%3D%20new%20Student(%22Jan%22%2C%2022)%3B%0A%20%20%20%20Student%20s3%20%3D%20s1%3B%0A%20%20%20%20s3.age%20%3D%2025%3B%0A%20%20%20%20System.out.println(s1.age)%3B%0A%20%20%7D%0A%7D&codeDivHeight=350&codeDivWidth=400&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=java&rawInputLstJSON=%5B%5D&textReferences=false"
+              width="1400"
+              height="800"
+              frameborder="0"
+              style="border: 3px solid #00BCD4; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,188,212,0.3); max-width: 100%;">
+      </iframe>
+      <p class="hint" style="margin-top: 5px;">KLUCZOWE! s1 i s3 wskazują na TEN SAM obiekt - modyfikacja przez s3 zmienia s1!</p>
+    </section>
+
+    <!-- SLIDE 7b: Python Tutor - Rekurencja (Fibonacci) -->
+    <section>
+      <h3 style="margin-bottom: 5px;">🔄 Python Tutor: Rekurencja Fibonacci</h3>
+      <iframe src="https://pythontutor.com/iframe-embed.html#code=public%20class%20Fibonacci%20%7B%0A%20%20public%20static%20int%20fib(int%20n)%20%7B%0A%20%20%20%20if%20(n%20%3C%3D%201)%20%7B%0A%20%20%20%20%20%20return%20n%3B%0A%20%20%20%20%7D%0A%20%20%20%20int%20a%20%3D%20fib(n-1)%3B%0A%20%20%20%20int%20b%20%3D%20fib(n-2)%3B%0A%20%20%20%20return%20a%20%2B%20b%3B%0A%20%20%7D%0A%20%20%0A%20%20public%20static%20void%20main(String%5B%5D%20args)%20%7B%0A%20%20%20%20int%20wynik%20%3D%20fib(3)%3B%0A%20%20%20%20System.out.println(wynik)%3B%0A%20%20%7D%0A%7D&codeDivHeight=350&codeDivWidth=400&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=java&rawInputLstJSON=%5B%5D&textReferences=false"
+              width="1400"
+              height="800"
+              frameborder="0"
+              style="border: 3px solid #f5576c; border-radius: 10px; box-shadow: 0 8px 24px rgba(245,87,108,0.3); max-width: 100%;">
+      </iframe>
+      <p class="hint" style="margin-top: 5px;">Obserwuj stos wywołań! Klikaj "Next >" - zobacz jak funkcje nakładają się i zwracają wartości!</p>
+    </section>
+
+    <!-- SLIDE 8: ALGORYTM DIJKSTRY -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">🗺️ Algorytm Dijkstry - Najkrótsza ścieżka</h3>
+      <iframe src="https://visualgo.net/en/sssp?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #4CAF50; border-radius: 12px; box-shadow: 0 12px 32px rgba(76,175,80,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Kliknij "Dijkstra's", wybierz wierzchołek 0, kliknij "Go" - obserwuj jak algorytm znajduje najkrótsze ścieżki!</p>
+    </section>
+
+    <!-- SLIDE 9: Drzewa binarne (BST) -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">🌳 Drzewo binarne wyszukiwań (BST)</h3>
+      <iframe src="https://visualgo.net/en/bst?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #FF9800; border-radius: 12px; box-shadow: 0 12px 32px rgba(255,152,0,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Kliknij "Create" aby wygenerować losowe drzewo, potem "Insert/Remove/Search" - obserwuj reorganizację!</p>
+    </section>
+
+    <!-- SLIDE 10: Graf - BFS i DFS -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">🕸️ Przeszukiwanie grafu: BFS vs DFS</h3>
+      <iframe src="https://visualgo.net/en/dfsbfs?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #9C27B0; border-radius: 12px; box-shadow: 0 12px 32px rgba(156,39,176,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Wybierz "BFS" lub "DFS", kliknij wierzchołek startowy i "Go" - zobacz różnicę w kolejności odwiedzania!</p>
+    </section>
+
+    <!-- SLIDE 11: Lista powiązana -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">🔗 Lista powiązana (Linked List)</h3>
+      <iframe src="https://visualgo.net/en/list?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #00BCD4; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,188,212,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Kliknij "Insert head/tail", "Remove" - obserwuj jak wskaźniki next/prev się zmieniają krok po kroku!</p>
+    </section>
+
+    <!-- SLIDE 12: Heap (kopiec) -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">⛰️ Heap (Kopiec) - Priority Queue</h3>
+      <iframe src="https://visualgo.net/en/heap?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #FF5722; border-radius: 12px; box-shadow: 0 12px 32px rgba(255,87,34,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Kliknij "Insert" aby dodać element - zobacz automatyczne przesiewanie w górę! "ExtractMax" - przesiewanie w dół!</p>
+    </section>
+
+    <!-- SLIDE 13: Minimum Spanning Tree (Prim, Kruskal) -->
+    <section data-background-color="#1a1a2e">
+      <h3 style="margin-bottom: 10px;">🌲 Minimalne drzewo rozpinające (MST)</h3>
+      <iframe src="https://visualgo.net/en/mst?slide=1"
+              width="1200"
+              height="720"
+              frameborder="0"
+              allowfullscreen
+              style="border: 3px solid #8BC34A; border-radius: 12px; box-shadow: 0 12px 32px rgba(139,195,74,0.4); background: white;">
+      </iframe>
+      <p class="hint" style="margin-top: 10px;">Porównaj "Prim's" vs "Kruskal's" - różne podejścia do znalezienia najtańszego drzewa rozpinającego!</p>
+    </section>
+
+  </div>
+</div>
+
+<!-- Reveal init + logika animacji -->
+<script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({ hash: true, controls: true });
+
+  const slide    = document.getElementById('typing-slide');
+  const codeEl   = document.getElementById('code');
+  const steps    = JSON.parse(document.getElementById('steps').textContent);
+  const nextBtn  = document.getElementById('next');
+  const undoBtn  = document.getElementById('undo');
+  const speedEl  = document.getElementById('speed');
+
+  let stepIndex = 0;
+  let current = "";
+  let animationInterval = null;
+
+  const highlight  = () => Prism.highlightElement(codeEl);
+  const stopAnimation = () => { if (animationInterval) { clearInterval(animationInterval); animationInterval = null; } };
+
+  function typeChunk(chunk) {
+    stopAnimation();
+    let i = 0;
+    animationInterval = setInterval(() => {
+      if (i < chunk.length) {
+        current += chunk[i];
+        codeEl.textContent = current + '|'; // kursor
+        i++;
+      } else {
+        clearInterval(animationInterval);
+        animationInterval = null;
+        codeEl.textContent = current;
+        highlight();
+      }
+    }, Number(speedEl.value));
+  }
+
+  function typeNextChunk() {
+    if (stepIndex >= steps.length) return;
+    const chunk = steps[stepIndex++];
+    typeChunk(chunk);
+  }
+
+  function typeBackspace(chars = 1) {
+    stopAnimation();
+    const target = current.slice(0, Math.max(0, current.length - chars));
+    let remaining = current.length - target.length;
+    animationInterval = setInterval(() => {
+      if (remaining > 0) {
+        current = current.slice(0, -1);
+        codeEl.textContent = current + '|';
+        remaining--;
+      } else {
+        clearInterval(animationInterval);
+        animationInterval = null;
+        codeEl.textContent = current;
+        highlight();
+      }
+    }, Math.max(5, Number(speedEl.value) / 2));
+  }
+
+  function resetSlide() {
+    stopAnimation();
+    codeEl.textContent = "";
+    current = "";
+    stepIndex = 0;
+    highlight();
+  }
+
+  Reveal.on('slidechanged', e => {
+    if (e.currentSlide === slide) resetSlide();
+  });
+
+  // Dopóki są kroki, →/spacja dopisuje i nie przełącza slajdu
+  document.addEventListener('keydown', e => {
+    const onTyping = Reveal.getCurrentSlide() === slide;
+    const hasMore = stepIndex < steps.length;
+    if (!onTyping) return;
+
+    if ((e.key === 'ArrowRight' || e.code === 'Space') && hasMore) {
+      e.preventDefault();
+      typeNextChunk();
+    }
+  });
+
+  nextBtn.addEventListener('click', typeNextChunk);
+  undoBtn.addEventListener('click', () => {
+    if (stepIndex > 0) {
+      const lastLen = steps[stepIndex - 1].length;
+      stepIndex = Math.max(0, stepIndex - 1);
+      typeBackspace(lastLen);
+    }
+  });
+
+  // ====== INTERAKTYWNE SORTOWANIE ======
+  const sortingSlide = document.getElementById('sorting-slide');
+  const arrayContainer = document.getElementById('array-container');
+  const sortInfo = document.getElementById('sort-info');
+  const sortNextBtn = document.getElementById('sort-next');
+  const sortResetBtn = document.getElementById('sort-reset');
+  const sortAutoBtn = document.getElementById('sort-auto');
+
+  let array = [5, 2, 8, 1, 9];
+  let sortSteps = [];
+  let sortStepIndex = 0;
+  let autoPlayInterval = null;
+
+  // Generuj wszystkie kroki sortowania
+  function generateSortingSteps() {
+    const steps = [];
+    const arr = [...array];
+    const n = arr.length;
+
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n - i - 1; j++) {
+        // Krok 1: Porównanie
+        steps.push({
+          type: 'compare',
+          indices: [j, j + 1],
+          array: [...arr],
+          message: `Porównuję ${arr[j]} i ${arr[j + 1]}`
+        });
+
+        if (arr[j] > arr[j + 1]) {
+          // Krok 2: Zamiana
+          steps.push({
+            type: 'swap',
+            indices: [j, j + 1],
+            array: [...arr],
+            message: `Zamieniam ${arr[j]} ↔ ${arr[j + 1]}`
+          });
+
+          // Wykonaj zamianę
+          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+
+          // Krok 3: Po zamianie
+          steps.push({
+            type: 'swapped',
+            indices: [j, j + 1],
+            array: [...arr],
+            message: `Po zamianie: [${arr.join(', ')}]`
+          });
+        } else {
+          steps.push({
+            type: 'no-swap',
+            indices: [j, j + 1],
+            array: [...arr],
+            message: `Bez zamiany (${arr[j]} ≤ ${arr[j + 1]})`
+          });
+        }
+      }
+
+      // Oznacz posortowany element
+      steps.push({
+        type: 'sorted',
+        indices: [n - i - 1],
+        array: [...arr],
+        message: `Element ${arr[n - i - 1]} na pozycji ${n - i - 1} jest posortowany ✓`
+      });
+    }
+
+    steps.push({
+      type: 'complete',
+      indices: [],
+      array: [...arr],
+      message: `✓ Sortowanie zakończone! [${arr.join(', ')}]`
+    });
+
+    return steps;
+  }
+
+  // Renderuj tablicę
+  function renderArray(step) {
+    arrayContainer.innerHTML = '';
+    step.array.forEach((value, index) => {
+      const item = document.createElement('div');
+      item.className = 'array-item';
+      item.textContent = value;
+
+      // Podświetlenia
+      if (step.type === 'compare' && step.indices.includes(index)) {
+        item.classList.add('comparing');
+      } else if ((step.type === 'swap' || step.type === 'swapped') && step.indices.includes(index)) {
+        item.classList.add('swapping');
+      } else if (step.type === 'sorted' && step.indices.includes(index)) {
+        item.classList.add('sorted');
+      } else if (step.type === 'complete') {
+        item.classList.add('sorted');
+      }
+
+      // Oznacz już posortowane elementy
+      const sortedCount = sortSteps.slice(0, sortStepIndex).filter(s => s.type === 'sorted').length;
+      if (index >= step.array.length - sortedCount && step.type !== 'complete') {
+        item.classList.add('sorted');
+      }
+
+      arrayContainer.appendChild(item);
+    });
+
+    sortInfo.textContent = step.message;
+  }
+
+  // Następny krok sortowania
+  function nextSortStep() {
+    if (sortStepIndex >= sortSteps.length) {
+      sortInfo.textContent = '✓ Sortowanie zakończone!';
+      return false;
+    }
+
+    renderArray(sortSteps[sortStepIndex]);
+    sortStepIndex++;
+    return sortStepIndex < sortSteps.length;
+  }
+
+  // Reset sortowania
+  function resetSorting() {
+    stopAutoPlay();
+    sortSteps = generateSortingSteps();
+    sortStepIndex = 0;
+    renderArray({ type: 'initial', indices: [], array: [...array], message: 'Tablica przed sortowaniem: [' + array.join(', ') + ']' });
+  }
+
+  // Auto play
+  function startAutoPlay() {
+    if (autoPlayInterval) return;
+    autoPlayInterval = setInterval(() => {
+      if (!nextSortStep()) {
+        stopAutoPlay();
+      }
+    }, 1000);
+    sortAutoBtn.textContent = 'Stop';
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = null;
+      sortAutoBtn.textContent = 'Auto play';
+    }
+  }
+
+  function toggleAutoPlay() {
+    if (autoPlayInterval) {
+      stopAutoPlay();
+    } else {
+      startAutoPlay();
+    }
+  }
+
+  // Event listeners
+  sortNextBtn.addEventListener('click', nextSortStep);
+  sortResetBtn.addEventListener('click', resetSorting);
+  sortAutoBtn.addEventListener('click', toggleAutoPlay);
+
+  // Sterowanie klawiaturą dla sortowania
+  document.addEventListener('keydown', e => {
+    const onSorting = Reveal.getCurrentSlide() === sortingSlide;
+    const hasMoreSteps = sortStepIndex < sortSteps.length;
+    if (!onSorting) return;
+
+    if ((e.key === 'ArrowRight' || e.code === 'Space') && hasMoreSteps) {
+      e.preventDefault();
+      nextSortStep();
+    }
+  });
+
+  // Reset przy wejściu na slajd
+  Reveal.on('slidechanged', e => {
+    if (e.currentSlide === sortingSlide) {
+      resetSorting();
+    } else {
+      stopAutoPlay();
+    }
+  });
+
+  // Inicjalizacja
+  sortSteps = generateSortingSteps();
+  renderArray({ type: 'initial', indices: [], array: [...array], message: 'Tablica przed sortowaniem: [' + array.join(', ') + ']' });
+
+  // ====== MANIM FRAMES CONTROL ======
+  const manimFramesSlide = document.getElementById('manim-frames-slide');
+  const manimFrameImg = document.getElementById('manim-frame');
+  const manimInfo = document.getElementById('manim-info');
+  const manimPrevBtn = document.getElementById('manim-prev');
+  const manimNextBtn = document.getElementById('manim-next');
+  const manimResetBtn = document.getElementById('manim-reset');
+  const manimSlider = document.getElementById('manim-slider');
+
+  const totalFrames = 28;
+  let currentFrame = 1;
+
+  function loadManipFrame(frameNum) {
+    currentFrame = Math.max(1, Math.min(frameNum, totalFrames));
+    const framePath = `images/manim_frames/frame_${String(currentFrame).padStart(3, '0')}.png`;
+    manimFrameImg.src = framePath;
+    manimInfo.textContent = `Klatka ${currentFrame} / ${totalFrames}`;
+    manimSlider.value = currentFrame;
+  }
+
+  function nextManipFrame() {
+    if (currentFrame < totalFrames) {
+      loadManipFrame(currentFrame + 1);
+    }
+  }
+
+  function prevManipFrame() {
+    if (currentFrame > 1) {
+      loadManipFrame(currentFrame - 1);
+    }
+  }
+
+  function resetManipFrames() {
+    loadManipFrame(1);
+  }
+
+  // Event listeners
+  manimNextBtn.addEventListener('click', nextManipFrame);
+  manimPrevBtn.addEventListener('click', prevManipFrame);
+  manimResetBtn.addEventListener('click', resetManipFrames);
+  manimSlider.addEventListener('input', (e) => loadManipFrame(parseInt(e.target.value)));
+
+  // Sterowanie klawiaturą dla Manim frames
+  document.addEventListener('keydown', e => {
+    const onManipFrames = Reveal.getCurrentSlide() === manimFramesSlide;
+    if (!onManipFrames) return;
+
+    if (e.key === 'ArrowRight' || e.code === 'Space') {
+      e.preventDefault();
+      nextManipFrame();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevManipFrame();
+    }
+  });
+
+  // Reset przy wejściu na slajd
+  Reveal.on('slidechanged', e => {
+    if (e.currentSlide === manimFramesSlide) {
+      resetManipFrames();
+    }
+  });
+
+  // Inicjalizacja pierwszej klatki
+  loadManipFrame(1);
+</script>
+</body>
+</html>

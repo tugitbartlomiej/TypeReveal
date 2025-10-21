@@ -1,0 +1,11 @@
+Jasne — 3 proste pytania sprawdzające sedno wykładu
+
+1. Klasa abstrakcyjna vs interfejs
+   Czy klasa w Javie może dziedziczyć po wielu klasach A czy może implementować wiele interfejsów (odpowiedz taknie + jedno zdanie wyjaśnienia)
+
+2. Wyjątki
+   Po co jest blok `finally` w konstrukcji `try–catch–finally` (jedno zdanie)
+
+3. Tablice i biblioteka
+   Co robi `Arrays.sort(...)` i z jakiego pakietu pochodzi klasa `Arrays` (jedno zdanie + nazwa pakietu)
+

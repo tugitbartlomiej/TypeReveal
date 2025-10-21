@@ -1,0 +1,76 @@
+================================================================================
+  LINKI DO POBRANIA - ŚRODOWISKA PROGRAMISTYCZNE JAVA
+================================================================================
+
+PRZED ZAJĘCIAMI ZAINSTALUJ JEDNO Z PONIŻSZYCH ŚRODOWISK:
+
+================================================================================
+1. INTELLIJ IDEA (POLECANE) ⭐
+================================================================================
+
+IntelliJ IDEA Community Edition (darmowa wersja)
+
+LINK DO POBRANIA:
+https://www.jetbrains.com/idea/download/
+
+INSTRUKCJA INSTALACJI:
+1. Wejdź na link powyżej
+2. Wybierz swój system operacyjny (Windows/Mac/Linux)
+3. Kliknij "Download" pod "Community Edition" (DARMOWA!)
+4. Uruchom pobrany plik instalacyjny
+5. Klikaj "Next" (domyślne ustawienia są OK)
+6. Po instalacji uruchom IntelliJ IDEA
+
+
+================================================================================
+2. NETBEANS (ALTERNATYWA)
+================================================================================
+
+Apache NetBeans (darmowe i open-source)
+
+LINK DO POBRANIA:
+https://netbeans.apache.org/download/
+
+INSTRUKCJA INSTALACJI:
+1. Wejdź na link powyżej
+2. Wybierz najnowszą wersję (np. NetBeans 20)
+3. Kliknij "Download" przy swojej wersji instalatora:
+   - Windows: netbeans-20-bin.exe
+   - Mac: netbeans-20-bin.dmg
+   - Linux: netbeans-20-bin.sh
+4. Uruchom instalator
+5. Klikaj "Next" (domyślne ustawienia)
+6. Po instalacji uruchom NetBeans
+
+UWAGA: NetBeans może poprosić o wskazanie ścieżki do JDK podczas instalacji.
+Jeśli nie masz JDK, zobacz sekcję "JAVA JDK" poniżej.
+
+================================================================================
+JAVA JDK (WYMAGANE!)
+================================================================================
+
+Wszystkie środowiska wymagają zainstalowanego Java Development Kit (JDK).
+
+OPCJA 1: Oracle JDK (oficjalne)
+https://www.oracle.com/java/technologies/downloads/
+
+OPCJA 2: OpenJDK (open-source, polecane)
+https://adoptium.net/
+
+INSTRUKCJA (dla Adoptium/OpenJDK):
+1. Wejdź na https://adoptium.net/
+2. Wybierz:
+   - Version: 17 LTS (Long Term Support) lub 21 LTS
+   - Operating System: (twój system)
+   - Architecture: x64
+3. Kliknij "Download"
+4. Uruchom instalator
+5. WAŻNE: Zaznacz opcję "Set JAVA_HOME variable" podczas instalacji
+6. Zrestartuj komputer po instalacji
+
+SPRAWDŹ CZY JAVA JEST ZAINSTALOWANA:
+Otwórz terminal/cmd i wpisz:
+   java -version
+
+Powinno pokazać:
+   openjdk version "17.0.x" lub podobne
