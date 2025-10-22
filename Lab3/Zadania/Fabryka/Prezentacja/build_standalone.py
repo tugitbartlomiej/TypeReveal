@@ -50,6 +50,35 @@ HEADER = '''<!doctype html>
 
   <style>
     :root { --pad: 18px }
+
+    /* NAPRAWKA: Padding dla wszystkich slajdów */
+    .reveal .slides section {
+      padding: 40px 60px !important;
+      box-sizing: border-box;
+    }
+
+    /* NAPRAWKA: Maksymalna wysokość z scrollbarem dla długich treści */
+    .reveal .slides section {
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* NAPRAWKA: Scrollbar dla slajdów */
+    .reveal .slides section::-webkit-scrollbar {
+      width: 12px;
+    }
+    .reveal .slides section::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+    }
+    .reveal .slides section::-webkit-scrollbar-thumb {
+      background: rgba(102,126,234,0.6);
+      border-radius: 6px;
+    }
+    .reveal .slides section::-webkit-scrollbar-thumb:hover {
+      background: rgba(102,126,234,0.8);
+    }
+
     .reveal pre {
       font-size: 0.95rem;
       line-height: 1.35;

@@ -16,6 +16,35 @@
 
   <style>
     :root { --pad: 18px }
+
+    /* NAPRAWKA: Padding dla wszystkich slajdów */
+    .reveal .slides section {
+      padding: 40px 60px !important;
+      box-sizing: border-box;
+    }
+
+    /* NAPRAWKA: Maksymalna wysokość z scrollbarem dla długich treści */
+    .reveal .slides section {
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* NAPRAWKA: Scrollbar dla slajdów */
+    .reveal .slides section::-webkit-scrollbar {
+      width: 12px;
+    }
+    .reveal .slides section::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+    }
+    .reveal .slides section::-webkit-scrollbar-thumb {
+      background: rgba(102,126,234,0.6);
+      border-radius: 6px;
+    }
+    .reveal .slides section::-webkit-scrollbar-thumb:hover {
+      background: rgba(102,126,234,0.8);
+    }
+
     .reveal pre {
       font-size: 0.95rem;
       line-height: 1.35;
@@ -165,34 +194,7 @@
   <h2>Factory Method<br/>& Abstract Factory</h2>
   <p style="font-size: 1.2rem; margin-top: 40px;">Salon Bajtazara - Specjalne funkcje samochodów</p>
   <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 20px;">Naciśnij → aby rozpocząć</p>
- </section>
-
-    <!-- slide-01-zadanie (wstrzyknięte) -->
-    <section>
-      <h2>🧪 Ćwiczenie: Treść Zadania</h2>
-      <div style="text-align: left; margin: 20px 0; line-height: 1.7;">
-        <p>Stwórz prosty program w Javie dla „Salonu Bajtazara”. Każdy samochód ma markę, cenę, metodę <code>jedz()</code> oraz unikalne funkcje:</p>
-        <ul>
-          <li><strong>BMW M5</strong> — <code>aktywujTrybM()</code></li>
-          <li><strong>Jaguar F-Type</strong> — <code>wydajRyk()</code></li>
-          <li><strong>Bentley Continental GT</strong> — <code>wlaczMasazFoteli()</code></li>
-          <li><strong>Koenigsegg Jesko</strong> — <code>aktywujTryb1600KM()</code>, <code>wlaczSystemNitro()</code>, <code>sprawdzPredkoscMaksymalna()</code></li>
-        </ul>
-        <p><strong>Wykonaj:</strong></p>
-        <ol>
-          <li>Utwórz klasy aut i obiekty w <code>main</code>.</li>
-          <li>Wypisz markę i cenę każdego auta.</li>
-          <li>Wywołaj <code>jedz()</code> oraz specjalne funkcje.</li>
-        </ol>
-        <p style="opacity:.85;">Pełny opis: <code>Zadania/ZADANIE_01_PODSTAWOWE.md</code></p>
-      </div>
-      <div class="solution-box">
-        <h4>Uruchamianie (lokalnie)</h4>
-        <pre style="font-size:.9rem; margin:0"><code>javac SalonDemo.java
-java SalonDemo</code></pre>
-      </div>
-      <p class="hint">Po wykonaniu — przejdziemy do refaktoryzacji: interfejs → fabryka.</p>
-    </section>
+</section>
 
     <!-- slide-01-problem.html -->
     <section>
