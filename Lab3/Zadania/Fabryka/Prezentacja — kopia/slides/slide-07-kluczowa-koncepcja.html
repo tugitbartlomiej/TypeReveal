@@ -1,0 +1,39 @@
+<section>
+  <h3>Kluczowa Koncepcja: pokazSpecjalneFunkcje()</h3>
+
+  <div class="diagram-container">
+    <div style="text-align: left; width: 80%;">
+      <h4 style="color: #FF5722;">Przed (bez interfejsu):</h4>
+      <pre style="font-size: 0.9rem;"><code class="language-java">BMW bmw = new BMW();
+bmw.aktywujTrybM();  // ← BMW ma tę metodę
+
+Koenigsegg k = new Koenigsegg();
+k.aktywujTryb1600KM();      // ← Koenigsegg ma 3 metody
+k.wlaczSystemNitro();        // ← Wszystkie różne!
+k.sprawdzPredkoscMaksymalna(); // ← Jak uogólnić?</code></pre>
+    </div>
+
+    <div style="margin: 30px 0;">
+      <span class="diagram-arrow">↓</span>
+    </div>
+
+    <div style="text-align: left; width: 80%;">
+      <h4 style="color: #4CAF50;">Po (z interfejsem):</h4>
+      <pre style="font-size: 0.9rem;"><code class="language-java">Samochod bmw = new BMW();
+Samochod k = new Koenigsegg();
+
+// JEDNA metoda dla wszystkich!
+for (Samochod auto : salon) {
+    auto.pokazSpecjalneFunkcje();
+    // ↑ BMW wywołuje 1 funkcję
+    // ↑ Koenigsegg wywołuje 3 funkcje
+    // → To jest POLIMORFIZM!
+}</code></pre>
+    </div>
+  </div>
+
+  <div class="solution-box" style="margin-top: 30px;">
+    <h4>To jest POLIMORFIZM!</h4>
+    <p>Jedna metoda w interfejsie → różne implementacje w klasach</p>
+  </div>
+</section>

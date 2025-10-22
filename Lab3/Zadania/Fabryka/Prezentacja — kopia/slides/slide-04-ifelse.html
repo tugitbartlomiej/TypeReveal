@@ -1,0 +1,68 @@
+<section id="code-slide-ifelse">
+  <h3>Próba 1: If-else (ZŁA!)</h3>
+
+  <pre><code id="code-ifelse" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-ifelse">Następny fragment</button>
+    <button id="undo-ifelse">Cofnij</button>
+    <button id="reset-ifelse">Reset</button>
+  </div>
+
+  <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 0.85rem; opacity: 0.8; min-width: 80px;">Postęp:</span>
+    <input id="progress-ifelse" type="range" min="0" max="100" value="0"
+           style="flex: 1; cursor: pointer; height: 8px;">
+    <span id="progress-label-ifelse" style="font-size: 0.85rem; opacity: 0.8; min-width: 60px;">0 / 0</span>
+  </div>
+
+  <script type="application/json" id="steps-ifelse">
+  [
+    "public static void pokazSamochod(String marka) {",
+    "\n    if (marka.equals(\"bmw\")) {",
+    "\n        BMW auto = new BMW();",
+    "\n        auto.jedz();",
+    "\n        auto.aktywujTrybM(); // ← Muszę WIEDZIEĆ że to BMW!",
+    "\n",
+    "\n    } else if (marka.equals(\"jaguar\")) {",
+    "\n        Jaguar auto = new Jaguar();",
+    "\n        auto.jedz();",
+    "\n        auto.wydajRyk(); // ← Muszę WIEDZIEĆ że to Jaguar!",
+    "\n",
+    "\n    } else if (marka.equals(\"koenigsegg\")) {",
+    "\n        Koenigsegg auto = new Koenigsegg();",
+    "\n        auto.jedz();",
+    "\n        // NAJGORSZE - 3 RÓŻNE metody!",
+    "\n        auto.aktywujTryb1600KM();",
+    "\n        auto.wlaczSystemNitro();",
+    "\n        auto.sprawdzPredkoscMaksymalna();",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// PROBLEM: If-else WSZĘDZIE!",
+    "\npublic static int pobierzCene(String marka) {",
+    "\n    if (marka.equals(\"bmw\")) {",
+    "\n        return 300000;",
+    "\n    } else if (marka.equals(\"jaguar\")) {",
+    "\n        return 280000;",
+    "\n    } else if (marka.equals(\"koenigsegg\")) {",
+    "\n        return 12000000;",
+    "\n    }",
+    "\n    return 0;",
+    "\n}",
+    "\n",
+    "\n// If-else ZNOWU!",
+    "\npublic static void testJazdy(String marka) {",
+    "\n    if (marka.equals(\"bmw\")) {",
+    "\n        BMW auto = new BMW();",
+    "\n        auto.jedz();",
+    "\n    } else if (marka.equals(\"koenigsegg\")) {",
+    "\n        Koenigsegg auto = new Koenigsegg();",
+    "\n        auto.jedz();",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// DUPLIKACJA if-else w 3 miejscach!"
+  ]
+  </script>
+</section>

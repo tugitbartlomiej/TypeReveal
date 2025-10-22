@@ -1,0 +1,523 @@
+#!/usr/bin/env python3
+"""
+Skrypt łączący wszystkie slajdy w jeden plik index.html
+Działa przez file:// - nie wymaga serwera HTTP!
+"""
+
+import os
+import re
+
+# Folder ze slajdami
+SLIDES_DIR = "slides"
+
+# Lista slajdów w kolejności
+SLIDE_FILES = [
+    "slide-00-tytul.html",
+    "slide-01-problem.html",
+    "slide-02-kod-start.html",
+    "slide-03-analiza.html",
+    "slide-04-ifelse.html",
+    "slide-05-dlaczego-zle.html",
+    "slide-06-interfejs.html",
+    "slide-07-kluczowa-koncepcja.html",
+    "slide-08-nadal-problem.html",
+    "slide-09-factory-method.html",
+    "slide-10-wizualizacja.html",
+    "slide-11-porownanie.html",
+    "slide-12-abstract-intro.html",
+    "slide-13-abstract-diagram.html",
+    "slide-14-kiedy-uzywac.html",
+    "slide-15-podsumowanie.html",
+    "slide-16-dziekuje.html",
+]
+
+# Header HTML
+HEADER = '''<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Wzorce Factory - Salon Bajtazara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Reveal.js (slajdy) -->
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/black.css" id="theme">
+
+  <!-- Prism.js (kolorowanie składni) -->
+  <link rel="stylesheet" href="https://unpkg.com/prismjs/themes/prism-tomorrow.css">
+  <script defer src="https://unpkg.com/prismjs/prism.js"></script>
+  <script defer src="https://unpkg.com/prismjs/components/prism-java.min.js"></script>
+
+  <style>
+    :root { --pad: 18px }
+
+    /* NAPRAWKA: Padding dla wszystkich slajdów */
+    .reveal .slides section {
+      padding: 40px 60px !important;
+      box-sizing: border-box;
+    }
+
+    /* NAPRAWKA: Maksymalna wysokość z scrollbarem dla długich treści */
+    .reveal .slides section {
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* NAPRAWKA: Scrollbar dla slajdów */
+    .reveal .slides section::-webkit-scrollbar {
+      width: 12px;
+    }
+    .reveal .slides section::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+    }
+    .reveal .slides section::-webkit-scrollbar-thumb {
+      background: rgba(102,126,234,0.6);
+      border-radius: 6px;
+    }
+    .reveal .slides section::-webkit-scrollbar-thumb:hover {
+      background: rgba(102,126,234,0.8);
+    }
+
+    .reveal pre {
+      font-size: 0.95rem;
+      line-height: 1.35;
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+    .reveal pre, pre[class*="language-"] { white-space: pre; }
+    .typed-cursor { opacity: 1; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Stylowanie scrollbara */
+    .reveal pre::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    .reveal pre::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+      border-radius: 5px;
+    }
+    .reveal pre::-webkit-scrollbar-thumb {
+      background: rgba(102,126,234,0.6);
+      border-radius: 5px;
+    }
+    .reveal pre::-webkit-scrollbar-thumb:hover {
+      background: rgba(102,126,234,0.8);
+    }
+    .controls-local { margin-top: var(--pad); display: flex; gap: 12px; align-items: center; opacity: .9; font-size: .9rem }
+    .controls-local button { padding: 6px 10px; border: 0; border-radius: 8px; cursor: pointer; background: #667eea; color: white; font-weight: bold; }
+    .controls-local button:hover { background: #5568d3; }
+    .hint { opacity:.7; font-size:.85rem; margin-top: 8px; color: #aaa; }
+
+    /* Wizualizacja Factory */
+    .factory-viz {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+    .car-box {
+      padding: 20px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .car-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(102,126,234,0.5);
+    }
+    .car-box.active {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      transform: scale(1.1);
+    }
+
+    .arrow {
+      font-size: 2rem;
+      color: #667eea;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Problem highlights */
+    .problem-box {
+      background: rgba(255,87,34,0.2);
+      border-left: 4px solid #FF5722;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+    }
+
+    .solution-box {
+      background: rgba(76,175,80,0.2);
+      border-left: 4px solid #4CAF50;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+    }
+
+    /* Comparison table */
+    .comparison-table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 12px;
+      border: 1px solid #444;
+    }
+    .comparison-table th {
+      background: #667eea;
+      font-weight: bold;
+    }
+    .comparison-table td {
+      background: rgba(255,255,255,0.05);
+    }
+    .comparison-table .good { color: #4CAF50; font-size: 1.5rem; }
+    .comparison-table .bad { color: #FF5722; font-size: 1.5rem; }
+
+    /* Diagram styles */
+    .diagram-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .diagram-row {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .diagram-box {
+      padding: 15px 25px;
+      background: rgba(102,126,234,0.3);
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      font-size: 1rem;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    .diagram-arrow {
+      font-size: 2rem;
+      color: #667eea;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+'''
+
+# Footer HTML
+FOOTER = '''
+  </div>
+</div>
+
+<!-- Reveal init + logika animacji -->
+<script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+<script>
+  // Inicjalizacja Reveal
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: false,
+    transition: 'slide'
+  });
+
+  // ============================================
+  // FUNKCJE POMOCNICZE (REUSABLE)
+  // ============================================
+  function createAnimatedCodeSlide(slideId, codeId, stepsId, nextBtnId, undoBtnId, resetBtnId, speedId, progressId, progressLabelId) {
+    const slide = document.getElementById(slideId);
+    const codeEl = document.getElementById(codeId);
+    const steps = JSON.parse(document.getElementById(stepsId).textContent);
+    const nextBtn = document.getElementById(nextBtnId);
+    const undoBtn = document.getElementById(undoBtnId);
+    const resetBtn = document.getElementById(resetBtnId);
+    const progressEl = document.getElementById(progressId);
+    const progressLabel = document.getElementById(progressLabelId);
+
+    // Stała prędkość (zamiast suwaka)
+    const SPEED = 15;
+
+    let stepIndex = 0;
+    let current = "";
+    let animationInterval = null;
+
+    // Ustaw max dla suwaka postępu
+    progressEl.max = steps.length;
+
+    // Aktualizuj label i suwak
+    const updateProgress = () => {
+      progressEl.value = stepIndex;
+      progressLabel.textContent = `${stepIndex} / ${steps.length}`;
+    };
+    updateProgress();
+
+    const highlight = () => {
+      Prism.highlightElement(codeEl);
+      // Auto-scroll do dołu po dodaniu kodu
+      codeEl.parentElement.scrollTop = codeEl.parentElement.scrollHeight;
+    };
+    const stopAnimation = () => {
+      if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+      }
+    };
+
+    function typeChunk(chunk) {
+      stopAnimation();
+
+      // Sprawdź czy to zastąpienie linii
+      if (chunk.startsWith('<<REPLACE_LINE>>')) {
+        const newText = chunk.substring(16);
+        const lastNewline = current.lastIndexOf('\\n');
+        const beforeLastLine = lastNewline >= 0 ? current.substring(0, lastNewline + 1) : '';
+
+        let charsToDelete = current.length - beforeLastLine.length;
+        let deleteInterval = setInterval(() => {
+          if (charsToDelete > 0) {
+            current = current.slice(0, -1);
+            codeEl.textContent = current + '|';
+            charsToDelete--;
+          } else {
+            clearInterval(deleteInterval);
+            current = beforeLastLine;
+            let i = 0;
+            animationInterval = setInterval(() => {
+              if (i < newText.length) {
+                current += newText[i];
+                codeEl.textContent = current + '|';
+                i++;
+              } else {
+                clearInterval(animationInterval);
+                animationInterval = null;
+                codeEl.textContent = current;
+                highlight();
+              }
+            }, SPEED);
+          }
+        }, Math.max(5, SPEED / 3));
+        return;
+      }
+
+      // Normalne pisanie
+      let i = 0;
+      animationInterval = setInterval(() => {
+        if (i < chunk.length) {
+          current += chunk[i];
+          codeEl.textContent = current + '|';
+          i++;
+        } else {
+          clearInterval(animationInterval);
+          animationInterval = null;
+          codeEl.textContent = current;
+          highlight();
+        }
+      }, SPEED);
+    }
+
+    function typeNextChunk() {
+      if (stepIndex >= steps.length) return;
+      const chunk = steps[stepIndex++];
+      typeChunk(chunk);
+      updateProgress();
+    }
+
+    function typeBackspace(chars = 1) {
+      stopAnimation();
+      const target = current.slice(0, Math.max(0, current.length - chars));
+      let remaining = current.length - target.length;
+      animationInterval = setInterval(() => {
+        if (remaining > 0) {
+          current = current.slice(0, -1);
+          codeEl.textContent = current + '|';
+          remaining--;
+        } else {
+          clearInterval(animationInterval);
+          animationInterval = null;
+          codeEl.textContent = current;
+          highlight();
+        }
+      }, Math.max(5, SPEED / 2));
+    }
+
+    function resetSlide() {
+      stopAnimation();
+      codeEl.textContent = "";
+      current = "";
+      stepIndex = 0;
+      updateProgress();
+      highlight();
+    }
+
+    // Event listeners
+    Reveal.on('slidechanged', e => {
+      if (e.currentSlide === slide) resetSlide();
+    });
+
+    document.addEventListener('keydown', e => {
+      const onTyping = Reveal.getCurrentSlide() === slide;
+      const hasMore = stepIndex < steps.length;
+      if (!onTyping) return;
+
+      if ((e.key === 'ArrowRight' || e.code === 'Space') && hasMore) {
+        e.preventDefault();
+        typeNextChunk();
+      }
+    });
+
+    // Funkcja przeskoku do wybranego kroku
+    function jumpToStep(targetIndex) {
+      stopAnimation();
+      targetIndex = Math.max(0, Math.min(targetIndex, steps.length));
+
+      // Buduj kod do wybranego kroku
+      current = "";
+      for (let i = 0; i < targetIndex; i++) {
+        const chunk = steps[i];
+        if (chunk.startsWith('<<REPLACE_LINE>>')) {
+          // Zastąp ostatnią linię
+          const newText = chunk.substring(16);
+          const lastNewline = current.lastIndexOf('\\n');
+          current = lastNewline >= 0 ? current.substring(0, lastNewline + 1) + newText : newText;
+        } else {
+          current += chunk;
+        }
+      }
+
+      stepIndex = targetIndex;
+      codeEl.textContent = current;
+      highlight();
+      updateProgress();
+    }
+
+    nextBtn.addEventListener('click', typeNextChunk);
+    undoBtn.addEventListener('click', () => {
+      if (stepIndex > 0) {
+        const lastLen = steps[stepIndex - 1].length;
+        stepIndex = Math.max(0, stepIndex - 1);
+        typeBackspace(lastLen);
+        updateProgress();
+      }
+    });
+    resetBtn.addEventListener('click', resetSlide);
+
+    // Listener na suwak postępu - przeskakiwanie do wybranego kroku
+    progressEl.addEventListener('input', (e) => {
+      const targetIndex = parseInt(e.target.value);
+      jumpToStep(targetIndex);
+    });
+  }
+
+  // ============================================
+  // INICJALIZACJA SLAJDÓW ANIMOWANYCH
+  // ============================================
+
+  // Slajd START
+  createAnimatedCodeSlide(
+    'code-slide-start',
+    'code-start',
+    'steps-start',
+    'next-start',
+    'undo-start',
+    'reset-start',
+    'speed-start',
+    'progress-start',
+    'progress-label-start'
+  );
+
+  // Slajd IF-ELSE
+  createAnimatedCodeSlide(
+    'code-slide-ifelse',
+    'code-ifelse',
+    'steps-ifelse',
+    'next-ifelse',
+    'undo-ifelse',
+    'reset-ifelse',
+    'speed-ifelse',
+    'progress-ifelse',
+    'progress-label-ifelse'
+  );
+
+  // Slajd INTERFEJS
+  createAnimatedCodeSlide(
+    'code-slide-interface',
+    'code-interface',
+    'steps-interface',
+    'next-interface',
+    'undo-interface',
+    'reset-interface',
+    'speed-interface',
+    'progress-interface',
+    'progress-label-interface'
+  );
+
+  // Slajd FACTORY
+  createAnimatedCodeSlide(
+    'code-slide-factory',
+    'code-factory',
+    'steps-factory',
+    'next-factory',
+    'undo-factory',
+    'reset-factory',
+    'speed-factory',
+    'progress-factory',
+    'progress-label-factory'
+  );
+</script>
+</body>
+</html>
+'''
+
+def build_standalone():
+    """Łączy wszystkie slajdy w jeden plik index.html"""
+
+    print("Tworzenie standalone index.html...")
+
+    # Zbierz zawartość wszystkich slajdów
+    slides_content = []
+
+    for slide_file in SLIDE_FILES:
+        slide_path = os.path.join(SLIDES_DIR, slide_file)
+
+        if not os.path.exists(slide_path):
+            print(f"[!] BRAK: {slide_file}")
+            continue
+
+        with open(slide_path, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+            slides_content.append(f"\n    <!-- {slide_file} -->\n    {content}\n")
+            print(f"[OK] {slide_file}")
+
+    # Połącz wszystko
+    full_html = HEADER + "".join(slides_content) + FOOTER
+
+    # Zapisz do index.html
+    with open("index.html", 'w', encoding='utf-8') as f:
+        f.write(full_html)
+
+    print(f"\n[OK] Gotowe! Utworzono index.html ({len(full_html)} znakow)")
+    print(f"[*] Slajdow: {len(slides_content)}")
+    print("\n[!] Uruchom: start index.html")
+    print("    (Dziala przez file:// - nie potrzeba serwera!)")
+
+if __name__ == "__main__":
+    build_standalone()

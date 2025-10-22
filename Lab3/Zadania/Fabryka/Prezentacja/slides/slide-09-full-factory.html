@@ -1,0 +1,80 @@
+<section>
+  <h3>Kod Pełny – Krok 2: Factory Method</h3>
+  <pre><code class="language-java">
+/**
+ * SALON BAJTAZARA - KROK 2: WZORZEC FABRYKA (Factory Method)
+ */
+
+interface Samochod {
+    String getMarka();
+    int getCena();
+    void jedz();
+    void pokazSpecjalneFunkcje();
+}
+
+class BMW implements Samochod {
+    public String getMarka() { return "BMW M5"; }
+    public int getCena() { return 300000; }
+    public void jedz() { System.out.println("BMW jedzie!"); }
+    public void pokazSpecjalneFunkcje() { System.out.println("TRYB M AKTYWNY! +100 KM!"); }
+}
+
+class Jaguar implements Samochod {
+    public String getMarka() { return "Jaguar F-Type"; }
+    public int getCena() { return 280000; }
+    public void jedz() { System.out.println("Jaguar jedzie!"); }
+    public void pokazSpecjalneFunkcje() { System.out.println("RRRROOOAAARRR! (V8 supercharged)"); }
+}
+
+class Bentley implements Samochod {
+    public String getMarka() { return "Bentley Continental GT"; }
+    public int getCena() { return 850000; }
+    public void jedz() { System.out.println("Bentley jedzie luksusowo!"); }
+    public void pokazSpecjalneFunkcje() { System.out.println("Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY"); }
+}
+
+class Koenigsegg implements Samochod {
+    public String getMarka() { return "Koenigsegg Jesko"; }
+    public int getCena() { return 12000000; }
+    public void jedz() { System.out.println("Koenigsegg jedzie!"); }
+    public void pokazSpecjalneFunkcje() {
+        System.out.println("TRYB 1600 KM AKTYWNY!!!");
+        System.out.println("NITRO WŁĄCZONE! BOOST!");
+        System.out.println("Prędkość maksymalna: 483 km/h!");
+    }
+}
+
+class FabrykaSamochodow {
+    public static Samochod stworzSamochod(String marka) {
+        if (marka == null) return null;
+        String m = marka.toLowerCase().trim();
+        switch (m) {
+            case "bmw": return new BMW();
+            case "jaguar": return new Jaguar();
+            case "bentley": return new Bentley();
+            case "koenigsegg": return new Koenigsegg();
+            default:
+                System.out.println("Nieznana marka: " + marka);
+                return null;
+        }
+    }
+}
+
+public class SalonDemo_KROK2_fabryka {
+    public static void main(String[] args) {
+        String[] marki = {"bmw", "jaguar", "bentley", "koenigsegg"};
+        for (String m : marki) {
+            Samochod auto = FabrykaSamochodow.stworzSamochod(m);
+            if (auto != null) {
+                System.out.println("=== " + auto.getMarka() + " ===");
+                System.out.println("Cena: " + auto.getCena() + " bajtalarów");
+                auto.jedz();
+                auto.pokazSpecjalneFunkcje();
+                System.out.println();
+            }
+        }
+    }
+}
+  </code></pre>
+</section>
+

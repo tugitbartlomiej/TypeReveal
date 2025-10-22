@@ -1,0 +1,67 @@
+<section>
+  <h3>Kod Pełny – Krok 1: Interfejs + polimorfizm</h3>
+  <pre><code class="language-java">
+/**
+ * SALON BAJTAZARA - KROK 1: INTERFEJS
+ */
+
+interface Samochod {
+    String getMarka();
+    int getCena();
+    void jedz();
+    void pokazSpecjalneFunkcje();
+}
+
+class BMW implements Samochod {
+    public String getMarka() { return "BMW M5"; }
+    public int getCena() { return 300000; }
+    public void jedz() { System.out.println("BMW jedzie!"); }
+    public void pokazSpecjalneFunkcje() { aktywujTrybM(); }
+    private void aktywujTrybM() { System.out.println("TRYB M AKTYWNY! +100 KM!"); }
+}
+
+class Jaguar implements Samochod {
+    public String getMarka() { return "Jaguar F-Type"; }
+    public int getCena() { return 280000; }
+    public void jedz() { System.out.println("Jaguar jedzie!"); }
+    public void pokazSpecjalneFunkcje() { wydajRyk(); }
+    private void wydajRyk() { System.out.println("RRRROOOAAARRR! (V8 supercharged)"); }
+}
+
+class Bentley implements Samochod {
+    public String getMarka() { return "Bentley Continental GT"; }
+    public int getCena() { return 850000; }
+    public void jedz() { System.out.println("Bentley jedzie luksusowo!"); }
+    public void pokazSpecjalneFunkcje() { wlaczMasazFoteli(); }
+    private void wlaczMasazFoteli() { System.out.println("Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY"); }
+}
+
+class Koenigsegg implements Samochod {
+    public String getMarka() { return "Koenigsegg Jesko"; }
+    public int getCena() { return 12000000; }
+    public void jedz() { System.out.println("Koenigsegg jedzie!"); }
+    public void pokazSpecjalneFunkcje() {
+        aktywujTryb1600KM();
+        wlaczSystemNitro();
+        sprawdzPredkoscMaksymalna();
+    }
+    private void aktywujTryb1600KM() { System.out.println("TRYB 1600 KM AKTYWNY!!!"); }
+    private void wlaczSystemNitro() { System.out.println("NITRO WŁĄCZONE! BOOST!"); }
+    private void sprawdzPredkoscMaksymalna() { System.out.println("Prędkość maksymalna: 483 km/h!"); }
+}
+
+public class SalonDemo_KROK1_interfejs {
+    public static void main(String[] args) {
+        Samochod[] salon = { new BMW(), new Jaguar(), new Bentley(), new Koenigsegg() };
+        for (Samochod auto : salon) {
+            System.out.println("=== " + auto.getMarka() + " ===");
+            System.out.println("Cena: " + auto.getCena() + " bajtalarów");
+            auto.jedz();
+            auto.pokazSpecjalneFunkcje();
+            System.out.println();
+        }
+    }
+}
+  </code></pre>
+</section>
+

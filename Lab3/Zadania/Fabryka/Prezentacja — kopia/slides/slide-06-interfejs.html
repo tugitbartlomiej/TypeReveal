@@ -1,0 +1,83 @@
+<section id="code-slide-interface">
+  <h3>Rozwiązanie Krok 1: Interfejs</h3>
+
+  <pre><code id="code-interface" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-interface">Następny fragment</button>
+    <button id="undo-interface">Cofnij</button>
+    <button id="reset-interface">Reset</button>
+  </div>
+
+  <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 0.85rem; opacity: 0.8; min-width: 80px;">Postęp:</span>
+    <input id="progress-interface" type="range" min="0" max="100" value="0"
+           style="flex: 1; cursor: pointer; height: 8px;">
+    <span id="progress-label-interface" style="font-size: 0.85rem; opacity: 0.8; min-width: 60px;">0 / 0</span>
+  </div>
+
+  <script type="application/json" id="steps-interface">
+  [
+    "// ========== INTERFEJS SAMOCHOD ==========",
+    "\ninterface Samochod {",
+    "\n    // Metody WSPÓLNE",
+    "\n    String getMarka();",
+    "\n    int getCena();",
+    "\n    void jedz();",
+    "\n",
+    "\n    // KLUCZOWE: jedna metoda dla specjalnych funkcji!",
+    "\n    void pokazSpecjalneFunkcje();",
+    "\n}",
+    "\n",
+    "\n// ========== BMW IMPLEMENTUJE INTERFEJS ==========",
+    "\nclass BMW implements Samochod {",
+    "\n    public String getMarka() { return \"BMW M5\"; }",
+    "\n    public int getCena() { return 300000; }",
+    "\n",
+    "\n    public void jedz() {",
+    "\n        System.out.println(\"BMW jedzie!\");",
+    "\n    }",
+    "\n",
+    "\n    public void pokazSpecjalneFunkcje() {",
+    "\n        // BMW pokazuje SWOJĄ funkcję",
+    "\n        System.out.println(\"TRYB M AKTYWNY!\");",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// ========== KOENIGSEGG IMPLEMENTUJE INTERFEJS ==========",
+    "\nclass Koenigsegg implements Samochod {",
+    "\n    public String getMarka() { return \"Koenigsegg Jesko\"; }",
+    "\n    public int getCena() { return 12000000; }",
+    "\n",
+    "\n    public void jedz() {",
+    "\n        System.out.println(\"Koenigsegg jedzie!\");",
+    "\n    }",
+    "\n",
+    "\n    public void pokazSpecjalneFunkcje() {",
+    "\n        // EGZOTYCZNY - wywołuje WSZYSTKIE 3 funkcje!",
+    "\n        System.out.println(\"TRYB 1600 KM AKTYWNY!!!\");",
+    "\n        System.out.println(\"NITRO WŁĄCZONE!\");",
+    "\n        System.out.println(\"Prędkość: 483 km/h!\");",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// ========== TERAZ MOŻEMY UŻYĆ POLIMORFIZMU! ==========",
+    "\npublic static void main(String[] args) {",
+    "\n    // Wszystkie jako TEN SAM TYP!",
+    "\n    Samochod bmw = new BMW();",
+    "\n    Samochod k = new Koenigsegg();",
+    "\n",
+    "\n    // Możemy zrobić LISTĘ!",
+    "\n    Samochod[] salon = {bmw, k};",
+    "\n",
+    "\n    // PĘTLA DZIAŁA!",
+    "\n    for (Samochod auto : salon) {",
+    "\n        auto.jedz();",
+    "\n        auto.pokazSpecjalneFunkcje(); // ← każdy robi SWOJE!",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// Koenigsegg automatycznie wywołuje 3 funkcje!"
+  ]
+  </script>
+</section>

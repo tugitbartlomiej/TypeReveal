@@ -25,7 +25,7 @@
 
     /* NAPRAWKA: Maksymalna wysokość z scrollbarem dla długich treści */
     .reveal .slides section {
-      max-height: 90vh;
+      max-height: 100vh;
       overflow-y: auto;
     }
 
@@ -190,7 +190,7 @@
 
     <!-- slide-00-tytul.html -->
     <section data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-  <h1>1 Wzorce Projektowe</h1>
+  <h1>🏭 Wzorce Projektowe</h1>
   <h2>Factory Method<br/>& Abstract Factory</h2>
   <p style="font-size: 1.2rem; margin-top: 40px;">Salon Bajtazara - Specjalne funkcje samochodów</p>
   <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 20px;">Naciśnij → aby rozpocząć</p>
@@ -617,13 +617,6 @@ if (marka.equals("bmw")) {
     <span id="progress-label-factory" style="font-size: 0.85rem; opacity: 0.8; min-width: 60px;">0 / 0</span>
   </div>
 
-  <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
-    <span style="font-size: 0.85rem; opacity: 0.8; min-width: 80px;">Postęp:</span>
-    <input id="progress-factory" type="range" min="0" max="100" value="0"
-           style="flex: 1; cursor: pointer; height: 8px;">
-    <span id="progress-label-factory" style="font-size: 0.85rem; opacity: 0.8; min-width: 60px;">0 / 0</span>
-  </div>
-
   <script type="application/json" id="steps-factory">
   [
     "// ========== WZORZEC FACTORY METHOD ==========",
@@ -964,53 +957,14 @@ SUV u = f.stworzSUV();</code></pre>
 <!-- Reveal init + logika animacji -->
 <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
 <script>
-  // ============================================
-  // TRYB LIVE: wczytywanie slajdów z folderu slides/
-  // ============================================
-  const slideFiles = [
-    'slides/slide-00-tytul.html',
-    'slides/slide-01a-zadanie.html',
-    'slides/slide-01-problem.html',
-    'slides/slide-02-kod-start.html',
-    'slides/slide-02-full-start.html',
-    'slides/slide-03-analiza.html',
-    'slides/slide-04-ifelse.html',
-    'slides/slide-04-full-ifelse.html',
-    'slides/slide-05-dlaczego-zle.html',
-    'slides/slide-06-interfejs.html',
-    'slides/slide-06-full-interfejs.html',
-    'slides/slide-07-kluczowa-koncepcja.html',
-    'slides/slide-08-nadal-problem.html',
-    'slides/slide-09-factory-method.html',
-    'slides/slide-09-full-factory.html',
-    'slides/slide-10-wizualizacja.html',
-    'slides/slide-11-porownanie.html',
-    'slides/slide-12-abstract-intro.html',
-    'slides/slide-13-abstract-diagram.html',
-    'slides/slide-12-full-abstract.html',
-    'slides/slide-14-kiedy-uzywac.html',
-    'slides/slide-15-podsumowanie.html',
-    'slides/slide-16-dziekuje.html'
-  ];
-
-  async function tryLoadLiveSlides() {
-    if (location.protocol === 'file:') return false; // file:// blokuje fetch
-    const slidesRoot = document.querySelector('.reveal .slides');
-    try {
-      let htmlAll = '';
-      for (const file of slideFiles) {
-        const res = await fetch(file);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const html = await res.text();
-        htmlAll += `\n<!-- ${file} -->\n${html}\n`;
-      }
-      slidesRoot.innerHTML = htmlAll;
-      return true;
-    } catch (e) {
-      console.warn('LIVE (fetch) niedostępny:', e);
-      return false;
-    }
-  }
+  // Inicjalizacja Reveal
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: false,
+    transition: 'slide'
+  });
 
   // ============================================
   // FUNKCJE POMOCNICZE (REUSABLE)
@@ -1200,20 +1154,60 @@ SUV u = f.stworzSUV();</code></pre>
   }
 
   // ============================================
-  // BOOTSTRAP: wczytaj slajdy (LIVE jeżeli możliwe), zainicjalizuj Reveal + animacje
+  // INICJALIZACJA SLAJDÓW ANIMOWANYCH
   // ============================================
-  (async function boot() {
-    await tryLoadLiveSlides();
 
-    // Dopiero po finalnym HTML inicjalizujemy Reveal
-    Reveal.initialize({ hash: true, controls: true, progress: true, center: true, transition: 'slide' });
+  // Slajd START
+  createAnimatedCodeSlide(
+    'code-slide-start',
+    'code-start',
+    'steps-start',
+    'next-start',
+    'undo-start',
+    'reset-start',
+    'speed-start',
+    'progress-start',
+    'progress-label-start'
+  );
 
-    // Inicjalizacja slajdów animowanych (jeśli są w DOM)
-    createAnimatedCodeSlide('code-slide-start','code-start','steps-start','next-start','undo-start','reset-start','speed-start','progress-start','progress-label-start');
-    createAnimatedCodeSlide('code-slide-ifelse','code-ifelse','steps-ifelse','next-ifelse','undo-ifelse','reset-ifelse','speed-ifelse','progress-ifelse','progress-label-ifelse');
-    createAnimatedCodeSlide('code-slide-interface','code-interface','steps-interface','next-interface','undo-interface','reset-interface','speed-interface','progress-interface','progress-label-interface');
-    createAnimatedCodeSlide('code-slide-factory','code-factory','steps-factory','next-factory','undo-factory','reset-factory','speed-factory','progress-factory','progress-label-factory');
-  })();
+  // Slajd IF-ELSE
+  createAnimatedCodeSlide(
+    'code-slide-ifelse',
+    'code-ifelse',
+    'steps-ifelse',
+    'next-ifelse',
+    'undo-ifelse',
+    'reset-ifelse',
+    'speed-ifelse',
+    'progress-ifelse',
+    'progress-label-ifelse'
+  );
+
+  // Slajd INTERFEJS
+  createAnimatedCodeSlide(
+    'code-slide-interface',
+    'code-interface',
+    'steps-interface',
+    'next-interface',
+    'undo-interface',
+    'reset-interface',
+    'speed-interface',
+    'progress-interface',
+    'progress-label-interface'
+  );
+
+  // Slajd FACTORY
+  createAnimatedCodeSlide(
+    'code-slide-factory',
+    'code-factory',
+    'steps-factory',
+    'next-factory',
+    'undo-factory',
+    'reset-factory',
+    'speed-factory',
+    'progress-factory',
+    'progress-label-factory'
+  );
 </script>
 </body>
 </html>

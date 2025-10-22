@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Slajd – Wzorce Factory (podstrona)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/black.css" id="theme">
+
+  <!-- Prism.js -->
+  <link rel="stylesheet" href="https://unpkg.com/prismjs/themes/prism-tomorrow.css">
+  <script defer src="https://unpkg.com/prismjs/prism.js"></script>
+  <script defer src="https://unpkg.com/prismjs/components/prism-java.min.js"></script>
+
+  <style>
+    :root { --pad: 18px }
+
+    /* Padding i przewijanie sekcji – unikanie ucięcia dołu */
+    .reveal .slides section {
+      padding: 40px 36px !important;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Ramki kodu – responsywna wysokość + scrollbar */
+    .reveal pre {
+      font-size: 0.95rem;
+      line-height: 1.35;
+      max-height: clamp(260px, 60vh, 520px);
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+    .reveal pre, pre[class*="language-"] { white-space: pre; }
+    .reveal pre::-webkit-scrollbar { width: 10px; height: 10px; }
+    .reveal pre::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 5px; }
+    .reveal pre::-webkit-scrollbar-thumb { background: rgba(102,126,234,0.6); border-radius: 5px; }
+    .reveal pre::-webkit-scrollbar-thumb:hover { background: rgba(102,126,234,0.8); }
+
+    /* Boxy pomocnicze */
+    .problem-box { background: rgba(255,87,34,0.2); border-left: 4px solid #FF5722; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    .solution-box { background: rgba(76,175,80,0.2); border-left: 4px solid #4CAF50; padding: 15px; margin: 15px 0; border-radius: 5px; }
+
+    /* Pasek nawigacji między podstronami */
+    .single-nav {
+      position: fixed; top: 6px; left: 6px; right: 6px; z-index: 1000;
+      display: flex; justify-content: space-between; gap: 8px; align-items: center;
+      font-size: .9rem; opacity: .9;
+    }
+    .single-nav a { color: #fff; text-decoration: none; background: rgba(0,0,0,.35); padding: 6px 10px; border-radius: 8px; }
+    .single-nav a:hover { background: rgba(0,0,0,.55); }
+  </style>
+</head>
+<body>
+<div class="single-nav" id="single-nav" hidden>
+  <a id="nav-prev" href="#">‹ Poprzedni</a>
+  <a id="nav-list" href="index.html">Spis slajdów</a>
+  <a id="nav-next" href="#">Następny ›</a>
+  <span id="nav-info" style="opacity:.7"></span>
+  </div>
+
+<div class="reveal">
+  <div class="slides" id="slides-container"></div>
+  </div>
+
+<script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+<script>
+  // Lista dostępnych slajdów (jak w index-modular-backup.html)
+  const slideFiles = [
+    'slides/slide-00-tytul.html',
+    'slides/slide-01-problem.html',
+    'slides/slide-02-kod-start.html',
+    'slides/slide-03-analiza.html',
+    'slides/slide-04-ifelse.html',
+    'slides/slide-05-dlaczego-zle.html',
+    'slides/slide-06-interfejs.html',
+    'slides/slide-07-kluczowa-koncepcja.html',
+    'slides/slide-08-nadal-problem.html',
+    'slides/slide-09-factory-method.html',
+    'slides/slide-10-wizualizacja.html',
+    'slides/slide-11-porownanie.html',
+    'slides/slide-12-abstract-intro.html',
+    'slides/slide-13-abstract-diagram.html',
+    'slides/slide-14-kiedy-uzywac.html',
+    'slides/slide-15-podsumowanie.html',
+    'slides/slide-16-dziekuje.html'
+  ];
+
+  function qs(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  function normalizeIndex(n) {
+    const idx = Number(n);
+    return Number.isFinite(idx) ? Math.min(slideFiles.length - 1, Math.max(0, idx)) : 0;
+  }
+
+  async function loadSingleSlide() {
+    const container = document.getElementById('slides-container');
+    // Parametry: ?n=3 lub ?file=slides/slide-03-analiza.html
+    let fileParam = qs('file');
+    let idxParam = qs('n');
+
+    let file = null;
+    let idx = 0;
+    if (fileParam) {
+      const cand = decodeURIComponent(fileParam);
+      idx = slideFiles.indexOf(cand);
+      if (idx >= 0) file = cand; else { idx = 0; file = slideFiles[0]; }
+    } else {
+      idx = normalizeIndex(idxParam);
+      file = slideFiles[idx];
+    }
+
+    try {
+      const html = await (await fetch(file)).text();
+      container.innerHTML = html;
+    } catch (e) {
+      container.innerHTML = `<section><h3>Nie udało się wczytać slajdu</h3><pre>${file}</pre></section>`;
+    }
+
+    // Pasek nawigacji podstron
+    const nav = document.getElementById('single-nav');
+    const prev = document.getElementById('nav-prev');
+    const next = document.getElementById('nav-next');
+    const info = document.getElementById('nav-info');
+    nav.hidden = false;
+    prev.href = `slide.html?n=${Math.max(0, idx - 1)}`;
+    next.href = `slide.html?n=${Math.min(slideFiles.length - 1, idx + 1)}`;
+    info.textContent = `Slajd ${idx} z ${slideFiles.length - 1}`;
+
+    // Inicjalizacja Reveal
+    Reveal.initialize({ hash: false, controls: true, progress: false, center: true, margin: 0.02, maxScale: 1, transition: 'slide' });
+
+    // Inicjalizacja animacji, jeśli to slajd kodu
+    initializeAnimatedIfPresent();
+  }
+
+  // Prosta wersja animacji kodu (bez suwaka prędkości, z auto-scroll)
+  function createAnimatedCodeSlide(slideId, codeId, stepsId, nextBtnId, undoBtnId, resetBtnId) {
+    const slide = document.getElementById(slideId);
+    const codeEl = document.getElementById(codeId);
+    const stepsEl = document.getElementById(stepsId);
+    const nextBtn = document.getElementById(nextBtnId);
+    const undoBtn = document.getElementById(undoBtnId);
+    const resetBtn = document.getElementById(resetBtnId);
+    if (!slide || !codeEl || !stepsEl || !nextBtn || !undoBtn || !resetBtn) return; // nic do roboty
+
+    const steps = JSON.parse(stepsEl.textContent);
+    const SPEED = 15;
+    let stepIndex = 0;
+    let current = "";
+    let animationInterval = null;
+
+    const scroller = codeEl.closest('pre') || codeEl.parentElement;
+    const autoScroll = () => { if (scroller) scroller.scrollTop = scroller.scrollHeight; };
+    const highlight = () => { Prism.highlightElement(codeEl); autoScroll(); };
+    const stopAnimation = () => { if (animationInterval) { clearInterval(animationInterval); animationInterval = null; } };
+
+    function typeChunk(chunk) {
+      stopAnimation();
+      if (chunk.startsWith('<<REPLACE_LINE>>')) {
+        const newText = chunk.substring(16);
+        const lastNewline = current.lastIndexOf('\n');
+        const beforeLastLine = lastNewline >= 0 ? current.substring(0, lastNewline + 1) : '';
+        let charsToDelete = current.length - beforeLastLine.length;
+        const del = setInterval(() => {
+          if (charsToDelete > 0) {
+            current = current.slice(0, -1);
+            codeEl.textContent = current + '|';
+            autoScroll();
+            charsToDelete--;
+          } else {
+            clearInterval(del);
+            current = beforeLastLine;
+            let i = 0;
+            animationInterval = setInterval(() => {
+              if (i < newText.length) {
+                current += newText[i];
+                codeEl.textContent = current + '|';
+                autoScroll();
+                i++;
+              } else {
+                clearInterval(animationInterval);
+                animationInterval = null;
+                codeEl.textContent = current;
+                highlight();
+              }
+            }, SPEED);
+          }
+        }, Math.max(5, SPEED / 3));
+        return;
+      }
+      let i = 0;
+      animationInterval = setInterval(() => {
+        if (i < chunk.length) {
+          current += chunk[i];
+          codeEl.textContent = current + '|';
+          autoScroll();
+          i++;
+        } else {
+          clearInterval(animationInterval);
+          animationInterval = null;
+          codeEl.textContent = current;
+          highlight();
+        }
+      }, SPEED);
+    }
+
+    function typeNextChunk() {
+      if (stepIndex >= steps.length) return;
+      const chunk = steps[stepIndex++];
+      typeChunk(chunk);
+    }
+
+    function typeBackspace(chars = 1) {
+      stopAnimation();
+      const target = current.slice(0, Math.max(0, current.length - chars));
+      let remaining = current.length - target.length;
+      animationInterval = setInterval(() => {
+        if (remaining > 0) {
+          current = current.slice(0, -1);
+          codeEl.textContent = current + '|';
+          autoScroll();
+          remaining--;
+        } else {
+          clearInterval(animationInterval);
+          animationInterval = null;
+          codeEl.textContent = current;
+          highlight();
+        }
+      }, Math.max(5, 10));
+    }
+
+    function resetSlide() {
+      stopAnimation();
+      codeEl.textContent = "";
+      current = "";
+      stepIndex = 0;
+      if (scroller) scroller.scrollTop = 0;
+      highlight();
+    }
+
+    Reveal.on('slidechanged', e => { if (e.currentSlide === slide) resetSlide(); });
+    document.addEventListener('keydown', e => {
+      const onTyping = Reveal.getCurrentSlide() === slide;
+      const hasMore = stepIndex < steps.length;
+      if (!onTyping) return;
+      if ((e.key === 'ArrowRight' || e.code === 'Space') && hasMore) { e.preventDefault(); typeNextChunk(); }
+    });
+    nextBtn.addEventListener('click', typeNextChunk);
+    undoBtn.addEventListener('click', () => {
+      if (stepIndex > 0) {
+        const lastLen = steps[stepIndex - 1].length;
+        stepIndex = Math.max(0, stepIndex - 1);
+        typeBackspace(lastLen);
+      }
+    });
+    resetBtn.addEventListener('click', resetSlide);
+  }
+
+  function initializeAnimatedIfPresent() {
+    createAnimatedCodeSlide('code-slide-start', 'code-start', 'steps-start', 'next-start', 'undo-start', 'reset-start');
+    createAnimatedCodeSlide('code-slide-ifelse', 'code-ifelse', 'steps-ifelse', 'next-ifelse', 'undo-ifelse', 'reset-ifelse');
+    createAnimatedCodeSlide('code-slide-interface', 'code-interface', 'steps-interface', 'next-interface', 'undo-interface', 'reset-interface');
+    createAnimatedCodeSlide('code-slide-factory', 'code-factory', 'steps-factory', 'next-factory', 'undo-factory', 'reset-factory');
+  }
+
+  window.addEventListener('DOMContentLoaded', loadSingleSlide);
+</script>
+</body>
+</html>
+

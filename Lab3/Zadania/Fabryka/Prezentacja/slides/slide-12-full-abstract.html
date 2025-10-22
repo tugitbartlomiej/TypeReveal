@@ -1,0 +1,97 @@
+<section>
+  <h3>Kod Pełny – Krok 3: Abstract Factory</h3>
+  <pre><code class="language-java">
+/**
+ * SALON BAJTAZARA - KROK 3: FABRYKA ABSTRAKCYJNA (Abstract Factory)
+ */
+
+interface Sedan { String getModel(); void jedz(); void pokazLuksusoweWnetrze(); }
+interface SUV   { String getModel(); void jedz(); void pokazTerenoweMozliwosci(); }
+
+class BMWSedan implements Sedan {
+    public String getModel() { return "BMW Seria 7"; }
+    public void jedz() { System.out.println("BMW Sedan jedzie!"); }
+    public void pokazLuksusoweWnetrze() { System.out.println("Skórzane fotele z masażem + ambient lighting"); }
+}
+class BMWSUV implements SUV {
+    public String getModel() { return "BMW X7"; }
+    public void jedz() { System.out.println("BMW SUV jedzie!"); }
+    public void pokazTerenoweMozliwosci() { System.out.println("Tryb OFF-ROAD + xDrive (napęd 4x4)"); }
+}
+
+class BentleySedan implements Sedan {
+    public String getModel() { return "Bentley Flying Spur"; }
+    public void jedz() { System.out.println("Bentley Sedan jedzie luksusowo!"); }
+    public void pokazLuksusoweWnetrze() { System.out.println("Drewniane wykończenia + diamentowe przeszycia"); }
+}
+class BentleySUV implements SUV {
+    public String getModel() { return "Bentley Bentayga"; }
+    public void jedz() { System.out.println("Bentley SUV jedzie majestatycznie!"); }
+    public void pokazTerenoweMozliwosci() { System.out.println("Luksusowy terenowy + zawieszenie pneumatyczne"); }
+}
+
+class JaguarSedan implements Sedan {
+    public String getModel() { return "Jaguar XJ"; }
+    public void jedz() { System.out.println("Jaguar Sedan jedzie!"); }
+    public void pokazLuksusoweWnetrze() { System.out.println("System audio Meridian + sportowe fotele"); }
+}
+class JaguarSUV implements SUV {
+    public String getModel() { return "Jaguar F-PACE"; }
+    public void jedz() { System.out.println("Jaguar SUV jedzie sportowo!"); }
+    public void pokazTerenoweMozliwosci() { System.out.println("All Surface Progress Control + napęd AWD"); }
+}
+
+interface FabrykaSamochodowAbstract {
+    Sedan stworzSedan();
+    SUV stworzSUV();
+}
+
+class FabrykaBMW implements FabrykaSamochodowAbstract {
+    public Sedan stworzSedan() { return new BMWSedan(); }
+    public SUV stworzSUV() { return new BMWSUV(); }
+}
+class FabrykaBentley implements FabrykaSamochodowAbstract {
+    public Sedan stworzSedan() { return new BentleySedan(); }
+    public SUV stworzSUV() { return new BentleySUV(); }
+}
+class FabrykaJaguar implements FabrykaSamochodowAbstract {
+    public Sedan stworzSedan() { return new JaguarSedan(); }
+    public SUV stworzSUV() { return new JaguarSUV(); }
+}
+
+class ProducentFabryk {
+    public static FabrykaSamochodowAbstract getFabryka(String marka) {
+        if (marka == null) return null;
+        switch (marka.toLowerCase().trim()) {
+            case "bmw": return new FabrykaBMW();
+            case "bentley": return new FabrykaBentley();
+            case "jaguar": return new FabrykaJaguar();
+            default: return null;
+        }
+    }
+}
+
+public class SalonDemo_KROK3_abstrakcyjna {
+    public static void main(String[] args) {
+        String[] marki = {"bmw", "bentley", "jaguar"};
+        for (String marka : marki) {
+            FabrykaSamochodowAbstract fabryka = ProducentFabryk.getFabryka(marka);
+            if (fabryka == null) continue;
+
+            System.out.println("=== " + marka.toUpperCase() + " – RODZINA ===");
+            Sedan sedan = fabryka.stworzSedan();
+            System.out.println("Sedan: " + sedan.getModel());
+            sedan.jedz();
+            sedan.pokazLuksusoweWnetrze();
+
+            SUV suv = fabryka.stworzSUV();
+            System.out.println("SUV: " + suv.getModel());
+            suv.jedz();
+            suv.pokazTerenoweMozliwosci();
+            System.out.println();
+        }
+    }
+}
+  </code></pre>
+</section>
+
