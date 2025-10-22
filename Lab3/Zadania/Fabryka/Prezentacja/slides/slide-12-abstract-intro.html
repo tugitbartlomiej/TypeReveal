@@ -1,0 +1,23 @@
+<section>
+  <h3>🤔 A Co Jeśli...</h3>
+
+  <div class="problem-box">
+    <h4>Problem: Chcemy PARĘ aut!</h4>
+    <p style="font-size: 1.1rem;">Klient chce kupić <strong>Sedan + SUV</strong> tej samej marki</p>
+  </div>
+
+  <div style="text-align: left; margin: 30px 0;">
+    <h4 style="color: #FFC107;">Z Factory Method:</h4>
+    <pre style="font-size: 0.95rem;"><code class="language-java">Samochod sedan = FabrykaSamochodow.stworzSamochod("bmw");
+Samochod suv = FabrykaSamochodow.stworzSamochod("bentley"); // Ups!</code></pre>
+    <p style="color: #FF5722;">❌ Możemy PRZYPADKOWO stworzyć BMW Sedan + Bentley SUV!</p>
+  </div>
+
+  <div class="solution-box" style="margin-top: 30px;">
+    <h4>💡 Potrzebujemy... ABSTRACT FACTORY!</h4>
+    <p>Fabryka która tworzy <strong>RODZINĘ</strong> produktów!</p>
+    <p>Gwarantowana spójność: oba to BMW lub oba to Bentley!</p>
+  </div>
+
+  <p class="hint">Naciśnij → aby zobaczyć Abstract Factory!</p>
+</section>

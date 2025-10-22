@@ -1,0 +1,149 @@
+═══════════════════════════════════════════════════════════
+  PREZENTACJA: Wzorce Factory - Salon Bajtazara
+═══════════════════════════════════════════════════════════
+
+📍 LOKALIZACJA:
+F:\Studia\Studiowanie\Sem8\Java\LAB\Lab3\Zadania\Fabryka\Prezentacja\index.html
+
+═══════════════════════════════════════════════════════════
+
+⭐ NOWA STRUKTURA: Każdy slajd w osobnym pliku!
+
+Prezentacja/
+├── index.html         ← Główny plik
+├── slides/            ← 17 slajdów jako osobne pliki
+└── README_SLAJDY.md   ← Instrukcja edycji
+
+═══════════════════════════════════════════════════════════
+
+🚀 JAK URUCHOMIĆ? (WYMAGA SERWERA HTTP!)
+
+⚠️ WAŻNE: Prezentacja używa fetch() więc NIE działa przez file://
+✅ Musisz użyć serwera HTTP!
+
+──────────────────────────────────────────────────────────
+
+OPCJA 1: Python (NAJŁATWIEJ)
+
+1. Otwórz terminal/cmd w folderze Prezentacja
+2. Uruchom:
+   python -m http.server 8000
+3. Otwórz w przeglądarce:
+   http://localhost:8000/index.html
+
+──────────────────────────────────────────────────────────
+
+OPCJA 2: VS Code + Live Server
+
+1. Zainstaluj rozszerzenie "Live Server"
+2. Otwórz index.html w VS Code
+3. Kliknij prawym → "Open with Live Server"
+4. Gotowe!
+
+──────────────────────────────────────────────────────────
+
+OPCJA 3: Node.js http-server
+
+npx http-server -p 8000
+
+═══════════════════════════════════════════════════════════
+
+🎮 STEROWANIE:
+
+→ lub SPACJA  = Następny slajd / Następny fragment kodu
+←             = Poprzedni slajd
+HOME          = Pierwszy slajd
+END           = Ostatni slajd
+ESC           = Przegląd wszystkich slajdów
+
+═══════════════════════════════════════════════════════════
+
+📚 STRUKTURA (17 slajdów):
+
+ 0. Tytuł
+ 1. Wprowadzenie - Problem
+ 2. Kod START (animacja) ⭐
+ 3. Analiza problemu
+ 4. If-else (animacja) ⭐
+ 5. Dlaczego if-else złe?
+ 6. Interfejs (animacja) ⭐
+ 7. Kluczowa koncepcja
+ 8. Nadal problem
+ 9. Factory Method (animacja) ⭐
+10. Wizualizacja Factory
+11. Porównanie (tabela)
+12. Abstract Factory - intro
+13. Abstract Factory - diagram
+14. Kiedy używać?
+15. Podsumowanie
+16. Dziękuję!
+
+═══════════════════════════════════════════════════════════
+
+⭐ KLUCZOWE SLAJDY:
+
+Slajd 2, 4, 6, 9 = ANIMOWANE PISANIE KODU
+  • Klikaj → aby dopisywać kolejne fragmenty
+  • Suwak kontroluje prędkość
+  • Przycisk "Cofnij" cofa ostatni fragment
+
+Slajd 2 = INTERAKTYWNE ĆWICZENIE!
+  • Kod pisze się BEZ typu: marka = "BMW M5";
+  • STOP tutaj i zapytaj studentów o typ!
+  • Kliknij → i kod kasuje i przepisuje: String marka = "BMW M5";
+  • To samo z cena (int)!
+
+Slajd 7 = pokazSpecjalneFunkcje()
+  • NAJWAŻNIEJSZY moment!
+  • Wyjaśnia jak Koenigsegg (3 metody) działa
+  • To jest polimorfizm!
+
+Slajd 11 = Porównanie (tabela)
+  • Pokazuje ewolucję rozwiązania
+  • START → IF-ELSE → INTERFEJS → FACTORY
+
+═══════════════════════════════════════════════════════════
+
+✏️ EDYCJA SLAJDÓW:
+
+Chcesz zmienić slajd?
+
+1. Otwórz plik slajdu w slides/
+   notepad slides/slide-03-analiza.html
+
+2. Edytuj HTML
+
+3. Zapisz
+
+4. Odśwież przeglądarkę (F5)
+
+5. Gotowe!
+
+Więcej: README_SLAJDY.md
+
+═══════════════════════════════════════════════════════════
+
+💡 TIPS:
+
+1. Użyj pełnego ekranu (F11) dla lepszego efektu
+2. Przy animacjach nie klikaj zbyt szybko - poczekaj aż kod się wypisze
+3. Podkreślaj kluczowe fragmenty kodu wskaźnikiem/kursorem
+4. Slajd 7 (polimorfizm) - daj czas na zrozumienie!
+5. Slajd 2 - STOP po każdym "marka =" i "cena =" - zapytaj o typ!
+
+═══════════════════════════════════════════════════════════
+
+📖 WIĘCEJ INFORMACJI:
+
+Pełna dokumentacja: PREZENTACJA_README.md
+Edycja slajdów: README_SLAJDY.md
+
+═══════════════════════════════════════════════════════════
+
+✅ GOTOWE DO UŻYCIA!
+
+1. Uruchom serwer HTTP (python -m http.server 8000)
+2. Otwórz http://localhost:8000/index.html
+3. Prezentuj!
+
+═══════════════════════════════════════════════════════════

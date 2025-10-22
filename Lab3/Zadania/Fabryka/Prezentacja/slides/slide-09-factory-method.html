@@ -1,0 +1,69 @@
+<section id="code-slide-factory">
+  <h3>Wzorzec Factory Method</h3>
+
+  <pre><code id="code-factory" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-factory">Następny fragment</button>
+    <button id="undo-factory">Cofnij</button>
+    <button id="reset-factory">Reset</button>
+  </div>
+
+  <script type="application/json" id="steps-factory">
+  [
+    "// ========== WZORZEC FACTORY METHOD ==========",
+    "\nclass FabrykaSamochodow {",
+    "\n",
+    "\n    // Jedna metoda tworzy WSZYSTKIE samochody!",
+    "\n    public static Samochod stworzSamochod(String marka) {",
+    "\n        if (marka == null) return null;",
+    "\n",
+    "\n        // Normalizacja - case insensitive",
+    "\n        String m = marka.toLowerCase().trim();",
+    "\n",
+    "\n        // FABRYKA - decyduje która klasa",
+    "\n        switch (m) {",
+    "\n            case \"bmw\":",
+    "\n                return new BMW();",
+    "\n",
+    "\n            case \"jaguar\":",
+    "\n                return new Jaguar();",
+    "\n",
+    "\n            case \"bentley\":",
+    "\n                return new Bentley();",
+    "\n",
+    "\n            case \"koenigsegg\":",
+    "\n                return new Koenigsegg();",
+    "\n",
+    "\n            default:",
+    "\n                return null;",
+    "\n        }",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// ========== UŻYCIE FABRYKI ==========",
+    "\npublic static void main(String[] args) {",
+    "\n    // PRZED (bez fabryki):",
+    "\n    // Samochod bmw = new BMW();",
+    "\n",
+    "\n    // PO (z fabryką):",
+    "\n    Samochod bmw = FabrykaSamochodow.stworzSamochod(\"bmw\");",
+    "\n    Samochod k = FabrykaSamochodow.stworzSamochod(\"koenigsegg\");",
+    "\n",
+    "\n    // Jedna metoda, różne parametry!",
+    "\n    bmw.pokazSpecjalneFunkcje();  // TRYB M",
+    "\n    k.pokazSpecjalneFunkcje();    // 3 funkcje automatycznie!",
+    "\n",
+    "\n    // LISTA DZIAŁA!",
+    "\n    String[] marki = {\"bmw\", \"jaguar\", \"bentley\", \"koenigsegg\"};",
+    "\n    for (String m : marki) {",
+    "\n        Samochod auto = FabrykaSamochodow.stworzSamochod(m);",
+    "\n        auto.pokazSpecjalneFunkcje();",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// If-else TYLKO w jednym miejscu (fabryka)!",
+    "\n// Koenigsegg działa automatycznie!"
+  ]
+  </script>
+</section>

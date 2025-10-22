@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <title>Wzorce Factory - Salon Bajtazara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Reveal.js (slajdy) -->
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/black.css" id="theme">
+
+  <!-- Prism.js (kolorowanie składni) -->
+  <link rel="stylesheet" href="https://unpkg.com/prismjs/themes/prism-tomorrow.css">
+  <script defer src="https://unpkg.com/prismjs/prism.js"></script>
+  <script defer src="https://unpkg.com/prismjs/components/prism-java.min.js"></script>
+
+  <style>
+    :root { --pad: 18px }
+    .reveal pre {
+      font-size: 0.95rem;
+      line-height: 1.35;
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+    .reveal pre, pre[class*="language-"] { white-space: pre; }
+    .typed-cursor { opacity: 1; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Stylowanie scrollbara */
+    .reveal pre::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    .reveal pre::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+      border-radius: 5px;
+    }
+    .reveal pre::-webkit-scrollbar-thumb {
+      background: rgba(102,126,234,0.6);
+      border-radius: 5px;
+    }
+    .reveal pre::-webkit-scrollbar-thumb:hover {
+      background: rgba(102,126,234,0.8);
+    }
+    .controls-local { margin-top: var(--pad); display: flex; gap: 12px; align-items: center; opacity: .9; font-size: .9rem }
+    .controls-local button { padding: 6px 10px; border: 0; border-radius: 8px; cursor: pointer; background: #667eea; color: white; font-weight: bold; }
+    .controls-local button:hover { background: #5568d3; }
+    .hint { opacity:.7; font-size:.85rem; margin-top: 8px; color: #aaa; }
+
+    /* Wizualizacja Factory */
+    .factory-viz {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+    .car-box {
+      padding: 20px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .car-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(102,126,234,0.5);
+    }
+    .car-box.active {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      transform: scale(1.1);
+    }
+
+    .arrow {
+      font-size: 2rem;
+      color: #667eea;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Problem highlights */
+    .problem-box {
+      background: rgba(255,87,34,0.2);
+      border-left: 4px solid #FF5722;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+    }
+
+    .solution-box {
+      background: rgba(76,175,80,0.2);
+      border-left: 4px solid #4CAF50;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+    }
+
+    /* Comparison table */
+    .comparison-table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 12px;
+      border: 1px solid #444;
+    }
+    .comparison-table th {
+      background: #667eea;
+      font-weight: bold;
+    }
+    .comparison-table td {
+      background: rgba(255,255,255,0.05);
+    }
+    .comparison-table .good { color: #4CAF50; font-size: 1.5rem; }
+    .comparison-table .bad { color: #FF5722; font-size: 1.5rem; }
+
+    /* Diagram styles */
+    .diagram-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .diagram-row {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .diagram-box {
+      padding: 15px 25px;
+      background: rgba(102,126,234,0.3);
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      font-size: 1rem;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    .diagram-arrow {
+      font-size: 2rem;
+      color: #667eea;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- SLAJD 0: TYTUŁ -->
+    <section data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+      <h1>🏭 Wzorce Projektowe</h1>
+      <h2>Factory Method<br/>& Abstract Factory</h2>
+      <p style="font-size: 1.2rem; margin-top: 40px;">Salon Bajtazara - Specjalne funkcje samochodów</p>
+      <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 20px;">Naciśnij → aby rozpocząć</p>
+    </section>
+
+    <!-- SLAJD 1: PROBLEM -->
+    <section>
+      <h2>🚗 Problem do Rozwiązania</h2>
+
+      <div style="text-align: left; margin: 20px 0;">
+        <h3 style="color: #667eea;">Salon Bajtazara sprzedaje 4 samochody:</h3>
+        <ul style="font-size: 1.1rem; line-height: 1.8;">
+          <li><strong>BMW M5</strong> (300 000 zł) → <code>aktywujTrybM()</code></li>
+          <li><strong>Jaguar F-Type</strong> (280 000 zł) → <code>wydajRyk()</code></li>
+          <li><strong>Bentley Continental GT</strong> (850 000 zł) → <code>wlaczMasazFoteli()</code></li>
+          <li><strong>Koenigsegg Jesko</strong> (12 000 000 zł) → <span style="color: #FF5722;">3 METODY!</span></li>
+        </ul>
+      </div>
+
+      <div class="problem-box">
+        <h4>❌ Problem:</h4>
+        <p>Każdy samochód ma <strong>RÓŻNE</strong> specjalne metody.</p>
+        <p>Koenigsegg ma <strong>3 metody</strong> - jak to uogólnić?</p>
+      </div>
+
+      <p class="hint">Naciśnij → aby zobaczyć kod problemu</p>
+    </section>
+
+    <!-- SLAJD 2: KOD START (ANIMOWANY) -->
+    <section id="code-slide-start">
+      <h3>Krok 0: Problem - Kod Startowy</h3>
+
+      <pre><code id="code-start" class="language-java"></code></pre>
+
+      <div class="controls-local">
+        <button id="next-start">Następny fragment</button>
+        <button id="undo-start">Cofnij</button>
+        <button id="reset-start">Reset</button>
+        <label>Prędkość:
+          <input id="speed-start" type="range" min="5" max="100" value="20">
+        </label>
+      </div>
+      <div class="hint">Używaj → lub spacji. STOP po "marka = " i "cena = " - zapytaj studentów o typ!</div>
+
+      <script type="application/json" id="steps-start">
+      [
+        "// ========== KLASA BMW ==========",
+        "\nclass BMW {",
+        "\n    marka = \"BMW M5\";",
+        "<<REPLACE_LINE>>    String marka = \"BMW M5\";",
+        "\n    cena = 300000;",
+        "<<REPLACE_LINE>>    int cena = 300000;",
+        "\n",
+        "\n    void jedz() {",
+        "\n        System.out.println(\"BMW jedzie!\");",
+        "\n    }",
+        "\n",
+        "\n    void aktywujTrybM() {",
+        "\n        System.out.println(\"TRYB M AKTYWNY! +100 KM!\");",
+        "\n    }",
+        "\n}",
+        "\n",
+        "\n// ========== KLASA KOENIGSEGG ==========",
+        "\nclass Koenigsegg {",
+        "\n    marka = \"Koenigsegg Jesko\";",
+        "<<REPLACE_LINE>>    String marka = \"Koenigsegg Jesko\";",
+        "\n    cena = 12000000;",
+        "<<REPLACE_LINE>>    int cena = 12000000;",
+        "\n",
+        "\n    void jedz() {",
+        "\n        System.out.println(\"Koenigsegg jedzie!\");",
+        "\n    }",
+        "\n",
+        "\n    // UWAGA - 3 SPECJALNE METODY!",
+        "\n    void aktywujTryb1600KM() {",
+        "\n        System.out.println(\"TRYB 1600 KM AKTYWNY!!!\");",
+        "\n    }",
+        "\n",
+        "\n    void wlaczSystemNitro() {",
+        "\n        System.out.println(\"NITRO WŁĄCZONE! BOOST!\");",
+        "\n    }",
+        "\n",
+        "\n    void sprawdzPredkoscMaksymalna() {",
+        "\n        System.out.println(\"Prędkość maks: 483 km/h!\");",
+        "\n    }",
+        "\n}",
+        "\n",
+        "\n// ========== UŻYCIE ==========",
+        "\npublic class SalonDemo_START {",
+        "\n    public static void main(String[] args) {",
+        "\n        BMW bmw = new BMW();",
+        "\n        bmw.jedz();",
+        "\n        bmw.aktywujTrybM();",
+        "\n",
+        "\n        Koenigsegg k = new Koenigsegg();",
+        "\n        k.jedz();",
+        "\n        k.aktywujTryb1600KM();      // ← Metoda 1",
+        "\n        k.wlaczSystemNitro();       // ← Metoda 2",
+        "\n        k.sprawdzPredkoscMaksymalna(); // ← Metoda 3",
+        "\n",
+        "\n        // ❌ PROBLEM: Każdy typ osobno!",
+        "\n        // ❌ Nie możemy zrobić List<???> - różne typy!",
+        "\n    }",
+        "\n}"
+      ]
+      </script>
+    </section>
+
+    <!-- SLAJD 3: ANALIZA -->
+    <section>
+      <h3>❌ Co Jest Złego?</h3>
+
+      <div style="text-align: left; margin: 30px 0;">
+        <div class="problem-box">
+          <h4>1. Każdy samochód to INNY TYP</h4>
+          <pre style="font-size: 0.9rem;"><code class="language-java">BMW bmw = new BMW();
+Jaguar jaguar = new Jaguar();
+Koenigsegg k = new Koenigsegg();</code></pre>
+          <p>→ Nie możemy zrobić <code>List&lt;???&gt;</code></p>
+        </div>
+
+        <div class="problem-box" style="margin-top: 20px;">
+          <h4>2. Każdy ma INNE METODY</h4>
+          <pre style="font-size: 0.9rem;"><code class="language-java">bmw.aktywujTrybM();     // ← BMW
+jaguar.wydajRyk();       // ← Jaguar (inna!)
+bentley.wlaczMasaz();    // ← Bentley (inna!)
+k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
+          <p>→ Jak wywołać je w pętli?</p>
+        </div>
+
+        <div class="problem-box" style="margin-top: 20px;">
+          <h4>3. Koenigsegg = KOSZMAR</h4>
+          <p>3 specjalne metody → 3× więcej kodu!</p>
+        </div>
+      </div>
+
+      <p class="hint">Naciśnij → aby zobaczyć próbę rozwiązania (if-else)</p>
+    </section>
+
+    <!-- SLAJD 4: IF-ELSE (ANIMOWANY) -->
+    <section id="code-slide-ifelse">
+      <h3>❌ Próba 1: If-else (ZŁA!)</h3>
+
+      <pre><code id="code-ifelse" class="language-java"></code></pre>
+
+      <div class="controls-local">
+        <button id="next-ifelse">Następny fragment</button>
+        <button id="undo-ifelse">Cofnij</button>
+        <button id="reset-ifelse">Reset</button>
+        <label>Prędkość:
+          <input id="speed-ifelse" type="range" min="5" max="100" value="20">
+        </label>
+      </div>
+      <div class="hint">Zobacz jak duplikuje się if-else...</div>
+
+      <script type="application/json" id="steps-ifelse">
+      [
+        "public static void pokazSamochod(String marka) {",
+        "\n    if (marka.equals(\"bmw\")) {",
+        "\n        BMW auto = new BMW();",
+        "\n        auto.jedz();",
+        "\n        auto.aktywujTrybM(); // ← Muszę WIEDZIEĆ że to BMW!",
+        "\n",
+        "\n    } else if (marka.equals(\"jaguar\")) {",
+        "\n        Jaguar auto = new Jaguar();",
+        "\n        auto.jedz();",
+        "\n        auto.wydajRyk(); // ← Muszę WIEDZIEĆ że to Jaguar!",
+        "\n",
+        "\n    } else if (marka.equals(\"koenigsegg\")) {",
+        "\n        Koenigsegg auto = new Koenigsegg();",
+        "\n        auto.jedz();",
+        "\n        // NAJGORSZE - 3 RÓŻNE metody!",
+        "\n        auto.aktywujTryb1600KM();",
+        "\n        auto.wlaczSystemNitro();",
+        "\n        auto.sprawdzPredkoscMaksymalna();",
+        "\n    }",
+        "\n}",
+        "\n",
+        "\n// ❌ PROBLEM: If-else WSZĘDZIE!",
+        "\npublic static int pobierzCene(String marka) {",
+        "\n    if (marka.equals(\"bmw\")) {",
+        "\n        return 300000;",
+        "\n    } else if (marka.equals(\"jaguar\")) {",
+        "\n        return 280000;",
+        "\n    } else if (marka.equals(\"koenigsegg\")) {",
+        "\n        return 12000000;",
+        "\n    }",
+        "\n    return 0;",
+        "\n}",
+        "\n",
+        "\n// ❌ If-else ZNOWU!",
+        "\npublic static void testJazdy(String marka) {",
+        "\n    if (marka.equals(\"bmw\")) {",
+        "\n        BMW auto = new BMW();",
+        "\n        auto.jedz();",
+        "\n    } else if (marka.equals(\"koenigsegg\")) {",
+        "\n        Koenigsegg auto = new Koenigsegg();",
+        "\n        auto.jedz();",
+        "\n    }",
+        "\n}",
+        "\n",
+        "\n// ❌ DUPLIKACJA if-else w 3 miejscach!"
+      ]
+      </script>
+    </section>
+
+    <!-- SLAJD 5: DLACZEGO IF-ELSE ZŁE -->
+    <section>
+      <h3>❌ Dlaczego If-else to ZŁE?</h3>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Opis</th>
+            <th>Skutek</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="bad">❌</span> Duplikacja</td>
+            <td>If-else w 3 metodach</td>
+            <td>3× ten sam kod!</td>
+          </tr>
+          <tr>
+            <td><span class="bad">❌</span> Koenigsegg</td>
+            <td>3 specjalne metody</td>
+            <td>If-else 3× dłuższy!</td>
+          </tr>
+          <tr>
+            <td><span class="bad">❌</span> Dodanie Ferrari</td>
+            <td>Nowy samochód</td>
+            <td>Zmiana w 10 miejscach!</td>
+          </tr>
+          <tr>
+            <td><span class="bad">❌</span> Brak listy</td>
+            <td>Różne typy</td>
+            <td>Nie możemy iterować!</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="solution-box" style="margin-top: 30px;">
+        <h4>💡 Potrzebujemy lepszego rozwiązania!</h4>
+        <p>Wskazówka: Co jest <strong>WSPÓLNE</strong> dla wszystkich aut?</p>
+        <p>Co jest <strong>RÓŻNE</strong>?</p>
+      </div>
+
+      <p class="hint">Naciśnij → aby zobaczyć rozwiązanie!</p>
+    </section>
+
+    <!-- Kontynuacja w następnej części... -->
+
+  </div>
+</div>
+
+<!-- Reveal init + logika animacji -->
+<script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+<script>
+  // Inicjalizacja Reveal
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: true,
+    transition: 'slide'
+  });
+
+  // ============================================
+  // FUNKCJE POMOCNICZE (REUSABLE)
+  // ============================================
+  function createAnimatedCodeSlide(slideId, codeId, stepsId, nextBtnId, undoBtnId, resetBtnId, speedId) {
+    const slide = document.getElementById(slideId);
+    const codeEl = document.getElementById(codeId);
+    const steps = JSON.parse(document.getElementById(stepsId).textContent);
+    const nextBtn = document.getElementById(nextBtnId);
+    const undoBtn = document.getElementById(undoBtnId);
+    const resetBtn = document.getElementById(resetBtnId);
+    const speedEl = document.getElementById(speedId);
+
+    let stepIndex = 0;
+    let current = "";
+    let animationInterval = null;
+
+    const highlight = () => Prism.highlightElement(codeEl);
+    const stopAnimation = () => {
+      if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+      }
+    };
+
+    function typeChunk(chunk) {
+      stopAnimation();
+
+      // Sprawdź czy to zastąpienie linii
+      if (chunk.startsWith('<<REPLACE_LINE>>')) {
+        const newText = chunk.substring(16);
+        const lastNewline = current.lastIndexOf('\n');
+        const beforeLastLine = lastNewline >= 0 ? current.substring(0, lastNewline + 1) : '';
+
+        let charsToDelete = current.length - beforeLastLine.length;
+        let deleteInterval = setInterval(() => {
+          if (charsToDelete > 0) {
+            current = current.slice(0, -1);
+            codeEl.textContent = current + '|';
+            charsToDelete--;
+          } else {
+            clearInterval(deleteInterval);
+            current = beforeLastLine;
+            let i = 0;
+            animationInterval = setInterval(() => {
+              if (i < newText.length) {
+                current += newText[i];
+                codeEl.textContent = current + '|';
+                i++;
+              } else {
+                clearInterval(animationInterval);
+                animationInterval = null;
+                codeEl.textContent = current;
+                highlight();
+              }
+            }, Number(speedEl.value));
+          }
+        }, Math.max(5, Number(speedEl.value) / 3));
+        return;
+      }
+
+      // Normalne pisanie
+      let i = 0;
+      animationInterval = setInterval(() => {
+        if (i < chunk.length) {
+          current += chunk[i];
+          codeEl.textContent = current + '|';
+          i++;
+        } else {
+          clearInterval(animationInterval);
+          animationInterval = null;
+          codeEl.textContent = current;
+          highlight();
+        }
+      }, Number(speedEl.value));
+    }
+
+    function typeNextChunk() {
+      if (stepIndex >= steps.length) return;
+      const chunk = steps[stepIndex++];
+      typeChunk(chunk);
+    }
+
+    function typeBackspace(chars = 1) {
+      stopAnimation();
+      const target = current.slice(0, Math.max(0, current.length - chars));
+      let remaining = current.length - target.length;
+      animationInterval = setInterval(() => {
+        if (remaining > 0) {
+          current = current.slice(0, -1);
+          codeEl.textContent = current + '|';
+          remaining--;
+        } else {
+          clearInterval(animationInterval);
+          animationInterval = null;
+          codeEl.textContent = current;
+          highlight();
+        }
+      }, Math.max(5, Number(speedEl.value) / 2));
+    }
+
+    function resetSlide() {
+      stopAnimation();
+      codeEl.textContent = "";
+      current = "";
+      stepIndex = 0;
+      highlight();
+    }
+
+    // Event listeners
+    Reveal.on('slidechanged', e => {
+      if (e.currentSlide === slide) resetSlide();
+    });
+
+    document.addEventListener('keydown', e => {
+      const onTyping = Reveal.getCurrentSlide() === slide;
+      const hasMore = stepIndex < steps.length;
+      if (!onTyping) return;
+
+      if ((e.key === 'ArrowRight' || e.code === 'Space') && hasMore) {
+        e.preventDefault();
+        typeNextChunk();
+      }
+    });
+
+    nextBtn.addEventListener('click', typeNextChunk);
+    undoBtn.addEventListener('click', () => {
+      if (stepIndex > 0) {
+        const lastLen = steps[stepIndex - 1].length;
+        stepIndex = Math.max(0, stepIndex - 1);
+        typeBackspace(lastLen);
+      }
+    });
+    resetBtn.addEventListener('click', resetSlide);
+  }
+
+  // ============================================
+  // INICJALIZACJA SLAJDÓW ANIMOWANYCH
+  // ============================================
+
+  // Slajd START
+  createAnimatedCodeSlide(
+    'code-slide-start',
+    'code-start',
+    'steps-start',
+    'next-start',
+    'undo-start',
+    'reset-start',
+    'speed-start'
+  );
+
+  // Slajd IF-ELSE
+  createAnimatedCodeSlide(
+    'code-slide-ifelse',
+    'code-ifelse',
+    'steps-ifelse',
+    'next-ifelse',
+    'undo-ifelse',
+    'reset-ifelse',
+    'speed-ifelse'
+  );
+
+  // Slajd INTERFEJS - dodaj później
+  // Slajd FACTORY - dodaj później
+</script>
+</body>
+</html>

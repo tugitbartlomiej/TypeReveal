@@ -1,0 +1,63 @@
+<section>
+  <h3>🏭 Abstract Factory - Koncepcja</h3>
+
+  <div style="display: flex; gap: 40px; justify-content: space-around; margin: 40px 0;">
+    <div style="text-align: center;">
+      <div style="padding: 20px; background: rgba(33,150,243,0.3); border: 2px solid #2196F3; border-radius: 10px;">
+        <h4>Factory Method</h4>
+        <p style="font-size: 0.9rem; margin: 10px 0;">JEDEN produkt</p>
+        <pre style="font-size: 0.8rem;"><code class="language-java">stworzSamochod()
+    ↓
+  BMW</code></pre>
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <div style="padding: 20px; background: rgba(76,175,80,0.3); border: 2px solid #4CAF50; border-radius: 10px;">
+        <h4>Abstract Factory</h4>
+        <p style="font-size: 0.9rem; margin: 10px 0;">RODZINA produktów</p>
+        <pre style="font-size: 0.8rem;"><code class="language-java">FabrykaBMW:
+  • stworzSedan() → BMW Sedan
+  • stworzSUV()   → BMW SUV</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-container" style="margin-top: 40px;">
+    <div class="diagram-box" style="background: rgba(255,193,7,0.3); border-color: #FFC107;">
+      String marka = "bmw"
+    </div>
+
+    <div class="diagram-arrow">⬇️</div>
+
+    <div class="diagram-box" style="background: rgba(102,126,234,0.5); border-color: #667eea;">
+      ProducentFabryk<br/>
+      .getFabryka("bmw")
+    </div>
+
+    <div class="diagram-arrow">⬇️</div>
+
+    <div class="diagram-box" style="background: rgba(76,175,80,0.3); border-color: #4CAF50; font-size: 1.1rem;">
+      <strong>FabrykaBMW</strong><br/>
+      (tworzy TYLKO BMW!)
+    </div>
+
+    <div class="diagram-arrow">⬇️</div>
+
+    <div class="diagram-row">
+      <div class="diagram-box" style="background: rgba(156,39,176,0.3); border-color: #9C27B0;">
+        stworzSedan()<br/>
+        → BMW Sedan
+      </div>
+      <div class="diagram-box" style="background: rgba(156,39,176,0.3); border-color: #9C27B0;">
+        stworzSUV()<br/>
+        → BMW SUV
+      </div>
+    </div>
+  </div>
+
+  <div class="solution-box" style="margin-top: 30px;">
+    <h4>⭐ Gwarantowana spójność!</h4>
+    <p>Jedna fabryka = jedna marka = spójna rodzina!</p>
+  </div>
+</section>

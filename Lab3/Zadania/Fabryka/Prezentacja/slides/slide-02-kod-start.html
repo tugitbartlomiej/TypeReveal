@@ -1,0 +1,74 @@
+<section id="code-slide-start">
+  <h3>Krok 0: Problem - Kod Startowy</h3>
+
+  <pre><code id="code-start" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-start">Następny fragment</button>
+    <button id="undo-start">Cofnij</button>
+    <button id="reset-start">Reset</button>
+  </div>
+
+  <script type="application/json" id="steps-start">
+  [
+    "// ========== KLASA BMW ==========",
+    "\nclass BMW {",
+    "\n    marka = \"BMW M5\";",
+    "<<REPLACE_LINE>>    String marka = \"BMW M5\";",
+    "\n    cena = 300000;",
+    "<<REPLACE_LINE>>    int cena = 300000;",
+    "\n",
+    "\n    void jedz() {",
+    "\n        System.out.println(\"BMW jedzie!\");",
+    "\n    }",
+    "\n",
+    "\n    void aktywujTrybM() {",
+    "\n        System.out.println(\"TRYB M AKTYWNY! +100 KM!\");",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// ========== KLASA KOENIGSEGG ==========",
+    "\nclass Koenigsegg {",
+    "\n    marka = \"Koenigsegg Jesko\";",
+    "<<REPLACE_LINE>>    String marka = \"Koenigsegg Jesko\";",
+    "\n    cena = 12000000;",
+    "<<REPLACE_LINE>>    int cena = 12000000;",
+    "\n",
+    "\n    void jedz() {",
+    "\n        System.out.println(\"Koenigsegg jedzie!\");",
+    "\n    }",
+    "\n",
+    "\n    // UWAGA - 3 SPECJALNE METODY!",
+    "\n    void aktywujTryb1600KM() {",
+    "\n        System.out.println(\"TRYB 1600 KM AKTYWNY!!!\");",
+    "\n    }",
+    "\n",
+    "\n    void wlaczSystemNitro() {",
+    "\n        System.out.println(\"NITRO WŁĄCZONE! BOOST!\");",
+    "\n    }",
+    "\n",
+    "\n    void sprawdzPredkoscMaksymalna() {",
+    "\n        System.out.println(\"Prędkość maks: 483 km/h!\");",
+    "\n    }",
+    "\n}",
+    "\n",
+    "\n// ========== UŻYCIE ==========",
+    "\npublic class SalonDemo_START {",
+    "\n    public static void main(String[] args) {",
+    "\n        BMW bmw = new BMW();",
+    "\n        bmw.jedz();",
+    "\n        bmw.aktywujTrybM();",
+    "\n",
+    "\n        Koenigsegg k = new Koenigsegg();",
+    "\n        k.jedz();",
+    "\n        k.aktywujTryb1600KM();      // ← Metoda 1",
+    "\n        k.wlaczSystemNitro();       // ← Metoda 2",
+    "\n        k.sprawdzPredkoscMaksymalna(); // ← Metoda 3",
+    "\n",
+    "\n        // PROBLEM: Każdy typ osobno!",
+    "\n        // Nie możemy zrobić List<???> - różne typy!",
+    "\n    }",
+    "\n}"
+  ]
+  </script>
+</section>

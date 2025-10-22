@@ -1,0 +1,45 @@
+<section>
+  <h3>🎯 Kiedy Używać Którego Wzorca?</h3>
+
+  <div style="display: flex; gap: 30px; justify-content: space-around; margin: 40px 0;">
+    <div style="flex: 1; text-align: left;">
+      <div style="padding: 20px; background: rgba(33,150,243,0.2); border-left: 4px solid #2196F3; border-radius: 5px;">
+        <h4 style="color: #2196F3;">⭐ Factory Method</h4>
+        <p style="margin: 15px 0;"><strong>Kiedy:</strong></p>
+        <ul style="font-size: 0.95rem; line-height: 1.6;">
+          <li>Tworzysz <strong>JEDEN TYP</strong> obiektu</li>
+          <li>Produkty nie muszą pasować do siebie</li>
+          <li>Prostsza struktura</li>
+        </ul>
+        <p style="margin: 15px 0;"><strong>Przykład:</strong></p>
+        <pre style="font-size: 0.85rem;"><code class="language-java">Samochod auto =
+  stworzSamochod("bmw");</code></pre>
+      </div>
+    </div>
+
+    <div style="flex: 1; text-align: left;">
+      <div style="padding: 20px; background: rgba(76,175,80,0.2); border-left: 4px solid #4CAF50; border-radius: 5px;">
+        <h4 style="color: #4CAF50;">🏆 Abstract Factory</h4>
+        <p style="margin: 15px 0;"><strong>Kiedy:</strong></p>
+        <ul style="font-size: 0.95rem; line-height: 1.6;">
+          <li>Tworzysz <strong>RODZINĘ</strong> produktów</li>
+          <li>Produkty MUSZĄ pasować do siebie</li>
+          <li>Gwarantowana spójność</li>
+        </ul>
+        <p style="margin: 15px 0;"><strong>Przykład:</strong></p>
+        <pre style="font-size: 0.85rem;"><code class="language-java">Fabryka f = getFabryka("bmw");
+Sedan s = f.stworzSedan();
+SUV u = f.stworzSUV();</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px; padding: 20px; background: rgba(255,193,7,0.2); border-radius: 10px;">
+    <h4 style="color: #FFC107;">💼 Przykłady z praktyki:</h4>
+    <ul style="text-align: left; font-size: 0.95rem; line-height: 1.8;">
+      <li><strong>Factory Method:</strong> Calendar.getInstance(), NumberFormat.getInstance()</li>
+      <li><strong>Abstract Factory:</strong> GUI (WindowsFactory: Button + Checkbox + ScrollBar)</li>
+      <li><strong>Abstract Factory:</strong> Database (DatabaseFactory: Connection + Statement + ResultSet)</li>
+    </ul>
+  </div>
+</section>

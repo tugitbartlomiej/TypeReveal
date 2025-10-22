@@ -1,0 +1,29 @@
+<section>
+  <h3>Co Jest Złego?</h3>
+
+  <div style="text-align: left; margin: 30px 0;">
+    <div class="problem-box">
+      <h4>1. Każdy samochód to INNY TYP</h4>
+      <pre style="font-size: 0.9rem;"><code class="language-java">BMW bmw = new BMW();
+Jaguar jaguar = new Jaguar();
+Koenigsegg k = new Koenigsegg();</code></pre>
+      <p>→ Nie możemy zrobić <code>List&lt;???&gt;</code></p>
+    </div>
+
+    <div class="problem-box" style="margin-top: 20px;">
+      <h4>2. Każdy ma INNE METODY</h4>
+      <pre style="font-size: 0.9rem;"><code class="language-java">bmw.aktywujTrybM();     // ← BMW
+jaguar.wydajRyk();       // ← Jaguar (inna!)
+bentley.wlaczMasaz();    // ← Bentley (inna!)
+k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
+      <p>→ Jak wywołać je w pętli?</p>
+    </div>
+
+    <div class="problem-box" style="margin-top: 20px;">
+      <h4>3. Koenigsegg = KOSZMAR</h4>
+      <p>3 specjalne metody → 3× więcej kodu!</p>
+    </div>
+  </div>
+
+  <p class="hint">Naciśnij → aby zobaczyć próbę rozwiązania (if-else)</p>
+</section>
