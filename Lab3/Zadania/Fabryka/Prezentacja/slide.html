@@ -34,13 +34,15 @@
 
     /* Ramki kodu – responsywna wysokość + scrollbar */
     .reveal pre {
+      /* container */
       font-size: 0.95rem;
       line-height: 1.35;
       max-height: clamp(260px, 60vh, 520px);
       overflow-y: auto;
       overflow-x: auto;
     }
-    .reveal pre, pre[class*="language-"] { white-space: pre; }
+    .reveal pre > code { display:block; white-space: pre; max-height: clamp(260px, 60vh, 520px); overflow:auto; outline: none; }
+.reveal pre, pre[class*="language-"] { white-space: pre; }
     .reveal pre::-webkit-scrollbar { width: 10px; height: 10px; }
     .reveal pre::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 5px; }
     .reveal pre::-webkit-scrollbar-thumb { background: rgba(102,126,234,0.6); border-radius: 5px; }
@@ -154,6 +156,15 @@
     const nextBtn = document.getElementById(nextBtnId);
     const undoBtn = document.getElementById(undoBtnId);
     const resetBtn = document.getElementById(resetBtnId);
+    // Anchor element to ensure scrollIntoView works reliably
+    let __autoScrollTail = codeEl.parentElement.querySelector('.__auto-tail');
+    if (!__autoScrollTail) {
+      __autoScrollTail = document.createElement('div');
+      __autoScrollTail.className = '__auto-tail';
+      __autoScrollTail.style.cssText = 'height:1px;width:100%;';
+      codeEl.parentElement.appendChild(__autoScrollTail);
+    }
+
     if (!slide || !codeEl || !stepsEl || !nextBtn || !undoBtn || !resetBtn) return; // nic do roboty
 
     const steps = JSON.parse(stepsEl.textContent);
@@ -163,8 +174,30 @@
     let animationInterval = null;
 
     const scroller = codeEl.closest('pre') || codeEl.parentElement;
-    const autoScroll = () => { if (scroller) scroller.scrollTop = scroller.scrollHeight; };
-    const highlight = () => { Prism.highlightElement(codeEl); autoScroll(); };
+    const autoScroll = () => {
+      const doScroll = () => {
+                if (codeEl) {
+          codeEl.scrollTop = codeEl.scrollHeight;
+          try { codeEl.scrollTo({ top: codeEl.scrollHeight }); } catch(e) {}
+        }
+const pre = codeEl.closest('pre');
+        if (pre) {
+          pre.scrollTop = pre.scrollHeight;
+          try { pre.scrollTo({ top: pre.scrollHeight }); } catch(e) {}
+        }
+        const sec = slide.closest ? (slide.closest('section') || slide) : slide;
+        if (sec && sec.scrollHeight > sec.clientHeight) {
+          sec.scrollTop = sec.scrollHeight;
+        }
+        if (codeEl && codeEl.scrollIntoView) {
+          try { codeEl.scrollIntoView({ block: 'end' });
+          try { __autoScrollTail.scrollIntoView({ block: 'end' }); } catch(e) {} } catch(e) {}
+        }
+      };
+      requestAnimationFrame(() => requestAnimationFrame(doScroll));
+    };
+    const highlight = () => { Prism.highlightElement(codeEl);
+      autoScroll(); autoScroll(); };
     const stopAnimation = () => { if (animationInterval) { clearInterval(animationInterval); animationInterval = null; } };
 
     function typeChunk(chunk) {
@@ -194,7 +227,8 @@
                 clearInterval(animationInterval);
                 animationInterval = null;
                 codeEl.textContent = current;
-                highlight();
+      autoScroll();
+      highlight();
               }
             }, SPEED);
           }
@@ -212,7 +246,8 @@
           clearInterval(animationInterval);
           animationInterval = null;
           codeEl.textContent = current;
-          highlight();
+      autoScroll();
+      highlight();
         }
       }, SPEED);
     }
@@ -237,7 +272,8 @@
           clearInterval(animationInterval);
           animationInterval = null;
           codeEl.textContent = current;
-          highlight();
+      autoScroll();
+      highlight();
         }
       }, Math.max(5, 10));
     }

@@ -27,6 +27,8 @@
     .reveal .slides section {
       max-height: 85vh;
       overflow-y: auto;
+      /* Płynne przewijanie całego slajdu */
+      scroll-behavior: smooth;
     }
 
     /* Dodatkowa "stopka" dla scrollowanych treści */
@@ -59,6 +61,8 @@
       max-height: clamp(260px, 60vh, 520px);
       overflow-y: auto;
       overflow-x: auto;
+      /* Płynne przewijanie okna kodu */
+      scroll-behavior: smooth;
     }
     .reveal pre, pre[class*="language-"] { white-space: pre; }
     .typed-cursor { opacity: 1; animation: blink 1s infinite; }
@@ -189,6 +193,11 @@
     .diagram-arrow {
       font-size: 2rem;
       color: #667eea;
+    }
+
+    /* Dodatkowe wymuszenie dla konkretnego bloku kodu */
+    #code-start {
+      display: block; /* upewnia się, że element ma własne pudełko */
     }
 
     /* Przyklejony nagłówek slajdu z kodem */
@@ -1056,6 +1065,15 @@ SUV u = f.stworzSUV();</code></pre>
     const nextBtn = document.getElementById(nextBtnId);
     const undoBtn = document.getElementById(undoBtnId);
     const resetBtn = document.getElementById(resetBtnId);
+    // Anchor element to ensure scrollIntoView works reliably
+    let __autoScrollTail = codeEl.parentElement.querySelector('.__auto-tail');
+    if (!__autoScrollTail) {
+      __autoScrollTail = document.createElement('div');
+      __autoScrollTail.className = '__auto-tail';
+      __autoScrollTail.style.cssText = 'height:1px;width:100%;';
+      codeEl.parentElement.appendChild(__autoScrollTail);
+    }
+
     const progressEl = document.getElementById(progressId);
     const progressLabel = document.getElementById(progressLabelId);
 
@@ -1077,15 +1095,45 @@ SUV u = f.stworzSUV();</code></pre>
     updateProgress();
 
     // Auto-scroll: działa tylko gdy użytkownik jest przy dole ("sticky")
-    const scroller = codeEl.closest('pre') || slide;
-    let stickyScroll = true;
-    const updateSticky = () => {
-      if (!scroller) return;
-      stickyScroll = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 8;
+    const pre = codeEl.closest('pre');
+    const section = slide;
+    const updateSticky = () => {};
+    const autoScroll = () => {
+      const doScroll = () => {
+        const pre = codeEl.closest('pre');
+        // 1) przewiń okno kodu (pre)
+        if (pre) {
+          pre.scrollTop = pre.scrollHeight;
+          try { pre.scrollTo({ top: pre.scrollHeight, behavior: 'smooth' }); } catch(e) {}
+        }
+        // 2) dodatkowo spróbuj przewinąć sam element code (czasem frameworki stylują overflow na code)
+        try { codeEl.scrollTop = codeEl.scrollHeight; } catch(e) {}
+        // 3) przewiń kotwicę na sam dół w obrębie pre (najpewniejsze)
+        try { __autoScrollTail.scrollIntoView({ block: 'end' }); } catch(e) {}
+        // 4) nie przewijamy całej sekcji, proszony był autoscroll w #code-start
+        //    jeżeli jednak kiedyś będzie potrzebny, poniższe można odkomentować
+        // const sec = slide;
+        // if (sec && sec.scrollHeight > sec.clientHeight) {
+        //   sec.scrollTop = sec.scrollHeight;
+        // }
+        // 5) specyficznie dla code-start wymuś jeszcze raz po kolejnej klatce
+        if (codeEl.id === 'code-start') {
+          requestAnimationFrame(() => {
+            const pre2 = codeEl.closest('pre');
+            if (pre2) {
+              pre2.scrollTop = pre2.scrollHeight;
+              try { pre2.scrollTo({ top: pre2.scrollHeight, behavior: 'smooth' }); } catch(e) {}
+            }
+          });
+        }
+      };
+      requestAnimationFrame(() => requestAnimationFrame(doScroll));
     };
-    if (scroller) scroller.addEventListener('scroll', updateSticky);
-    const autoScroll = () => { if (scroller && stickyScroll) scroller.scrollTop = scroller.scrollHeight; };
-    const highlight = () => { Prism.highlightElement(codeEl); autoScroll(); };
+    const highlight = () => {
+      Prism.highlightElement(codeEl);
+      autoScroll();
+      if (codeEl.textContent.length > 0) autoScroll();
+    };
     const stopAnimation = () => {
       if (animationInterval) {
         clearInterval(animationInterval);
@@ -1124,7 +1172,8 @@ SUV u = f.stworzSUV();</code></pre>
                 clearInterval(animationInterval);
                 animationInterval = null;
                 codeEl.textContent = current;
-                highlight();
+      autoScroll();
+      highlight();
               }
             }, SPEED);
           }
@@ -1145,7 +1194,8 @@ SUV u = f.stworzSUV();</code></pre>
           clearInterval(animationInterval);
           animationInterval = null;
           codeEl.textContent = current;
-          highlight();
+      autoScroll();
+      highlight();
         }
       }, SPEED);
     }
@@ -1172,7 +1222,8 @@ SUV u = f.stworzSUV();</code></pre>
           clearInterval(animationInterval);
           animationInterval = null;
           codeEl.textContent = current;
-          highlight();
+      autoScroll();
+      highlight();
         }
       }, Math.max(5, SPEED / 2));
     }
@@ -1183,8 +1234,8 @@ SUV u = f.stworzSUV();</code></pre>
       current = "";
       stepIndex = 0;
       updateProgress();
-      if (scroller) scroller.scrollTop = 0;
-      stickyScroll = true;
+      if (pre) pre.scrollTop = 0;
+      if (section) section.scrollTop = 0;
       highlight();
     }
 
@@ -1201,6 +1252,7 @@ SUV u = f.stworzSUV();</code></pre>
       if ((e.key === 'ArrowRight' || e.code === 'Space') && hasMore) {
         e.preventDefault();
         typeNextChunk();
+        autoScroll();
       }
     });
 
@@ -1225,11 +1277,16 @@ SUV u = f.stworzSUV();</code></pre>
 
       stepIndex = targetIndex;
       codeEl.textContent = current;
+      updateSticky();
       highlight();
       updateProgress();
     }
 
-    nextBtn.addEventListener('click', typeNextChunk);
+    // Po kliknięciu "Następny fragment" przewiń w dół sekcję i okno kodu
+    nextBtn.addEventListener('click', () => {
+      typeNextChunk();
+      autoScroll();
+    });
     undoBtn.addEventListener('click', () => {
       if (stepIndex > 0) {
         const lastLen = steps[stepIndex - 1].length;
@@ -1239,12 +1296,15 @@ SUV u = f.stworzSUV();</code></pre>
       }
     });
     resetBtn.addEventListener('click', resetSlide);
-
+    
     // Listener na suwak postępu - przeskakiwanie do wybranego kroku
     progressEl.addEventListener('input', (e) => {
       const targetIndex = parseInt(e.target.value);
       jumpToStep(targetIndex);
     });
+
+    // Ustaw początkowy stan "sticky"
+    updateSticky();
   }
 
   // ============================================
