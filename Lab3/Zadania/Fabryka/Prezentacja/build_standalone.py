@@ -214,20 +214,38 @@ FOOTER = '''
   // ============================================
   // FUNKCJE POMOCNICZE (REUSABLE)
   // ============================================
-  function createAnimatedCodeSlide(slideId, codeId, stepsId, nextBtnId, undoBtnId, resetBtnId, speedId) {
+  function createAnimatedCodeSlide(slideId, codeId, stepsId, nextBtnId, undoBtnId, resetBtnId, speedId, progressId, progressLabelId) {
     const slide = document.getElementById(slideId);
     const codeEl = document.getElementById(codeId);
     const steps = JSON.parse(document.getElementById(stepsId).textContent);
     const nextBtn = document.getElementById(nextBtnId);
     const undoBtn = document.getElementById(undoBtnId);
     const resetBtn = document.getElementById(resetBtnId);
-    const speedEl = document.getElementById(speedId);
+    const progressEl = document.getElementById(progressId);
+    const progressLabel = document.getElementById(progressLabelId);
+
+    // Stała prędkość (zamiast suwaka)
+    const SPEED = 15;
 
     let stepIndex = 0;
     let current = "";
     let animationInterval = null;
 
-    const highlight = () => Prism.highlightElement(codeEl);
+    // Ustaw max dla suwaka postępu
+    progressEl.max = steps.length;
+
+    // Aktualizuj label i suwak
+    const updateProgress = () => {
+      progressEl.value = stepIndex;
+      progressLabel.textContent = `${stepIndex} / ${steps.length}`;
+    };
+    updateProgress();
+
+    const highlight = () => {
+      Prism.highlightElement(codeEl);
+      // Auto-scroll do dołu po dodaniu kodu
+      codeEl.parentElement.scrollTop = codeEl.parentElement.scrollHeight;
+    };
     const stopAnimation = () => {
       if (animationInterval) {
         clearInterval(animationInterval);
@@ -265,9 +283,9 @@ FOOTER = '''
                 codeEl.textContent = current;
                 highlight();
               }
-            }, Number(speedEl.value));
+            }, SPEED);
           }
-        }, Math.max(5, Number(speedEl.value) / 3));
+        }, Math.max(5, SPEED / 3));
         return;
       }
 
@@ -284,13 +302,14 @@ FOOTER = '''
           codeEl.textContent = current;
           highlight();
         }
-      }, Number(speedEl.value));
+      }, SPEED);
     }
 
     function typeNextChunk() {
       if (stepIndex >= steps.length) return;
       const chunk = steps[stepIndex++];
       typeChunk(chunk);
+      updateProgress();
     }
 
     function typeBackspace(chars = 1) {
@@ -308,7 +327,7 @@ FOOTER = '''
           codeEl.textContent = current;
           highlight();
         }
-      }, Math.max(5, Number(speedEl.value) / 2));
+      }, Math.max(5, SPEED / 2));
     }
 
     function resetSlide() {
@@ -316,6 +335,7 @@ FOOTER = '''
       codeEl.textContent = "";
       current = "";
       stepIndex = 0;
+      updateProgress();
       highlight();
     }
 
@@ -335,15 +355,47 @@ FOOTER = '''
       }
     });
 
+    // Funkcja przeskoku do wybranego kroku
+    function jumpToStep(targetIndex) {
+      stopAnimation();
+      targetIndex = Math.max(0, Math.min(targetIndex, steps.length));
+
+      // Buduj kod do wybranego kroku
+      current = "";
+      for (let i = 0; i < targetIndex; i++) {
+        const chunk = steps[i];
+        if (chunk.startsWith('<<REPLACE_LINE>>')) {
+          // Zastąp ostatnią linię
+          const newText = chunk.substring(16);
+          const lastNewline = current.lastIndexOf('\\n');
+          current = lastNewline >= 0 ? current.substring(0, lastNewline + 1) + newText : newText;
+        } else {
+          current += chunk;
+        }
+      }
+
+      stepIndex = targetIndex;
+      codeEl.textContent = current;
+      highlight();
+      updateProgress();
+    }
+
     nextBtn.addEventListener('click', typeNextChunk);
     undoBtn.addEventListener('click', () => {
       if (stepIndex > 0) {
         const lastLen = steps[stepIndex - 1].length;
         stepIndex = Math.max(0, stepIndex - 1);
         typeBackspace(lastLen);
+        updateProgress();
       }
     });
     resetBtn.addEventListener('click', resetSlide);
+
+    // Listener na suwak postępu - przeskakiwanie do wybranego kroku
+    progressEl.addEventListener('input', (e) => {
+      const targetIndex = parseInt(e.target.value);
+      jumpToStep(targetIndex);
+    });
   }
 
   // ============================================
@@ -358,7 +410,9 @@ FOOTER = '''
     'next-start',
     'undo-start',
     'reset-start',
-    'speed-start'
+    'speed-start',
+    'progress-start',
+    'progress-label-start'
   );
 
   // Slajd IF-ELSE
@@ -369,7 +423,9 @@ FOOTER = '''
     'next-ifelse',
     'undo-ifelse',
     'reset-ifelse',
-    'speed-ifelse'
+    'speed-ifelse',
+    'progress-ifelse',
+    'progress-label-ifelse'
   );
 
   // Slajd INTERFEJS
@@ -380,7 +436,9 @@ FOOTER = '''
     'next-interface',
     'undo-interface',
     'reset-interface',
-    'speed-interface'
+    'speed-interface',
+    'progress-interface',
+    'progress-label-interface'
   );
 
   // Slajd FACTORY
@@ -391,7 +449,9 @@ FOOTER = '''
     'next-factory',
     'undo-factory',
     'reset-factory',
-    'speed-factory'
+    'speed-factory',
+    'progress-factory',
+    'progress-label-factory'
   );
 </script>
 </body>

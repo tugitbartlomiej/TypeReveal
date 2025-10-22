@@ -446,7 +446,14 @@ k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
     let current = "";
     let animationInterval = null;
 
-    const highlight = () => Prism.highlightElement(codeEl);
+    // Auto-scroll helper: scroll the surrounding <pre> as content grows
+    const getScroller = () => codeEl.closest('pre') || codeEl.parentElement;
+    const autoScroll = () => {
+      const scroller = getScroller();
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    };
+
+    const highlight = () => { Prism.highlightElement(codeEl); autoScroll(); };
     const stopAnimation = () => {
       if (animationInterval) {
         clearInterval(animationInterval);
@@ -468,6 +475,7 @@ k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
           if (charsToDelete > 0) {
             current = current.slice(0, -1);
             codeEl.textContent = current + '|';
+            autoScroll();
             charsToDelete--;
           } else {
             clearInterval(deleteInterval);
@@ -477,11 +485,13 @@ k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
               if (i < newText.length) {
                 current += newText[i];
                 codeEl.textContent = current + '|';
+                autoScroll();
                 i++;
               } else {
                 clearInterval(animationInterval);
                 animationInterval = null;
                 codeEl.textContent = current;
+                autoScroll();
                 highlight();
               }
             }, Number(speedEl.value));
@@ -496,11 +506,13 @@ k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
         if (i < chunk.length) {
           current += chunk[i];
           codeEl.textContent = current + '|';
+          autoScroll();
           i++;
         } else {
           clearInterval(animationInterval);
           animationInterval = null;
           codeEl.textContent = current;
+          autoScroll();
           highlight();
         }
       }, Number(speedEl.value));
@@ -520,11 +532,13 @@ k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
         if (remaining > 0) {
           current = current.slice(0, -1);
           codeEl.textContent = current + '|';
+          autoScroll();
           remaining--;
         } else {
           clearInterval(animationInterval);
           animationInterval = null;
           codeEl.textContent = current;
+          autoScroll();
           highlight();
         }
       }, Math.max(5, Number(speedEl.value) / 2));
@@ -535,6 +549,8 @@ k.aktywujTryb1600KM();   // ← Koenigsegg (3 metody!)</code></pre>
       codeEl.textContent = "";
       current = "";
       stepIndex = 0;
+      const scroller = getScroller();
+      if (scroller) scroller.scrollTop = 0;
       highlight();
     }
 

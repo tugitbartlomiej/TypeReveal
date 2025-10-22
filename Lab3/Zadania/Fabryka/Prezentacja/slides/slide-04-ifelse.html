@@ -9,6 +9,13 @@
     <button id="reset-ifelse">Reset</button>
   </div>
 
+  <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 0.85rem; opacity: 0.8; min-width: 80px;">Postęp:</span>
+    <input id="progress-ifelse" type="range" min="0" max="100" value="0"
+           style="flex: 1; cursor: pointer; height: 8px;">
+    <span id="progress-label-ifelse" style="font-size: 0.85rem; opacity: 0.8; min-width: 60px;">0 / 0</span>
+  </div>
+
   <script type="application/json" id="steps-ifelse">
   [
     "public static void pokazSamochod(String marka) {",

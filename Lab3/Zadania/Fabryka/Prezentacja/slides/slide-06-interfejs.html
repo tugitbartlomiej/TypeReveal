@@ -9,6 +9,13 @@
     <button id="reset-interface">Reset</button>
   </div>
 
+  <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 0.85rem; opacity: 0.8; min-width: 80px;">Postęp:</span>
+    <input id="progress-interface" type="range" min="0" max="100" value="0"
+           style="flex: 1; cursor: pointer; height: 8px;">
+    <span id="progress-label-interface" style="font-size: 0.85rem; opacity: 0.8; min-width: 60px;">0 / 0</span>
+  </div>
+
   <script type="application/json" id="steps-interface">
   [
     "// ========== INTERFEJS SAMOCHOD ==========",
