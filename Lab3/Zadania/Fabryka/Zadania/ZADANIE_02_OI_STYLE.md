@@ -7,14 +7,14 @@
 
 ## Treść zadania
 
-Bajtek otworzył luksusowy salon samochodowy w Bajtocji. Sprzedaje w nim cztery marki samochodów:
+Bajtazar otworzył luksusowy salon samochodowy w Bajtocji. Sprzedaje w nim cztery marki samochodów:
 
 - **BMW M5** - niemiecki samochód sportowy (cena: **300 000** bajtalarów)
 - **Jaguar F-Type** - brytyjski samochód sportowy (cena: **280 000** bajtalarów)
 - **Bentley Continental GT** - luksusowa limuzyna (cena: **850 000** bajtalarów)
 - **Koenigsegg Jesko** - szwedzki hipersamochód (cena: **12 000 000** bajtalarów)
 
-Do salonu przychodzą klienci i składają zamówienia. Bajtek potrzebuje systemu, który:
+Do salonu przychodzą klienci i składają zamówienia. Bajtazar potrzebuje systemu, który:
 1. Przetwarza zamówienia klientów
 2. Wyświetla informacje o zamówionych samochodach
 3. Oblicza łączną wartość zamówień

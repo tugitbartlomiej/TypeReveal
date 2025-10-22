@@ -7,7 +7,7 @@
 
 ## Opis problemu
 
-Bajtek prowadzi salon samochodowy w Bajtocji. Każdy samochód ma swoją **unikalną specjalną funkcję**:
+Bajtazar prowadzi salon samochodowy w Bajtocji. Każdy samochód ma swoją **unikalną specjalną funkcję**:
 
 ### 1. BMW M5 (300 000 bajtalarów)
 - Podstawowe: marka, cena, jedź
@@ -152,7 +152,7 @@ if (typAuta.equals("bmw")) {
 
 ### Problem 2: Dodanie nowego samochodu
 
-Bajtek kupił do salonu **Bugatti Chiron** (nowy hipersamochód).
+Bajtazar kupił do salonu **Bugatti Chiron** (nowy hipersamochód).
 
 **Pytanie:** Ile miejsc musisz zmienić w kodzie?
 
