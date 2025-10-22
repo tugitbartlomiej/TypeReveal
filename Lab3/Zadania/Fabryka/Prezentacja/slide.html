@@ -17,12 +17,19 @@
   <style>
     :root { --pad: 18px }
 
-    /* Padding i przewijanie sekcji – unikanie ucięcia dołu */
+    /* Padding i przewijanie sekcji – z "stopką" na dole */
     .reveal .slides section {
-      padding: 40px 36px !important;
+      padding: 30px 36px 80px 36px !important;
       box-sizing: border-box;
-      max-height: 90vh;
+      max-height: 85vh;
       overflow-y: auto;
+    }
+
+    /* Dodatkowa "stopka" dla scrollowanych treści */
+    .reveal .slides section::after {
+      content: "";
+      display: block;
+      height: 40px;
     }
 
     /* Ramki kodu – responsywna wysokość + scrollbar */

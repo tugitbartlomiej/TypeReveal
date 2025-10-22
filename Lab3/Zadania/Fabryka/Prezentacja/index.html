@@ -17,16 +17,23 @@
   <style>
     :root { --pad: 18px }
 
-    /* NAPRAWKA: Padding dla wszystkich slajdów */
+    /* NAPRAWKA: Padding dla wszystkich slajdów - z "stopką" na dole */
     .reveal .slides section {
-      padding: 40px 60px !important;
+      padding: 30px 50px 80px 50px !important;
       box-sizing: border-box;
     }
 
     /* NAPRAWKA: Maksymalna wysokość z scrollbarem dla długich treści */
     .reveal .slides section {
-      max-height: 90vh;
+      max-height: 85vh;
       overflow-y: auto;
+    }
+
+    /* Dodatkowa "stopka" dla scrollowanych treści */
+    .reveal .slides section::after {
+      content: "";
+      display: block;
+      height: 40px;
     }
 
     /* NAPRAWKA: Scrollbar dla slajdów */
@@ -48,7 +55,8 @@
     .reveal pre {
       font-size: 0.95rem;
       line-height: 1.35;
-      max-height: 500px;
+      /* Responsywna wysokość, by zachować przewijanie na mniejszych ekranach */
+      max-height: clamp(260px, 60vh, 520px);
       overflow-y: auto;
       overflow-x: auto;
     }
@@ -181,6 +189,29 @@
     .diagram-arrow {
       font-size: 2rem;
       color: #667eea;
+    }
+
+    /* Przyklejony nagłówek slajdu z kodem */
+    .code-slide-sticky-header {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .code-slide-sticky-header h3 {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(to bottom, #191919 0%, #191919 85%, rgba(25,25,25,0.9) 100%);
+      padding: 15px 20px;
+      margin: -30px -50px 20px -50px !important;
+      z-index: 100;
+      flex-shrink: 0;
+      border-bottom: 2px solid #667eea;
+    }
+
+    .code-slide-sticky-header pre {
+      flex: 1;
+      margin-bottom: 15px;
     }
   </style>
 </head>
@@ -994,7 +1025,8 @@ SUV u = f.stworzSUV();</code></pre>
   ];
 
   async function tryLoadLiveSlides() {
-    if (location.protocol === 'file:') return false; // file:// blokuje fetch
+    // EKSPERYMENT: Usuńmy blokadę file:// i zobaczmy czy fetch zadziała
+    // if (location.protocol === 'file:') return false; // file:// blokuje fetch
     const slidesRoot = document.querySelector('.reveal .slides');
     try {
       let htmlAll = '';
@@ -1005,9 +1037,11 @@ SUV u = f.stworzSUV();</code></pre>
         htmlAll += `\n<!-- ${file} -->\n${html}\n`;
       }
       slidesRoot.innerHTML = htmlAll;
+      console.log('✅ Slajdy załadowane dynamicznie z folderu slides/');
       return true;
     } catch (e) {
-      console.warn('LIVE (fetch) niedostępny:', e);
+      console.warn('❌ LIVE (fetch) niedostępny:', e);
+      console.log('📦 Używam wbudowanych slajdów (statycznych)');
       return false;
     }
   }
@@ -1042,11 +1076,16 @@ SUV u = f.stworzSUV();</code></pre>
     };
     updateProgress();
 
-    const highlight = () => {
-      Prism.highlightElement(codeEl);
-      // Auto-scroll do dołu po dodaniu kodu
-      codeEl.parentElement.scrollTop = codeEl.parentElement.scrollHeight;
+    // Auto-scroll: działa tylko gdy użytkownik jest przy dole ("sticky")
+    const scroller = codeEl.closest('pre') || slide;
+    let stickyScroll = true;
+    const updateSticky = () => {
+      if (!scroller) return;
+      stickyScroll = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 8;
     };
+    if (scroller) scroller.addEventListener('scroll', updateSticky);
+    const autoScroll = () => { if (scroller && stickyScroll) scroller.scrollTop = scroller.scrollHeight; };
+    const highlight = () => { Prism.highlightElement(codeEl); autoScroll(); };
     const stopAnimation = () => {
       if (animationInterval) {
         clearInterval(animationInterval);
@@ -1056,6 +1095,7 @@ SUV u = f.stworzSUV();</code></pre>
 
     function typeChunk(chunk) {
       stopAnimation();
+      updateSticky();
 
       // Sprawdź czy to zastąpienie linii
       if (chunk.startsWith('<<REPLACE_LINE>>')) {
@@ -1068,6 +1108,7 @@ SUV u = f.stworzSUV();</code></pre>
           if (charsToDelete > 0) {
             current = current.slice(0, -1);
             codeEl.textContent = current + '|';
+            autoScroll();
             charsToDelete--;
           } else {
             clearInterval(deleteInterval);
@@ -1077,6 +1118,7 @@ SUV u = f.stworzSUV();</code></pre>
               if (i < newText.length) {
                 current += newText[i];
                 codeEl.textContent = current + '|';
+                autoScroll();
                 i++;
               } else {
                 clearInterval(animationInterval);
@@ -1092,10 +1134,12 @@ SUV u = f.stworzSUV();</code></pre>
 
       // Normalne pisanie
       let i = 0;
+      updateSticky();
       animationInterval = setInterval(() => {
         if (i < chunk.length) {
           current += chunk[i];
           codeEl.textContent = current + '|';
+          autoScroll();
           i++;
         } else {
           clearInterval(animationInterval);
@@ -1115,12 +1159,14 @@ SUV u = f.stworzSUV();</code></pre>
 
     function typeBackspace(chars = 1) {
       stopAnimation();
+      updateSticky();
       const target = current.slice(0, Math.max(0, current.length - chars));
       let remaining = current.length - target.length;
       animationInterval = setInterval(() => {
         if (remaining > 0) {
           current = current.slice(0, -1);
           codeEl.textContent = current + '|';
+          autoScroll();
           remaining--;
         } else {
           clearInterval(animationInterval);
@@ -1137,6 +1183,8 @@ SUV u = f.stworzSUV();</code></pre>
       current = "";
       stepIndex = 0;
       updateProgress();
+      if (scroller) scroller.scrollTop = 0;
+      stickyScroll = true;
       highlight();
     }
 
@@ -1206,7 +1254,7 @@ SUV u = f.stworzSUV();</code></pre>
     await tryLoadLiveSlides();
 
     // Dopiero po finalnym HTML inicjalizujemy Reveal
-    Reveal.initialize({ hash: true, controls: true, progress: true, center: true, transition: 'slide' });
+    Reveal.initialize({ hash: true, controls: true, progress: true, center: false, transition: 'slide' });
 
     // Inicjalizacja slajdów animowanych (jeśli są w DOM)
     createAnimatedCodeSlide('code-slide-start','code-start','steps-start','next-start','undo-start','reset-start','speed-start','progress-start','progress-label-start');
