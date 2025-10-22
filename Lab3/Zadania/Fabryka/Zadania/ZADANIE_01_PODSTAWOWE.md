@@ -21,7 +21,7 @@ Bajtazar prowadzi salon samochodowy w Bajtocji. Każdy samochód ma swoją **uni
 - Podstawowe: marka, cena, jedź
 - **SPECJALNA FUNKCJA:** `wlaczMasazFoteli()` - luksusowy masaż w fotelach
 
-### 4. Koenigsegg Jesko (12 000 000 bajtalarów) ⚡ **MEGA EGZOTYCZNY!**
+### 4. Koenigsegg Jesko (12 000 000 bajtalarów)  **MEGA EGZOTYCZNY!**
 - Podstawowe: marka, cena, jedź
 - **SPECJALNA FUNKCJA 1:** `aktywujTryb1600KM()` - pełna moc 1600 KM!
 - **SPECJALNA FUNKCJA 2:** `wlaczSystemNitro()` - dodatkowe przyspieszenie
@@ -51,11 +51,11 @@ class BMW {
     int cena = 300000;
 
     void jedz() {
-        System.out.println("🏎️ BMW jedzie!");
+        System.out.println("BMW jedzie!");
     }
 
     void aktywujTrybM() {
-        System.out.println("⚡ TRYB M AKTYWNY! +100 KM!");
+        System.out.println("TRYB M AKTYWNY! +100 KM!");
     }
 }
 
@@ -64,11 +64,11 @@ class Jaguar {
     int cena = 280000;
 
     void jedz() {
-        System.out.println("🐆 Jaguar jedzie!");
+        System.out.println("Jaguar jedzie!");
     }
 
     void wydajRyk() {
-        System.out.println("🔊 RRRROOOAAARRR! (V8 supercharged)");
+        System.out.println("RRRROOOAAARRR! (V8 supercharged)");
     }
 }
 
@@ -86,30 +86,30 @@ class Jaguar {
 
 ```
 ╔═══════════════════════════════════════╗
-║  🚗 SALON BAJTAZARA - DEMO SAMOCHODÓW    ║
+║  SALON BAJTAZARA - DEMO SAMOCHODÓW    ║
 ╚═══════════════════════════════════════╝
 
 === BMW M5 ===
 Cena: 300000 bajtalarów
-🏎️ BMW jedzie!
-⚡ TRYB M AKTYWNY! +100 KM!
+ BMW jedzie!
+ TRYB M AKTYWNY! +100 KM!
 
 === Jaguar F-Type ===
 Cena: 280000 bajtalarów
-🐆 Jaguar jedzie!
-🔊 RRRROOOAAARRR! (V8 supercharged)
+ Jaguar jedzie!
+ RRRROOOAAARRR! (V8 supercharged)
 
 === Bentley Continental GT ===
 Cena: 850000 bajtalarów
-👑 Bentley jedzie luksusowo!
-💺 Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY
+ Bentley jedzie luksusowo!
+ Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY
 
 === Koenigsegg Jesko ===
 Cena: 12000000 bajtalarów
-⚡ Koenigsegg jedzie!
-🚀 TRYB 1600 KM AKTYWNY!!!
-💨 NITRO WŁĄCZONE! BOOST!
-📊 Prędkość maksymalna: 483 km/h (najszybszy samochód produkcyjny!)
+ Koenigsegg jedzie!
+ TRYB 1600 KM AKTYWNY!!!
+ NITRO WŁĄCZONE! BOOST!
+ Prędkość maksymalna: 483 km/h (najszybszy samochód produkcyjny!)
 ```
 
 ---
@@ -209,11 +209,11 @@ class BMW {
     int cena = 300000;
 
     void jedz() {
-        System.out.println("🏎️ BMW jedzie!");
+        System.out.println("BMW jedzie!");
     }
 
     void aktywujTrybM() {
-        System.out.println("⚡ TRYB M AKTYWNY! +100 KM!");
+        System.out.println("TRYB M AKTYWNY! +100 KM!");
     }
 }
 
@@ -222,20 +222,20 @@ class Koenigsegg {
     int cena = 12000000;
 
     void jedz() {
-        System.out.println("⚡ Koenigsegg jedzie!");
+        System.out.println("Koenigsegg jedzie!");
     }
 
-    // ⚠️ UWAGA - 3 SPECJALNE METODY!
+    // UWAGA - 3 SPECJALNE METODY!
     void aktywujTryb1600KM() {
-        System.out.println("🚀 TRYB 1600 KM AKTYWNY!!!");
+        System.out.println("TRYB 1600 KM AKTYWNY!!!");
     }
 
     void wlaczSystemNitro() {
-        System.out.println("💨 NITRO WŁĄCZONE! BOOST!");
+        System.out.println("NITRO WŁĄCZONE! BOOST!");
     }
 
     void sprawdzPredkoscMaksymalna() {
-        System.out.println("📊 Prędkość maksymalna: 483 km/h!");
+        System.out.println("Prędkość maksymalna: 483 km/h!");
     }
 }
 
@@ -263,7 +263,7 @@ public class SalonDemo {
 
 1. **Jak zrobić listę wszystkich aut?**
    ```java
-   // ❌ Nie działa - różne typy!
+   // Nie działa - różne typy!
    List<???> salon = new ArrayList<>();
    salon.add(new BMW());
    salon.add(new Jaguar());
@@ -271,7 +271,7 @@ public class SalonDemo {
 
 2. **Jak wywołać specjalne funkcje w pętli?**
    ```java
-   // ❌ Każdy samochód ma inną metodę!
+   // Każdy samochód ma inną metodę!
    for (??? auto : salon) {
        auto.jedz(); // OK
        auto.???(); // Którą metodę wywołać?
@@ -285,12 +285,12 @@ public class SalonDemo {
 ## Cel zadania
 
 Po wykonaniu tego zadania powinieneś:
-- ✅ Zobaczyć **problem** z if-else dla różnych typów
-- ✅ Zrozumieć **dlaczego** potrzebujemy lepszego rozwiązania
-- ✅ Pomyśleć o **interfejsach** i **polimorfizmie**
-- ✅ Być gotowym do nauki **wzorców projektowych**
+-  Zobaczyć **problem** z if-else dla różnych typów
+-  Zrozumieć **dlaczego** potrzebujemy lepszego rozwiązania
+-  Pomyśleć o **interfejsach** i **polimorfizmie**
+-  Być gotowym do nauki **wzorców projektowych**
 
-*To zadanie pokazuje PROBLEM. Rozwiązanie poznasz na warsztatach!* 😉
+*To zadanie pokazuje PROBLEM. Rozwiązanie poznasz na warsztatach!* 
 
 ---
 
@@ -304,7 +304,7 @@ Po wykonaniu tego zadania powinieneś:
 - System "Light Speed Transmission" (najszybsza skrzynia na świecie)
 - **Wiele unikalnych technologii** których inne auta nie mają!
 
-Dlatego Koenigsegg ma **3 specjalne metody** - bo ma funkcje których inne samochody po prostu nie mają! 🚀
+Dlatego Koenigsegg ma **3 specjalne metody** - bo ma funkcje których inne samochody po prostu nie mają! 
 
 ---
 

@@ -1,4 +1,4 @@
-# 🎬 SCENARIUSZ: Jak wprowadzić wzorzec FABRYKA?
+#  SCENARIUSZ: Jak wprowadzić wzorzec FABRYKA?
 
 **Czas:** 30-40 minut
 **Od:** If-else chaos
@@ -14,14 +14,14 @@
 3. Teraz wprowadzasz rozwiązanie krok po kroku
 
 ### Materiały:
-- ✅ SalonDemo_START.java (punkt wyjścia)
-- ✅ SalonDemo_IFELSE.java (pokazuje problem)
-- ✅ SalonDemo_KROK1_interfejs.java (będziesz pisać)
-- ✅ SalonDemo_KROK2_fabryka.java (będziesz pisać)
+-  SalonDemo_START.java (punkt wyjścia)
+-  SalonDemo_IFELSE.java (pokazuje problem)
+-  SalonDemo_KROK1_interfejs.java (będziesz pisać)
+-  SalonDemo_KROK2_fabryka.java (będziesz pisać)
 
 ---
 
-## 🎯 KROK 1: WPROWADZENIE INTERFEJSU (10-12 minut)
+##  KROK 1: WPROWADZENIE INTERFEJSU (10-12 minut)
 
 ### [ZACZYNASZ OD PYTANIA]
 
@@ -87,13 +87,13 @@ class BMW implements Samochod {
 
     @Override
     public void jedz() {
-        System.out.println("🏎️ BMW jedzie!");
+        System.out.println("BMW jedzie!");
     }
 
     @Override
     public void pokazSpecjalneFunkcje() {
         // BMW pokazuje SWOJĄ funkcję
-        System.out.println("⚡ TRYB M AKTYWNY!");
+        System.out.println("TRYB M AKTYWNY!");
     }
 }
 ```
@@ -110,10 +110,10 @@ class Koenigsegg implements Samochod {
 
     @Override
     public void pokazSpecjalneFunkcje() {
-        // ⚡ EGZOTYCZNY - pokazuje WSZYSTKIE 3!
-        System.out.println("🚀 TRYB 1600 KM AKTYWNY!!!");
-        System.out.println("💨 NITRO WŁĄCZONE!");
-        System.out.println("📊 Prędkość: 483 km/h!");
+        // EGZOTYCZNY - pokazuje WSZYSTKIE 3!
+        System.out.println("TRYB 1600 KM AKTYWNY!!!");
+        System.out.println("NITRO WŁĄCZONE!");
+        System.out.println("Prędkość: 483 km/h!");
     }
 }
 ```
@@ -125,15 +125,15 @@ Ten sam interfejs, ale RÓŻNA implementacja!"
 
 ```java
 public static void main(String[] args) {
-    // ✅ TERAZ WSZYSTKIE TO TEN SAM TYP!
+    // TERAZ WSZYSTKIE TO TEN SAM TYP!
     Samochod bmw = new BMW();
     Samochod jaguar = new Jaguar();
     Samochod koenigsegg = new Koenigsegg();
 
-    // ✅ MOŻEMY ZROBIĆ LISTĘ!
+    // MOŻEMY ZROBIĆ LISTĘ!
     Samochod[] salon = {bmw, jaguar, koenigsegg};
 
-    // ✅ PĘTLA DZIAŁA!
+    // PĘTLA DZIAŁA!
     for (Samochod auto : salon) {
         System.out.println(auto.getMarka());
         auto.jedz();
@@ -152,14 +152,14 @@ java SalonDemo_KROK1_interfejs
 **Wyjście:**
 ```
 === BMW M5 ===
-🏎️ BMW jedzie!
-⚡ TRYB M AKTYWNY!
+ BMW jedzie!
+ TRYB M AKTYWNY!
 
 === Koenigsegg Jesko ===
-⚡ Koenigsegg jedzie!
-🚀 TRYB 1600 KM AKTYWNY!!!
-💨 NITRO WŁĄCZONE!
-📊 Prędkość: 483 km/h!
+ Koenigsegg jedzie!
+ TRYB 1600 KM AKTYWNY!!!
+ NITRO WŁĄCZONE!
+ Prędkość: 483 km/h!
 ```
 
 **Ty**: "PATRZCIE! Koenigsegg pokazał WSZYSTKIE 3 funkcje, automatycznie!
@@ -176,7 +176,7 @@ Co jeśli klient wybiera markę? Znowu if-else?"
 
 ---
 
-## 🏭 KROK 2: WZORZEC FABRYKA (15-20 minut)
+##  KROK 2: WZORZEC FABRYKA (15-20 minut)
 
 ### [NOWY PLIK]
 
@@ -237,7 +237,7 @@ To jest CAŁA fabryka. Prosta, prawda?"
 
 ```
 ╔════════════════════════════════════════════════════════╗
-║  BEZ FABRYKI (if-else WSZĘDZIE)                        ║
+║ BEZ FABRYKI (if-else WSZĘDZIE)                        ║
 ╚════════════════════════════════════════════════════════╝
 
 pokazSamochod(String marka) {
@@ -258,12 +258,12 @@ testJazdy(String marka) {
     ...
 }
 
-❌ PROBLEM: If-else powtórzony 3 RAZY!
-❌ Dodanie Ferrari → zmiana w 3 miejscach!
+ PROBLEM: If-else powtórzony 3 RAZY!
+ Dodanie Ferrari → zmiana w 3 miejscach!
 
 
 ╔════════════════════════════════════════════════════════╗
-║  Z FABRYKĄ (switch RAZ!)                               ║
+║ Z FABRYKĄ (switch RAZ!)                               ║
 ╚════════════════════════════════════════════════════════╝
 
 FabrykaSamochodow.stworzSamochod(String marka) {
@@ -284,8 +284,8 @@ pobierzCene(String marka) {
     return auto.getCena();                  ← 2 linie!
 }
 
-✅ ZALETA: Switch TYLKO w fabryce!
-✅ Dodanie Ferrari → zmiana w 1 miejscu (fabryka)!
+ ZALETA: Switch TYLKO w fabryce!
+ Dodanie Ferrari → zmiana w 1 miejscu (fabryka)!
 ```
 
 **Ty**: "Widzicie różnicę?
@@ -305,17 +305,17 @@ To jest **DRY principle** - Don't Repeat Yourself!"
 *[Pokazujesz na tablicy]*
 
 ```java
-// ✅ Zrobić listę!
+// Zrobić listę!
 List<Samochod> salon = new ArrayList<>();
 salon.add(FabrykaSamochodow.stworzSamochod("bmw"));
 salon.add(FabrykaSamochodow.stworzSamochod("jaguar"));
 
-// ✅ Iterować!
+// Iterować!
 for (Samochod auto : salon) {
     auto.pokazSpecjalneFunkcje();  // Polimorfizm!
 }
 
-// ✅ Czytać z pliku/input!
+// Czytać z pliku/input!
 String marka = scanner.nextLine();
 Samochod auto = FabrykaSamochodow.stworzSamochod(marka);
 ```
@@ -338,10 +338,10 @@ public static void main(String[] args) {
 **Ty**: "Teraz używamy fabryki..."
 
 ```java
-    // ✅ PRZED (bez fabryki):
+    // PRZED (bez fabryki):
     Samochod bmw = new BMW();
 
-    // ✅ PO (z fabryką):
+    // PO (z fabryką):
     Samochod bmw = FabrykaSamochodow.stworzSamochod("bmw");
 ```
 
@@ -351,7 +351,7 @@ public static void main(String[] args) {
     String[] marki = {"bmw", "jaguar", "bentley", "koenigsegg"};
 
     for (String marka : marki) {
-        // ⭐ FABRYKA!
+        // FABRYKA!
         Samochod auto = FabrykaSamochodow.stworzSamochod(marka);
 
         if (auto != null) {
@@ -408,13 +408,13 @@ salon.add(FabrykaSamochodow.stworzSamochod("koenigsegg"));
 
 ---
 
-## 📊 KROK 3: PORÓWNANIE (5 minut)
+##  KROK 3: PORÓWNANIE (5 minut)
 
 ### [RYSUJESZ NA TABLICY]
 
 ```
 ╔═══════════════════════════════════════════════════════╗
-║              EWOLUCJA KODU                            ║
+║             EWOLUCJA KODU                            ║
 ╚═══════════════════════════════════════════════════════╝
 
 WERSJA START: Bez interfejsu
@@ -427,7 +427,7 @@ k.aktywujTryb1600KM();
 k.wlaczSystemNitro();
 k.sprawdzPredkoscMaksymalna();
 
-❌ Problem: Każdy typ osobno, brak listy
+ Problem: Każdy typ osobno, brak listy
 
 
 WERSJA IF-ELSE: Próba uogólnienia
@@ -442,7 +442,7 @@ if (marka.equals("bmw")) {
     auto.sprawdzPredkoscMaksymalna();
 }
 
-❌ Problem: If-else wszędzie, duplikacja
+ Problem: If-else wszędzie, duplikacja
 
 
 WERSJA INTERFEJS: Polimorfizm
@@ -455,7 +455,7 @@ for (Samochod auto : salon) {
     auto.pokazSpecjalneFunkcje(); // każdy swoje!
 }
 
-✅ Lepiej, ale: nadal 'new BMW()', 'new Koenigsegg()'
+ Lepiej, ale: nadal 'new BMW()', 'new Koenigsegg()'
 
 
 WERSJA FABRYKA: Wzorzec!
@@ -463,7 +463,7 @@ WERSJA FABRYKA: Wzorzec!
 Samochod auto = FabrykaSamochodow.stworzSamochod("bmw");
 auto.pokazSpecjalneFunkcje();
 
-✅✅ IDEALNIE:
+ IDEALNIE:
    - Interfejs (polimorfizm)
    - Fabryka (tworzenie)
    - Działa z Koenigseggiem (3 metody)!
@@ -471,7 +471,7 @@ auto.pokazSpecjalneFunkcje();
 
 ---
 
-## 🎓 KROK 4: PYTANIA I ODPOWIEDZI (5 minut)
+##  KROK 4: PYTANIA I ODPOWIEDZI (5 minut)
 
 ### Częste pytania:
 
@@ -492,7 +492,7 @@ auto.pokazSpecjalneFunkcje();
 
 ---
 
-## ✅ PODSUMOWANIE (2 minuty)
+##  PODSUMOWANIE (2 minuty)
 
 **Ty**: "Co dzisiaj zrobiliśmy?
 
@@ -505,11 +505,11 @@ auto.pokazSpecjalneFunkcje();
 
 **Ty**: "Pytanie na koniec: A co jeśli chcemy tworzyć RODZINY aut?
 Nie jeden samochód, ale Bentley Sedan + Bentley SUV razem?
-To jest... Abstract Factory! Ale to następnym razem 😉"
+To jest... Abstract Factory! Ale to następnym razem "
 
 ---
 
-## 📎 TIMELINE
+##  TIMELINE
 
 | Czas | Faza | Co robisz |
 |------|------|-----------|
@@ -528,7 +528,7 @@ To jest... Abstract Factory! Ale to następnym razem 😉"
 
 ---
 
-## 🎯 KLUCZOWE MOMENTY
+##  KLUCZOWE MOMENTY
 
 ### Moment AHA! #1 (min 8):
 ```java
@@ -554,7 +554,7 @@ k.pokazSpecjalneFunkcje(); // automatycznie wszystkie 3!
 
 ---
 
-## 🆘 CO JEŚLI...
+##  CO JEŚLI...
 
 ### Studenci się gubią przy interfejsie?
 **Rozwiązanie**: Wróć do przykładu. "BMW ma tryb M, Jaguar ma ryk. Różne, prawda?
@@ -570,4 +570,4 @@ Po co obiekt? To prosta funkcja!"
 
 ---
 
-**GOTOWE!** Masz kompletny scenariusz wprowadzenia wzorca Fabryka! 🎓🏭
+**GOTOWE!** Masz kompletny scenariusz wprowadzenia wzorca Fabryka! 

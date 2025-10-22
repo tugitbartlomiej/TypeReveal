@@ -13,7 +13,7 @@ interface Samochod {
     int getCena();
     void jedz();
 
-    // ⭐ KLUCZOWE: Metoda do pokazania specjalnych funkcji!
+    // KLUCZOWE: Metoda do pokazania specjalnych funkcji!
     // Każdy samochód pokaże SWOJE unikalne funkcje
     void pokazSpecjalneFunkcje();
 }
@@ -33,7 +33,7 @@ class BMW implements Samochod {
 
     @Override
     public void jedz() {
-        System.out.println("🏎️ BMW jedzie!");
+        System.out.println("BMW jedzie!");
     }
 
     @Override
@@ -44,7 +44,7 @@ class BMW implements Samochod {
 
     // Prywatna metoda specjalna BMW
     private void aktywujTrybM() {
-        System.out.println("⚡ TRYB M AKTYWNY! +100 KM!");
+        System.out.println("TRYB M AKTYWNY! +100 KM!");
     }
 }
 
@@ -61,7 +61,7 @@ class Jaguar implements Samochod {
 
     @Override
     public void jedz() {
-        System.out.println("🐆 Jaguar jedzie!");
+        System.out.println("Jaguar jedzie!");
     }
 
     @Override
@@ -71,7 +71,7 @@ class Jaguar implements Samochod {
     }
 
     private void wydajRyk() {
-        System.out.println("🔊 RRRROOOAAARRR! (V8 supercharged)");
+        System.out.println("RRRROOOAAARRR! (V8 supercharged)");
     }
 }
 
@@ -88,7 +88,7 @@ class Bentley implements Samochod {
 
     @Override
     public void jedz() {
-        System.out.println("👑 Bentley jedzie luksusowo!");
+        System.out.println("Bentley jedzie luksusowo!");
     }
 
     @Override
@@ -97,7 +97,7 @@ class Bentley implements Samochod {
     }
 
     private void wlaczMasazFoteli() {
-        System.out.println("💺 Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY");
+        System.out.println("Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY");
     }
 }
 
@@ -114,27 +114,27 @@ class Koenigsegg implements Samochod {
 
     @Override
     public void jedz() {
-        System.out.println("⚡ Koenigsegg jedzie!");
+        System.out.println("Koenigsegg jedzie!");
     }
 
     @Override
     public void pokazSpecjalneFunkcje() {
-        // ⚡ EGZOTYCZNY - pokazuje WSZYSTKIE 3 funkcje!
+        // EGZOTYCZNY - pokazuje WSZYSTKIE 3 funkcje!
         aktywujTryb1600KM();
         wlaczSystemNitro();
         sprawdzPredkoscMaksymalna();
     }
 
     private void aktywujTryb1600KM() {
-        System.out.println("🚀 TRYB 1600 KM AKTYWNY!!!");
+        System.out.println("TRYB 1600 KM AKTYWNY!!!");
     }
 
     private void wlaczSystemNitro() {
-        System.out.println("💨 NITRO WŁĄCZONE! BOOST!");
+        System.out.println("NITRO WŁĄCZONE! BOOST!");
     }
 
     private void sprawdzPredkoscMaksymalna() {
-        System.out.println("📊 Prędkość maksymalna: 483 km/h!");
+        System.out.println("Prędkość maksymalna: 483 km/h!");
     }
 }
 
@@ -144,19 +144,19 @@ public class SalonDemo_KROK1_interfejs {
 
     public static void main(String[] args) {
         System.out.println("╔═══════════════════════════════════════╗");
-        System.out.println("║  🚗 KROK 1: INTERFEJS                 ║");
+        System.out.println("║  KROK 1: INTERFEJS                 ║");
         System.out.println("╚═══════════════════════════════════════╝\n");
 
-        // ✅ TERAZ WSZYSTKIE SAMOCHODY TO TEN SAM TYP: Samochod!
+        // TERAZ WSZYSTKIE SAMOCHODY TO TEN SAM TYP: Samochod!
         Samochod bmw = new BMW();
         Samochod jaguar = new Jaguar();
         Samochod bentley = new Bentley();
         Samochod koenigsegg = new Koenigsegg();
 
-        // ✅ Możemy je dodać do LISTY!
+        // Możemy je dodać do LISTY!
         Samochod[] salon = {bmw, jaguar, bentley, koenigsegg};
 
-        // ✅ Możemy iterować po nich JEDNAKOWO!
+        // Możemy iterować po nich JEDNAKOWO!
         for (Samochod auto : salon) {
             System.out.println("=== " + auto.getMarka() + " ===");
             System.out.println("Cena: " + auto.getCena() + " bajtalarów");
@@ -165,9 +165,9 @@ public class SalonDemo_KROK1_interfejs {
             System.out.println();
         }
 
-        // ✅ Polimorfizm w akcji!
+        // Polimorfizm w akcji!
         System.out.println("=".repeat(50));
-        System.out.println("✅ ZALETY INTERFEJSU:");
+        System.out.println("ZALETY INTERFEJSU:");
         System.out.println("=".repeat(50));
         System.out.println("1. Wszystkie samochody jako JEDEN TYP: Samochod");
         System.out.println("2. Możemy zrobić List<Samochod> lub Samochod[]");
@@ -175,7 +175,7 @@ public class SalonDemo_KROK1_interfejs {
         System.out.println("4. pokazSpecjalneFunkcje() - każdy robi SWOJE!");
         System.out.println("5. Koenigsegg pokazuje 3 funkcje - automatycznie!");
 
-        System.out.println("\n❓ ALE NADAL PROBLEM:");
+        System.out.println("\n ALE NADAL PROBLEM:");
         System.out.println("Jak TWORZYĆ samochody bez 'new BMW()', 'new Jaguar()'?");
         System.out.println("→ Następny krok: FABRYKA!");
     }

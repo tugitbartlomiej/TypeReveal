@@ -12,11 +12,11 @@ class BMW {
     int cena = 300000;
 
     void jedz() {
-        System.out.println("🏎️ BMW jedzie!");
+        System.out.println("BMW jedzie!");
     }
 
     void aktywujTrybM() {
-        System.out.println("⚡ TRYB M AKTYWNY! +100 KM!");
+        System.out.println("TRYB M AKTYWNY! +100 KM!");
     }
 }
 
@@ -25,11 +25,11 @@ class Jaguar {
     int cena = 280000;
 
     void jedz() {
-        System.out.println("🐆 Jaguar jedzie!");
+        System.out.println("Jaguar jedzie!");
     }
 
     void wydajRyk() {
-        System.out.println("🔊 RRRROOOAAARRR! (V8 supercharged)");
+        System.out.println("RRRROOOAAARRR! (V8 supercharged)");
     }
 }
 
@@ -38,11 +38,11 @@ class Bentley {
     int cena = 850000;
 
     void jedz() {
-        System.out.println("👑 Bentley jedzie luksusowo!");
+        System.out.println("Bentley jedzie luksusowo!");
     }
 
     void wlaczMasazFoteli() {
-        System.out.println("💺 Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY");
+        System.out.println("Masaż foteli WŁĄCZONY - poziom relaksu: MAKSYMALNY");
     }
 }
 
@@ -51,19 +51,19 @@ class Koenigsegg {
     int cena = 12000000;
 
     void jedz() {
-        System.out.println("⚡ Koenigsegg jedzie!");
+        System.out.println("Koenigsegg jedzie!");
     }
 
     void aktywujTryb1600KM() {
-        System.out.println("🚀 TRYB 1600 KM AKTYWNY!!!");
+        System.out.println("TRYB 1600 KM AKTYWNY!!!");
     }
 
     void wlaczSystemNitro() {
-        System.out.println("💨 NITRO WŁĄCZONE! BOOST!");
+        System.out.println("NITRO WŁĄCZONE! BOOST!");
     }
 
     void sprawdzPredkoscMaksymalna() {
-        System.out.println("📊 Prędkość maksymalna: 483 km/h!");
+        System.out.println("Prędkość maksymalna: 483 km/h!");
     }
 }
 
@@ -71,11 +71,11 @@ class Koenigsegg {
 
 public class SalonDemo_IFELSE {
 
-    // ❌ PROBLEM 1: Metoda pokazująca samochód - pełna if-else!
+    // PROBLEM 1: Metoda pokazująca samochód - pełna if-else!
     public static void pokazSamochod(String marka) {
         System.out.println("\n=== Demonstracja: " + marka + " ===");
 
-        // ❌ Musimy wiedzieć jaki to typ!
+        // Musimy wiedzieć jaki to typ!
         if (marka.equalsIgnoreCase("bmw")) {
             BMW auto = new BMW();
             System.out.println("Cena: " + auto.cena + " bajtalarów");
@@ -98,19 +98,19 @@ public class SalonDemo_IFELSE {
             Koenigsegg auto = new Koenigsegg();
             System.out.println("Cena: " + auto.cena + " bajtalarów");
             auto.jedz();
-            // ❌ NAJGORSZE - 3 różne metody!
+            // NAJGORSZE - 3 różne metody!
             auto.aktywujTryb1600KM();
             auto.wlaczSystemNitro();
             auto.sprawdzPredkoscMaksymalna();
 
         } else {
-            System.out.println("❌ Nieznana marka!");
+            System.out.println("Nieznana marka!");
         }
     }
 
-    // ❌ PROBLEM 2: Inna metoda - TO SAMO if-else!
+    // PROBLEM 2: Inna metoda - TO SAMO if-else!
     public static int pobierzCene(String marka) {
-        // ❌ DUPLIKACJA if-else!
+        // DUPLIKACJA if-else!
         if (marka.equalsIgnoreCase("bmw")) {
             return 300000;
         } else if (marka.equalsIgnoreCase("jaguar")) {
@@ -124,11 +124,11 @@ public class SalonDemo_IFELSE {
         }
     }
 
-    // ❌ PROBLEM 3: Jeszcze jedna metoda - ZNOWU if-else!
+    // PROBLEM 3: Jeszcze jedna metoda - ZNOWU if-else!
     public static void testJazdy(String marka) {
         System.out.println("\n🏁 Test jazdy: " + marka);
 
-        // ❌ TO SAMO if-else TRZECI RAZ!
+        // TO SAMO if-else TRZECI RAZ!
         if (marka.equalsIgnoreCase("bmw")) {
             BMW auto = new BMW();
             auto.jedz();
@@ -142,14 +142,14 @@ public class SalonDemo_IFELSE {
             Koenigsegg auto = new Koenigsegg();
             auto.jedz();
         } else {
-            System.out.println("❌ Nieznana marka!");
+            System.out.println("Nieznana marka!");
         }
     }
 
     public static void main(String[] args) {
         System.out.println("╔═══════════════════════════════════════╗");
-        System.out.println("║  🚗 SALON BAJTAZARA - WERSJA IF-ELSE     ║");
-        System.out.println("║  ❌ ZŁY PRZYKŁAD - NIE RÓB TAK!       ║");
+        System.out.println("║  SALON BAJTAZARA - WERSJA IF-ELSE     ║");
+        System.out.println("║  ZŁY PRZYKŁAD - NIE RÓB TAK!       ║");
         System.out.println("╚═══════════════════════════════════════╝");
 
         // Pokazujemy samochody
@@ -169,40 +169,40 @@ public class SalonDemo_IFELSE {
 
         // ========== PODSUMOWANIE PROBLEMÓW ==========
         System.out.println("\n" + "=".repeat(60));
-        System.out.println("❌ PROBLEMY Z TYM KODEM:");
+        System.out.println("PROBLEMY Z TYM KODEM:");
         System.out.println("=".repeat(60));
 
         System.out.println("\n1. DUPLIKACJA if-else:");
-        System.out.println("   - pokazSamochod() → if-else");
-        System.out.println("   - pobierzCene() → if-else (TO SAMO!)");
-        System.out.println("   - testJazdy() → if-else (ZNOWU!)");
+        System.out.println("  - pokazSamochod() → if-else");
+        System.out.println("  - pobierzCene() → if-else (TO SAMO!)");
+        System.out.println("  - testJazdy() → if-else (ZNOWU!)");
 
         System.out.println("\n2. Każdy samochód wymaga INNEGO kodu:");
-        System.out.println("   - BMW → aktywujTrybM()");
-        System.out.println("   - Jaguar → wydajRyk()");
-        System.out.println("   - Bentley → wlaczMasazFoteli()");
-        System.out.println("   - Koenigsegg → 3 RÓŻNE metody!");
+        System.out.println("  - BMW → aktywujTrybM()");
+        System.out.println("  - Jaguar → wydajRyk()");
+        System.out.println("  - Bentley → wlaczMasazFoteli()");
+        System.out.println("  - Koenigsegg → 3 RÓŻNE metody!");
 
         System.out.println("\n3. Niemożliwe do zrobienia:");
-        System.out.println("   - List<???> salon = new ArrayList<>();");
-        System.out.println("   - Bo każdy samochód to INNY TYP!");
+        System.out.println("  - List<???> salon = new ArrayList<>();");
+        System.out.println("  - Bo każdy samochód to INNY TYP!");
 
         System.out.println("\n4. Dodanie Ferrari?");
-        System.out.println("   - Zmiana w pokazSamochod()");
-        System.out.println("   - Zmiana w pobierzCene()");
-        System.out.println("   - Zmiana w testJazdy()");
-        System.out.println("   - Zmiana w... WSZĘDZIE!");
+        System.out.println("  - Zmiana w pokazSamochod()");
+        System.out.println("  - Zmiana w pobierzCene()");
+        System.out.println("  - Zmiana w testJazdy()");
+        System.out.println("  - Zmiana w... WSZĘDZIE!");
 
         System.out.println("\n5. Koenigsegg to KOSZMAR:");
-        System.out.println("   - 3 specjalne metody");
-        System.out.println("   - Każda wymaga if-else!");
-        System.out.println("   - Jak dodać więcej funkcji?");
+        System.out.println("  - 3 specjalne metody");
+        System.out.println("  - Każda wymaga if-else!");
+        System.out.println("  - Jak dodać więcej funkcji?");
 
         System.out.println("\n" + "=".repeat(60));
-        System.out.println("❓ PYTANIE: Czy jest lepszy sposób?");
+        System.out.println("PYTANIE: Czy jest lepszy sposób?");
         System.out.println("=".repeat(60));
-        System.out.println("\n💡 WSKAZÓWKA: Pomyśl o interfejsach i polimorfizmie!");
-        System.out.println("💡 WSKAZÓWKA 2: Co jest WSPÓLNE dla wszystkich aut?");
-        System.out.println("💡 WSKAZÓWKA 3: Jak UOGÓLNIĆ różne specjalne funkcje?");
+        System.out.println("\n WSKAZÓWKA: Pomyśl o interfejsach i polimorfizmie!");
+        System.out.println("WSKAZÓWKA 2: Co jest WSPÓLNE dla wszystkich aut?");
+        System.out.println("WSKAZÓWKA 3: Jak UOGÓLNIĆ różne specjalne funkcje?");
     }
 }

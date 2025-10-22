@@ -1,4 +1,4 @@
-# 🏭 Warsztaty: Wzorce Fabryka - Materiały Dydaktyczne
+#  Warsztaty: Wzorce Fabryka - Materiały Dydaktyczne
 
 **Temat:** Factory Method i Abstract Factory na przykładzie Salonu Bajtazara
 
@@ -6,9 +6,9 @@
 
 ---
 
-## 📁 Struktura Materiałów
+##  Struktura Materiałów
 
-### 1️⃣ `Kod/` - Przykłady Java (ponumerowane w kolejności prowadzenia zajęć)
+### 1⃣ `Kod/` - Przykłady Java (ponumerowane w kolejności prowadzenia zajęć)
 
 Pliki Java pokazujące ewolucję od problemu do rozwiązania:
 
@@ -25,7 +25,7 @@ Pliki Java pokazujące ewolucję od problemu do rozwiązania:
 
 ---
 
-### 2️⃣ `SkryptProwadzacego/` - Scenariusze dla nauczyciela
+### 2⃣ `SkryptProwadzacego/` - Scenariusze dla nauczyciela
 
 Szczegółowe scenariusze krok-po-kroku z dokładnym dialogiem:
 
@@ -35,19 +35,19 @@ Szczegółowe scenariusze krok-po-kroku z dokładnym dialogiem:
 | **02_SCENARIUSZ_ABSTRACT_FACTORY.md** | 25-30 min | Jak wprowadzić Abstract Factory |
 
 **Co jest w scenariuszach:**
-- ✅ Dokładny dialog (co mówisz, jak wyjaśniasz)
-- ✅ Timeline (minuty dla każdej fazy)
-- ✅ Kluczowe momenty "AHA!"
-- ✅ Rysunki na tablicy
-- ✅ Odpowiedzi na typowe pytania
-- ✅ Co robić gdy studenci się gubią
+-  Dokładny dialog (co mówisz, jak wyjaśniasz)
+-  Timeline (minuty dla każdej fazy)
+-  Kluczowe momenty "AHA!"
+-  Rysunki na tablicy
+-  Odpowiedzi na typowe pytania
+-  Co robić gdy studenci się gubią
 
 **Podfolder:**
 - `Archiwum_Stare_Wersje/` - wcześniejsze wersje scenariuszy (nieaktualne)
 
 ---
 
-### 3️⃣ `Zadania/` - Treści zadań dla studentów
+### 3⃣ `Zadania/` - Treści zadań dla studentów
 
 Zadania w stylu olimpiad programistycznych (Bajtocja):
 
@@ -63,13 +63,13 @@ Zadania w stylu olimpiad programistycznych (Bajtocja):
 
 ---
 
-### 4️⃣ `Prezentacja/` - Slajdy (opcjonalne, obecnie puste)
+### 4⃣ `Prezentacja/` - Slajdy (opcjonalne, obecnie puste)
 
 Folder na ewentualne slajdy PowerPoint/PDF do pokazania na ekranie.
 
 ---
 
-## 🎯 Kluczowe Koncepcje
+##  Kluczowe Koncepcje
 
 ### Problem: Koenigsegg - samochód egzotyczny
 
@@ -110,7 +110,7 @@ auto.pokazSpecjalneFunkcje(); // Automatycznie wywołuje wszystkie 3!
 
 ---
 
-## 🚀 Jak Prowadzić Warsztaty
+##  Jak Prowadzić Warsztaty
 
 ### Część 1: Factory Method (30-40 minut)
 
@@ -134,11 +134,11 @@ auto.pokazSpecjalneFunkcje(); // Automatycznie wywołuje wszystkie 3!
 
 ---
 
-## 📊 Ewolucja Kodu (Pełen Obraz)
+##  Ewolucja Kodu (Pełen Obraz)
 
 ```
 ╔═══════════════════════════════════════════════════════╗
-║         EWOLUCJA - OD PROBLEMU DO ROZWIĄZANIA         ║
+║        EWOLUCJA - OD PROBLEMU DO ROZWIĄZANIA         ║
 ╚═══════════════════════════════════════════════════════╝
 
 01_START: Bez interfejsu
@@ -147,8 +147,8 @@ BMW bmw = new BMW();
 Jaguar jaguar = new Jaguar();
 Koenigsegg k = new Koenigsegg();
 
-❌ Problem: Każdy typ osobno, brak listy
-❌ Koenigsegg: 3 metody do wywołania
+ Problem: Każdy typ osobno, brak listy
+ Koenigsegg: 3 metody do wywołania
 
 
 02_IFELSE: Próba uogólnienia
@@ -163,7 +163,7 @@ if (marka.equals("bmw")) {
     auto.sprawdzPredkoscMaksymalna();
 }
 
-❌ Problem: If-else wszędzie, duplikacja
+ Problem: If-else wszędzie, duplikacja
 
 
 03_INTERFEJS: Polimorfizm
@@ -176,8 +176,8 @@ for (Samochod auto : salon) {
     auto.pokazSpecjalneFunkcje(); // każdy swoje!
 }
 
-✅ Lepiej: polimorfizm działa
-❌ Nadal: 'new BMW()', 'new Koenigsegg()'
+ Lepiej: polimorfizm działa
+ Nadal: 'new BMW()', 'new Koenigsegg()'
 
 
 04_FACTORY_METHOD: Wzorzec!
@@ -185,7 +185,7 @@ for (Samochod auto : salon) {
 Samochod auto = FabrykaSamochodow.stworzSamochod("bmw");
 auto.pokazSpecjalneFunkcje();
 
-✅✅ IDEALNIE:
+ IDEALNIE:
    - Interfejs (polimorfizm)
    - Fabryka (tworzenie)
    - Koenigsegg działa automatycznie!
@@ -197,7 +197,7 @@ FabrykaSamochodowAbstract fabryka = ProducentFabryk.getFabryka("bmw");
 Sedan sedan = fabryka.stworzSedan();   // BMW Sedan
 SUV suv = fabryka.stworzSUV();         // BMW SUV
 
-✅✅✅ PERFEKCJA:
+ PERFEKCJA:
    - Rodziny produktów (Sedan + SUV)
    - Gwarantowana spójność (oba BMW!)
    - Łatwa zamiana rodziny
@@ -205,7 +205,7 @@ SUV suv = fabryka.stworzSUV();         // BMW SUV
 
 ---
 
-## 💡 Kluczowe Pytania dla Studentów
+##  Kluczowe Pytania dla Studentów
 
 ### Po kodzie START:
 - "Jak zrobić listę wszystkich aut?" (Nie da się - różne typy!)
@@ -229,7 +229,7 @@ SUV suv = fabryka.stworzSUV();         // BMW SUV
 
 ---
 
-## ✅ Punkty Kontrolne
+##  Punkty Kontrolne
 
 Po warsztatach studenci powinni:
 
@@ -243,7 +243,7 @@ Po warsztatach studenci powinni:
 
 ---
 
-## 🎓 Dla Nauczyciela
+##  Dla Nauczyciela
 
 ### Najważniejsze momenty:
 
@@ -265,7 +265,7 @@ Po warsztatach studenci powinni:
 
 ---
 
-## 📚 Materiały Dodatkowe
+##  Materiały Dodatkowe
 
 ### Polecane do przeczytania:
 - "Design Patterns" - Gang of Four (Factory Method, Abstract Factory)
@@ -277,7 +277,7 @@ Po warsztatach studenci powinni:
 
 ---
 
-## 🔄 Historia Zmian
+##  Historia Zmian
 
 - **2024-10-22**: Uporządkowanie struktury, numeracja plików
 - **2024-10-22**: Zmiana "Salon Bajtka" → "Salon Bajtazara"
@@ -286,6 +286,6 @@ Po warsztatach studenci powinni:
 
 ---
 
-**Powodzenia na warsztatach!** 🎓🏭
+**Powodzenia na warsztatach!** 
 
 *Jeśli masz pytania lub sugestie, kontakt: [twój email]*

@@ -1,4 +1,4 @@
-# 🎬 SCENARIUSZ: Jak wprowadzić FABRYKĘ ABSTRAKCYJNĄ?
+#  SCENARIUSZ: Jak wprowadzić FABRYKĘ ABSTRAKCYJNĄ?
 
 **Czas:** 25-30 minut
 **Od:** Factory Method (jeden produkt)
@@ -14,12 +14,12 @@
 3. Rozumieją interfejs Samochod i polimorfizm
 
 ### Materiały:
-- ✅ SalonDemo_KROK2_fabryka.java (punkt wyjścia)
-- ✅ SalonDemo_KROK3_abstrakcyjna.java (będziesz pisać)
+-  SalonDemo_KROK2_fabryka.java (punkt wyjścia)
+-  SalonDemo_KROK3_abstrakcyjna.java (będziesz pisać)
 
 ---
 
-## 🎯 WPROWADZENIE (3-5 minut)
+##  WPROWADZENIE (3-5 minut)
 
 ### [ZACZYNASZ OD PYTANIA]
 
@@ -35,7 +35,7 @@
 
 ```java
 Samochod sedan = FabrykaSamochodow.stworzSamochod("bmw");
-Samochod suv = FabrykaSamochodow.stworzSamochod("bentley");  // ❌ Ups!
+Samochod suv = FabrykaSamochodow.stworzSamochod("bentley");  // Ups!
 ```
 
 **Ty**: "Widzicie? Możemy PRZYPADKOWO stworzyć BMW Sedan + Bentley SUV!
@@ -60,7 +60,7 @@ stworzSamochod()          Fabryka BMW:
 
 ---
 
-## 🏭 KROK 1: INTERFEJSY DLA RÓŻNYCH TYPÓW (8-10 minut)
+##  KROK 1: INTERFEJSY DLA RÓŻNYCH TYPÓW (8-10 minut)
 
 ### [OTWIERASZ NOWY PLIK]
 
@@ -106,12 +106,12 @@ class BMWSedan implements Sedan {
 
     @Override
     public void jedz() {
-        System.out.println("🏎️ BMW Sedan jedzie!");
+        System.out.println("BMW Sedan jedzie!");
     }
 
     @Override
     public void pokazLuksusoweWnetrze() {
-        System.out.println("💺 Skórzane fotele + ambient lighting");
+        System.out.println("Skórzane fotele + ambient lighting");
     }
 }
 ```
@@ -125,12 +125,12 @@ class BMWSUV implements SUV {
 
     @Override
     public void jedz() {
-        System.out.println("🚙 BMW SUV jedzie!");
+        System.out.println("BMW SUV jedzie!");
     }
 
     @Override
     public void pokazTerenoweMozliwosci() {
-        System.out.println("🏔️ Tryb OFF-ROAD + xDrive");
+        System.out.println("Tryb OFF-ROAD + xDrive");
     }
 }
 ```
@@ -147,7 +147,7 @@ class BMWSUV implements SUV {
 
 ---
 
-## ⭐ KROK 2: ABSTRACT FACTORY - INTERFEJS (5-7 minut)
+##  KROK 2: ABSTRACT FACTORY - INTERFEJS (5-7 minut)
 
 ### [KLUCZOWY MOMENT]
 
@@ -200,7 +200,7 @@ Sedan? BMW Sedan. SUV? BMW SUV. Spójność zagwarantowana!"
 
 ---
 
-## 🏗️ KROK 3: PRODUCER FABRYK (5 minut)
+## 🏗 KROK 3: PRODUCER FABRYK (5 minut)
 
 ### [META-FABRYKA]
 
@@ -249,7 +249,7 @@ ProducentFabryk.getFabryka("bmw")
 
 ---
 
-## 🎮 KROK 4: DEMONSTRACJA (7-10 minut)
+##  KROK 4: DEMONSTRACJA (7-10 minut)
 
 ### [POKAZUJESZ UŻYCIE]
 
@@ -260,10 +260,10 @@ public static void main(String[] args) {
 **Ty**: "Teraz używamy Abstract Factory..."
 
 ```java
-    // ⭐ Krok 1: Pobierz fabrykę
+    // Krok 1: Pobierz fabrykę
     FabrykaSamochodowAbstract fabryka = ProducentFabryk.getFabryka("bmw");
 
-    // ⭐ Krok 2: Fabryka tworzy RODZINĘ
+    // Krok 2: Fabryka tworzy RODZINĘ
     Sedan sedan = fabryka.stworzSedan();
     SUV suv = fabryka.stworzSUV();
 ```
@@ -281,15 +281,15 @@ java SalonDemo_KROK3_abstrakcyjna
 ```
 === BMW - RODZINA PRODUKTÓW ===
 
-📍 SEDAN:
+ SEDAN:
 Model: BMW Seria 7
-🏎️ BMW Sedan jedzie!
-💺 Skórzane fotele + ambient lighting
+ BMW Sedan jedzie!
+ Skórzane fotele + ambient lighting
 
-📍 SUV:
+ SUV:
 Model: BMW X7
-🚙 BMW SUV jedzie!
-🏔️ Tryb OFF-ROAD + xDrive
+ BMW SUV jedzie!
+ Tryb OFF-ROAD + xDrive
 ```
 
 **Ty**: "PATRZCIE! Jeden getFabryka(), dwa produkty, 100% spójność!"
@@ -316,28 +316,28 @@ FabrykaSamochodowAbstract fabryka = ProducentFabryk.getFabryka("bentley");
 
 ```java
 Samochod s = FabrykaSamochodow.stworzSamochod("bmw");
-Samochod u = FabrykaSamochodow.stworzSamochod("bentley");  // ❌ Mieszanka!
+Samochod u = FabrykaSamochodow.stworzSamochod("bentley");  // Mieszanka!
 ```
 
 **Ty**: "Z Abstract Factory?"
 
 ```java
 FabrykaSamochodowAbstract fabryka = ProducentFabryk.getFabryka("bmw");
-Sedan s = fabryka.stworzSedan();   // ✅ BMW
-SUV u = fabryka.stworzSUV();       // ✅ BMW - gwarantowane!
+Sedan s = fabryka.stworzSedan();   // BMW
+SUV u = fabryka.stworzSUV();       // BMW - gwarantowane!
 ```
 
 **Ty**: "NIEMOŻLIWE by stworzyć mieszankę! Fabryka wie tylko o SWOJEJ rodzinie!"
 
 ---
 
-## 📊 KROK 5: PORÓWNANIE (3-5 minut)
+##  KROK 5: PORÓWNANIE (3-5 minut)
 
 ### [RYSUJESZ NA TABLICY]
 
 ```
 ╔═══════════════════════════════════════════════════════╗
-║         EWOLUCJA - PEŁNY OBRAZ                        ║
+║        EWOLUCJA - PEŁNY OBRAZ                        ║
 ╚═══════════════════════════════════════════════════════╝
 
 KROK 1: INTERFEJS
@@ -347,17 +347,17 @@ interface Samochod { ... }
 Samochod bmw = new BMW();
 Samochod jaguar = new Jaguar();
 
-✅ Polimorfizm
-❌ Nadal 'new BMW()'
+ Polimorfizm
+ Nadal 'new BMW()'
 
 
 KROK 2: FACTORY METHOD
 ───────────────────────
 Samochod auto = FabrykaSamochodow.stworzSamochod("bmw");
 
-✅ Enkapsulacja tworzenia
-✅ Jeden if-else w jednym miejscu
-❌ Tylko JEDEN produkt na raz
+ Enkapsulacja tworzenia
+ Jeden if-else w jednym miejscu
+ Tylko JEDEN produkt na raz
 
 
 KROK 3: ABSTRACT FACTORY
@@ -366,15 +366,15 @@ FabrykaSamochodowAbstract fabryka = ProducentFabryk.getFabryka("bmw");
 Sedan sedan = fabryka.stworzSedan();
 SUV suv = fabryka.stworzSUV();
 
-✅ Rodziny produktów
-✅ Gwarantowana spójność
-✅ Łatwa zamiana całej rodziny
-✅✅ PERFEKCJA!
+ Rodziny produktów
+ Gwarantowana spójność
+ Łatwa zamiana całej rodziny
+ PERFEKCJA!
 ```
 
 ---
 
-## 🎓 PYTANIA I ODPOWIEDZI (5 minut)
+##  PYTANIA I ODPOWIEDZI (5 minut)
 
 ### Częste pytania:
 
@@ -395,7 +395,7 @@ SUV suv = fabryka.stworzSUV();
 
 ---
 
-## ✅ PODSUMOWANIE (2 minuty)
+##  PODSUMOWANIE (2 minuty)
 
 **Ty**: "Co dzisiaj zrobiliśmy?
 
@@ -416,7 +416,7 @@ Używaj Abstract Factory gdy produkty MUSZĄ pasować do siebie!"
 
 ---
 
-## 📎 TIMELINE
+##  TIMELINE
 
 | Czas | Faza | Co robisz |
 |------|------|-----------|
@@ -435,12 +435,12 @@ Używaj Abstract Factory gdy produkty MUSZĄ pasować do siebie!"
 
 ---
 
-## 🎯 KLUCZOWE MOMENTY
+##  KLUCZOWE MOMENTY
 
 ### Moment AHA! #1 (min 7):
 ```java
 Samochod s = stworzSamochod("bmw");
-Samochod u = stworzSamochod("bentley");  // ❌ Mieszanka!
+Samochod u = stworzSamochod("bentley");  // Mieszanka!
 ```
 **Mówisz**: "Factory Method NIE GWARANTUJE spójności par!"
 
@@ -463,7 +463,7 @@ getFabryka("bmw") → getFabryka("bentley")
 
 ---
 
-## 🆘 CO JEŚLI...
+##  CO JEŚLI...
 
 ### Studenci nie widzą różnicy z Factory Method?
 **Rozwiązanie**: Pokaż problem mieszanki:
@@ -492,7 +492,7 @@ BMWSedan, BMWSUV        (konkretne produkty)
 
 ---
 
-## 💡 DODATKOWE WSKAZÓWKI
+##  DODATKOWE WSKAZÓWKI
 
 ### Analogia ze życia:
 **Ty**: "Myślcie o restauracjach:
@@ -506,10 +506,10 @@ Zmiana restauracji = zmiana CAŁEGO zestawu!"
 
 ### Pytanie prowokacyjne (na koniec):
 **Ty**: "Pytanie dla chętnych: A co jeśli chcę fabrykę fabryk fabryk?
-ProducentFabryk tworzy fabryki... a kto tworzy ProducentFabryk? 😉
+ProducentFabryk tworzy fabryki... a kto tworzy ProducentFabryk? 
 
 To jest rabbit hole wzorców! Ale uwaga - za dużo abstrakcji = overengineering!"
 
 ---
 
-**GOTOWE!** Masz kompletny scenariusz wprowadzenia wzorca Abstract Factory! 🎓🏭
+**GOTOWE!** Masz kompletny scenariusz wprowadzenia wzorca Abstract Factory! 
