@@ -4,7 +4,9 @@
 
 TypeReveal is a presentation framework that brings code to life with character-by-character typing animations, creating an engaging live-coding experience for educational presentations and technical talks.
 
-## Features
+## Engine Features (opis silnika)
+
+Opis poniżej dotyczy działania silnika TypeReveal – modułu odpowiedzialnego za animację kodu i obsługę lekcji:
 
 - **Typewriter Animation** - Code appears character-by-character with realistic typing effect
 - **Step-by-Step Control** - Navigate through code changes with Next/Undo/Reset buttons
@@ -32,12 +34,6 @@ Since the slides are loaded dynamically, you need to run a web server:
 ```bash
 # Using Python
 python -m http.server 8000
-
-# Or using npx
-npx serve
-
-# Or using Node.js http-server
-npx http-server
 ```
 
 ### 3. Open in browser
@@ -141,6 +137,34 @@ Keeping `slides-template` untouched ensures every presentation starts from a cle
    - Do `slides-template`, jeśli poprawiasz szablon.
 
 Szablon pozostaje wtedy czysty, a każda prezentacja ma własną historię zmian.
+
+## Slides Branching Convention / Konwencja rozgałęzień slajdów
+
+### EN
+
+- **Improving the template:**  
+  - Branch name suggestion: `slides-template/<feature>` (e.g., `slides-template/better-controls`).  
+  - Workflow: `git checkout origin/slides-template -b slides-template/<feature>` → implement improvements in `SlidesTemplate/` → PR back to `slides-template`.  
+  - After merge, rebase/merge `slides-template` into `main` when you want the updated engine + template available to everyone.
+- **Creating a brand-new deck:**  
+  - Branch name suggestion: `slides/<topic>` (e.g., `slides/streams-intro`).  
+  - Workflow: start from `slides-template`, finish the deck, then open a PR into `slides-content`. The merge commit in `slides-content` becomes the canonical version of that deck.  
+  - Future fixes to that deck should branch from `slides-content` (e.g., `slides-content/streams-intro-fixes`) so you inherit the already merged slides without touching the pristine template.
+
+This separation keeps `slides-template` minimal, while `slides-content` aggregates every published presentation.
+
+### PL
+
+- **Ulepszanie szablonu:**  
+  - Nazwa gałęzi: `slides-template/<feature>` (np. `slides-template/nowe-przyciski`).  
+  - Przebieg: `git checkout origin/slides-template -b slides-template/<feature>` → wprowadź zmiany w `SlidesTemplate/` → PR do `slides-template`.  
+  - Po scaleniu aktualizujesz `main`, aby wszyscy dostali najnowszy silnik i szablon.
+- **Tworzenie nowej prezentacji:**  
+  - Nazwa gałęzi: `slides/<temat>` (np. `slides/funkcyjne-java`).  
+  - Start z `slides-template`, przygotuj slajdy, a gotową gałąź scal do `slides-content`. Commit w `slides-content` to “oficjalna” wersja prezentacji.  
+  - Kolejne poprawki tej prezentacji rób z `slides-content` (np. `slides-content/funkcyjne-java-poprawki`), żeby korzystać z istniejącej wersji i nie zaśmiecać szablonu.
+
+Dzięki temu `slides-template` pozostaje wzorcem, a `slides-content` gromadzi kompletne slajdy gotowe do użycia.
 
 ## How It Works
 
