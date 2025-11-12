@@ -1,0 +1,25 @@
+<section id="klasa-anonimowa-code">
+  <h3 style="color: #FFC107;">Przypomnienie · Klasa anonimowa</h3>
+
+  <p style="font-size: 0.85em;">Klasa anonimowa to klasa bez nazwy, zdefiniowana i utworzona w jednym miejscu. <strong>Zawsze rozszerza klasę</strong> lub implementuje interfejs.</p>
+
+  <pre><code id="code-klasa-anonimowa" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-klasa-anonimowa">Następny fragment</button>
+    <button id="undo-klasa-anonimowa">Cofnij</button>
+    <button id="reset-klasa-anonimowa">Reset</button>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <label for="progress-klasa-anonimowa">Postęp:</label>
+      <input type="range" id="progress-klasa-anonimowa" min="0" value="0" style="flex:1;">
+      <span id="progress-label-klasa-anonimowa" style="width:60px; text-align:right;">0 / 0</span>
+    </div>
+  </div>
+
+  <script type="application/json" id="steps-klasa-anonimowa">
+  [
+    "// Mamy zwykłą klasę bazową\nclass Osoba {\n    void przedstawSie() {\n        System.out.println(\"Jestem osobą\");\n    }\n}\n\n// Klasyczne podejście: tworzymy klasę potomną\nclass Student extends Osoba {\n    void przedstawSie() {\n        System.out.println(\"Jestem studentem\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Osoba o = new Student();\n        o.przedstawSie();\n    }\n}\n\n",
+    "// -------------------------------------------------\n// Klasa anonimowa - skrót od powyższego!\n// -------------------------------------------------\n\nclass Osoba {\n    void przedstawSie() {\n        System.out.println(\"Jestem osobą\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Rozszerzamy Osoba \"na miejscu\"\n        Osoba o = new Osoba() {\n            void przedstawSie() {\n                System.out.println(\"Jestem studentem\");\n            }\n        };\n        o.przedstawSie();\n    }\n}\n"
+  ]
+  </script>
+</section>

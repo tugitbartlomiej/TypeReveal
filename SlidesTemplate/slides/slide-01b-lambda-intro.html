@@ -1,0 +1,25 @@
+<section id="lambda-intro-code">
+  <h3 style="color: #FFC107;">Wyrażenia lambda · Wprowadzenie</h3>
+
+  <p style="font-size: 0.85em;">Wyrażenie lambda to skrócona forma tworzenia instancji <strong>interfejsu funkcyjnego</strong> (SAM - Single Abstract Method). Składnia: <code>(parameters) -> expression</code></p>
+
+  <pre><code id="code-lambda-intro" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-lambda-intro">Następny fragment</button>
+    <button id="undo-lambda-intro">Cofnij</button>
+    <button id="reset-lambda-intro">Reset</button>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <label for="progress-lambda-intro">Postęp:</label>
+      <input type="range" id="progress-lambda-intro" min="0" value="0" style="flex:1;">
+      <span id="progress-label-lambda-intro" style="width:60px; text-align:right;">0 / 0</span>
+    </div>
+  </div>
+
+  <script type="application/json" id="steps-lambda-intro">
+  [
+    "// Interfejs funkcyjny (SAM)\ninterface Powitanie {\n    void przedstawSie();\n}\n\n// Klasa anonimowa - długa forma\npublic class Main {\n    public static void main(String[] args) {\n        Powitanie p = new Powitanie() {\n            public void przedstawSie() {\n                System.out.println(\"Jestem studentem\");\n            }\n        };\n        p.przedstawSie();\n    }\n}\n\n",
+    "// -------------------------------------------------\n// Lambda - jeszcze krótszy skrót!\n// -------------------------------------------------\n\ninterface Powitanie {\n    void przedstawSie();\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        // Wyrażenie lambda\n        Powitanie p = () -> System.out.println(\"Jestem studentem\");\n        p.przedstawSie();\n    }\n}\n"
+  ]
+  </script>
+</section>

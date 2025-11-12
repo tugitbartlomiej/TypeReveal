@@ -1,0 +1,31 @@
+<section id="swing-lambda-przyklad-code">
+  <h3 style="color: #FFC107;">Lambdy w Swing · Jak podpiąć akcję pod przycisk</h3>
+  <p style="font-size: 0.85em;">Interfejs <code>ActionListener</code> jest funkcyjny (1 metoda) - idealne miejsce na lambdę!</p>
+
+  <pre><code id="code-swing-lambda-przyklad" class="language-java"></code></pre>
+
+  <div class="controls-local">
+    <button id="next-swing-lambda-przyklad">Następny fragment</button>
+    <button id="undo-swing-lambda-przyklad">Cofnij</button>
+    <button id="reset-swing-lambda-przyklad">Reset</button>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <label for="progress-swing-lambda-przyklad">Postęp:</label>
+      <input type="range" id="progress-swing-lambda-przyklad" min="0" value="0" style="flex:1;">
+      <span id="progress-label-swing-lambda-przyklad" style="width:60px; text-align:right;">0 / 0</span>
+    </div>
+  </div>
+
+  <script type="application/json" id="steps-swing-lambda-przyklad">
+  [
+    "// Klasyczne podejście: klasa anonimowa\nJButton button = new JButton(\"Kliknij\");\nbutton.addActionListener(new ActionListener() {\n    @Override\n    public void actionPerformed(ActionEvent e) {\n        System.out.println(\"Przycisk kliknięty!\");\n    }\n});\n\n",
+    "// Lambda - o wiele krócej!\nJButton button2 = new JButton(\"Kliknij\");\nbutton2.addActionListener(e -> \n    System.out.println(\"Przycisk kliknięty!\"));\n\n",
+    "// Lambda z blokiem kodu\nJButton button3 = new JButton(\"Kliknij\");\nbutton3.addActionListener(e -> {\n    System.out.println(\"Kliknięto!\");\n    System.out.println(\"Czas: \" + System.currentTimeMillis());\n});\n"
+  ]
+  </script>
+
+  <ul style="font-size: 0.65em;">
+    <li><strong>ActionListener</strong> to interfejs funkcyjny (1 metoda: <code>actionPerformed</code>)</li>
+    <li>Lambda automatycznie wnioskuje typ parametru <code>e</code> (to <code>ActionEvent</code>)</li>
+    <li>Dla jednej instrukcji możesz pominąć <code>{}</code>, dla wielu użyj bloku</li>
+  </ul>
+</section>
