@@ -58,29 +58,74 @@ Use the lesson selector at the top of the page to switch between available lesso
 
 ## Branch Strategy
 
+### EN
+
 | Branch | Role |
 | ------ | ---- |
-| `main` | Stable snapshot przygotowany do udostępniania współautorom oraz konsumentom silnika. |
-| `engine-dev` | Gałąź robocza dla silnika TypeReveal – tu trafiają bieżące prace developerskie przed scaleniem do `main`. |
-| `engine-release/*` | Zamrożone wersje silnika (np. `engine-release/v1.0`) wykorzystywane do prezentacji lub jako punkt odniesienia dla innych repozytoriów. |
-| `slides-template` | Czysty szablon slajdów wraz z assetami. Z tej gałęzi odchodzą nowe prezentacje. |
-| `slides-content` | Gałąź z konkretnymi prezentacjami/slajdami powstającymi na bazie szablonu. |
+| `main` | Stable snapshot shared with collaborators and slide authors; only verified engine & slide assets live here. |
+| `engine-dev` | Working branch for the TypeReveal engine; merge into `main` after every finished iteration. |
+| `engine-release/*` | Frozen release branches/tags (e.g., `engine-release/v1.0`) that other projects or presenters can pin to. |
+| `slides-template` | Clean slide template plus assets; every new deck must branch off from here. |
+| `slides-content` | Accumulates ready-to-use slide decks produced from the template. |
 
-## Tworzenie slajdów z gałęzi `slides-template`
+### PL
+
+| Gałąź | Rola |
+| ----- | ---- |
+| `main` | Stabilny snapshot do udostępniania współautorom i twórcom slajdów. |
+| `engine-dev` | Gałąź robocza silnika TypeReveal scalana cyklicznie do `main`. |
+| `engine-release/*` | Zamrożone wydania silnika (np. `engine-release/v1.0`) jako punkt odniesienia. |
+| `slides-template` | Czysty szablon slajdów wraz z assetami – od niego odchodzą nowe prezentacje. |
+| `slides-content` | Gałąź z gotowymi prezentacjami tworzonymi na bazie szablonu. |
+
+## Working with `slides-template`
+
+### EN
+
+1. Fetch the latest state:
+   ```bash
+   git fetch origin
+   ```
+2. Create your own branch from the template:
+   ```bash
+   git checkout origin/slides-template -b slides-<your-topic>
+   ```
+3. Update content inside `SlidesTemplate/`:
+   - HTML slides in `SlidesTemplate/slides/`
+   - Media in `SlidesTemplate/Pics/` (and the bundled video if needed)
+   - Sample code in `SlidesTemplate/Code/`
+4. Test locally:
+   ```bash
+   SlidesTemplate/uruchom_prezentacje.bat
+   ```
+   Make sure the presentation runs with all media.
+5. Commit & push your branch:
+   ```bash
+   git add SlidesTemplate
+   git commit -m "Slides: <your-topic>"
+   git push origin slides-<your-topic>
+   ```
+6. Open a pull request:
+   - Target `slides-content` for finished decks.
+   - Target `slides-template` if you are improving the template itself.
+
+Keeping `slides-template` untouched ensures every presentation starts from a clean baseline.
+
+### PL
 
 1. Zsynchronizuj repozytorium:
    ```bash
    git fetch origin
    ```
-2. Utwórz własną gałąź roboczą startując z szablonu:
+2. Utwórz własną gałąź startując z szablonu:
    ```bash
    git checkout origin/slides-template -b slides-<twoj-temat>
    ```
 3. Wprowadź zmiany w katalogu `SlidesTemplate/`:
    - Treść HTML w `SlidesTemplate/slides/`
-   - Obrazy/wideo w `SlidesTemplate/Pics/` (lub `My BCA...mp4`)
+   - Obrazy/wideo w `SlidesTemplate/Pics/` (i ewentualnie `My BCA...mp4`)
    - Kod demonstracyjny w `SlidesTemplate/Code/`
-4. Przetestuj lokalnie, uruchamiając:
+4. Przetestuj lokalnie:
    ```bash
    SlidesTemplate/uruchom_prezentacje.bat
    ```
@@ -92,10 +137,10 @@ Use the lesson selector at the top of the page to switch between available lesso
    git push origin slides-<twoj-temat>
    ```
 6. Otwórz pull request:
-   - Do `slides-content`, jeśli chcesz dodać gotową prezentację do repo.
-   - Do `slides-template`, jeśli poprawiasz sam szablon.
+   - Do `slides-content`, jeśli dodajesz gotową prezentację.
+   - Do `slides-template`, jeśli poprawiasz szablon.
 
-W ten sposób szablon pozostaje czysty, a każda prezentacja ma własną historię zmian.
+Szablon pozostaje wtedy czysty, a każda prezentacja ma własną historię zmian.
 
 ## How It Works
 
