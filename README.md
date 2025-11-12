@@ -52,9 +52,7 @@ http://localhost:8000/Lab4/self_writing_code_lecture_template_ml_update/self_wri
 
 Use the lesson selector at the top of the page to switch between available lessons (02, 03, 05).
 
-## Branch Strategy
-
-### EN
+## Branch Strategy (EN)
 
 | Branch | Role |
 | ------ | ---- |
@@ -64,19 +62,7 @@ Use the lesson selector at the top of the page to switch between available lesso
 | `slides-template` | Clean slide template plus assets; every new deck must branch off from here. |
 | `slides-content` | Accumulates ready-to-use slide decks produced from the template. |
 
-### PL
-
-| Gałąź | Rola |
-| ----- | ---- |
-| `main` | Stabilny snapshot do udostępniania współautorom i twórcom slajdów. |
-| `engine-dev` | Gałąź robocza silnika TypeReveal scalana cyklicznie do `main`. |
-| `engine-release/*` | Zamrożone wydania silnika (np. `engine-release/v1.0`) jako punkt odniesienia. |
-| `slides-template` | Czysty szablon slajdów wraz z assetami – od niego odchodzą nowe prezentacje. |
-| `slides-content` | Gałąź z gotowymi prezentacjami tworzonymi na bazie szablonu. |
-
-## Working with `slides-template`
-
-### EN
+## Working with `slides-template` (EN)
 
 1. Fetch the latest state:
    ```bash
@@ -107,7 +93,30 @@ Use the lesson selector at the top of the page to switch between available lesso
 
 Keeping `slides-template` untouched ensures every presentation starts from a clean baseline.
 
-### PL
+## Slides Branching Convention (EN)
+
+- **Improving the template:**  
+  - Branch name suggestion: `slides-template/<feature>` (e.g., `slides-template/better-controls`).  
+  - Workflow: `git checkout origin/slides-template -b slides-template/<feature>` → implement improvements in `SlidesTemplate/` → PR back to `slides-template`.  
+  - After merge, rebase/merge `slides-template` into `main` when you want the updated engine + template available to everyone.
+- **Creating a brand-new deck:**  
+  - Branch name suggestion: `slides/<topic>` (e.g., `slides/streams-intro`).  
+  - Workflow: start from `slides-template`, finish the deck, then open a PR into `slides-content`. The merge commit in `slides-content` becomes the canonical version of that deck.  
+  - Future fixes to that deck should branch from `slides-content` (e.g., `slides-content/streams-intro-fixes`) so you inherit the already merged slides without touching the pristine template.
+
+This separation keeps `slides-template` minimal, while `slides-content` aggregates every published presentation.
+
+## Strategia gałęzi (PL)
+
+| Gałąź | Rola |
+| ----- | ---- |
+| `main` | Stabilny snapshot do udostępniania współautorom i twórcom slajdów. |
+| `engine-dev` | Gałąź robocza silnika TypeReveal scalana cyklicznie do `main`. |
+| `engine-release/*` | Zamrożone wydania silnika (np. `engine-release/v1.0`) jako punkt odniesienia. |
+| `slides-template` | Czysty szablon slajdów wraz z assetami – od niego odchodzą nowe prezentacje. |
+| `slides-content` | Gałąź z gotowymi prezentacjami tworzonymi na bazie szablonu. |
+
+## Praca z `slides-template` (PL)
 
 1. Zsynchronizuj repozytorium:
    ```bash
@@ -138,22 +147,7 @@ Keeping `slides-template` untouched ensures every presentation starts from a cle
 
 Szablon pozostaje wtedy czysty, a każda prezentacja ma własną historię zmian.
 
-## Slides Branching Convention / Konwencja rozgałęzień slajdów
-
-### EN
-
-- **Improving the template:**  
-  - Branch name suggestion: `slides-template/<feature>` (e.g., `slides-template/better-controls`).  
-  - Workflow: `git checkout origin/slides-template -b slides-template/<feature>` → implement improvements in `SlidesTemplate/` → PR back to `slides-template`.  
-  - After merge, rebase/merge `slides-template` into `main` when you want the updated engine + template available to everyone.
-- **Creating a brand-new deck:**  
-  - Branch name suggestion: `slides/<topic>` (e.g., `slides/streams-intro`).  
-  - Workflow: start from `slides-template`, finish the deck, then open a PR into `slides-content`. The merge commit in `slides-content` becomes the canonical version of that deck.  
-  - Future fixes to that deck should branch from `slides-content` (e.g., `slides-content/streams-intro-fixes`) so you inherit the already merged slides without touching the pristine template.
-
-This separation keeps `slides-template` minimal, while `slides-content` aggregates every published presentation.
-
-### PL
+## Konwencja rozgałęzień slajdów (PL)
 
 - **Ulepszanie szablonu:**  
   - Nazwa gałęzi: `slides-template/<feature>` (np. `slides-template/nowe-przyciski`).  
